@@ -1,5 +1,5 @@
 <html>
-<body>
-Charge Server Index!
-</body>
+    <body>
+        Charge Server Index!
+    </body>
 </html>
