@@ -2,15 +2,15 @@ package com.charge.pojo;
 
 public class User {
 
-    private String name;
+    private String userName;
     private Integer age;
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public Integer getAge() {
