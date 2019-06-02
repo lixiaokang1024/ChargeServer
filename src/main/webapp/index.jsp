@@ -22,7 +22,7 @@
                     <span>学生信息管理</span>
                     <ul>
                         <li>
-                            <a href="#" class="easyui-tree" onclick="addTab('123','http://www.baidu.com/')">123</a>
+                            <a href="#" class="easyui-tree" onclick="addTab('二电饭锅','http://www.baidu.com/')">123</a>
                         </li>
                         <li>
                             <a href="#" class="easyui-tree" onclick="addTab('456','http://www.baidu.com/')">456</a>
