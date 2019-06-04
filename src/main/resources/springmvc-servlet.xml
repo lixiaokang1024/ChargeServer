@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- scan the package and the sub package -->
+<!-- scan the package and the sub package -->
     <context:component-scan base-package="com.charge"/>
 
     <!-- don't handle the static resource -->
@@ -16,6 +18,19 @@
     <mvc:resources mapping="/css/**" location="/WEB-INF/css/" />
     <mvc:resources mapping="/js/**"  location="/WEB-INF/js/" />
     <mvc:resources mapping="/images/**" location="/WEB-INF/images/" />
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/css/**" />
+            <mvc:exclude-mapping path="/images/**" />
+            <mvc:exclude-mapping path="/js/**" />
+            <mvc:exclude-mapping path="/files/**" />
+            <mvc:exclude-mapping path="/charge/user/**" />
+            <mvc:exclude-mapping path="/charge/hello/helloworld" />
+            <bean class="com.charge.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <!-- configure the InternalResourceViewResolver -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"

@@ -128,7 +128,7 @@
             </h1>
         </div>
         <div class="login-content ">
-            <div class="form">
+            <div class="form" style="font-family: 'Glyphicons Halflings';">
                 <form id="modifyPassword" class="form-horizontal" action="#" method="post">
                     <span id="referer" name="referer"></span>
                     <div class="form-group">
@@ -163,20 +163,9 @@
     </div>
 </div>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <span class="text-danger"><i class="fa fa-warning"></i> 用户名或密码错误，请重试！</span>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- 引入jQuery -->
-<script src="../js/hm.js"></script><script src="../js/jquery/jquery.min.js"></script>
-<script src="../js/jquery/jquery.cookie.js"></script>
-<script src="../js/bootstrap.min.js"></script>
+<script src="../js/hm.js"></script><script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.cookie.js"></script>
 <script type="text/javascript">
     $(function () {
         $('#password').keyup(function (event) {
@@ -203,7 +192,6 @@
                     if (!data.status) {
                         alert(data.msg);
                         $('#referer').html(data.msg).css("color","red");
-                        $('#myModal').modal();
                     } else {
                         window.location.href="/charge"
                     }

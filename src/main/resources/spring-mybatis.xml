@@ -47,11 +47,8 @@
         <!-- 配置数据库表对应的java实体类 -->
         <property name="typeAliasesPackage" value="com.charge.pojo" />
         <!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
-        <property name="mapperLocations" value="classpath:com/charge/mapper/*.xml" />
-        <property name="configuration" ref="configuration"></property>
-    </bean>
-    <bean id="configuration" class="org.apache.ibatis.session.Configuration">
-        <property name="mapUnderscoreToCamelCase" value="true"/>
+        <property name="mapperLocations" value="classpath:com/charge/mapper/*/*.xml" />
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
     </bean>
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.charge.mapper" />

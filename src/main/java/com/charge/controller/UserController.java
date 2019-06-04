@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class UserController {
 
     @RequestMapping("/login")
     @ResponseBody
-    public Map<String,Object> login(User user) {
+    public Map<String,Object> login(User user, HttpSession session) {
         logger.info("username = {}", user.getUserName());
         User userIndb = userService.getByUserName(user.getUserName());
         Map<String,Object> result = new HashMap<String,Object>();
@@ -37,6 +38,14 @@ public class UserController {
             result.put("status", false);
             result.put("msg", "用户不存在");
         }
+        session.setAttribute("user", userIndb);
+        result.put("status", true);
         return result;
+    }
+
+    @RequestMapping("/logout")
+    public String loginOut(HttpSession session) {
+        session.invalidate();
+        return "login";
     }
 }

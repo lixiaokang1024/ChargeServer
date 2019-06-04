@@ -1,6 +1,6 @@
 package com.charge.service.impl;
 
-import com.charge.mapper.UserDao;
+import com.charge.mapper.user.UserDao;
 import com.charge.pojo.User;
 import com.charge.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,6 @@ public class UserServiceImpl implements UserService {
     }
 
     public User getByUserName(String username) {
-        return null;
+        return userDao.getByUserName(username);
     }
 }

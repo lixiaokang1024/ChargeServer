@@ -1,4 +1,4 @@
-package com.charge.mapper;
+package com.charge.mapper.user;
 
 import com.charge.pojo.User;
 
