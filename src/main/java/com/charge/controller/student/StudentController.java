@@ -1,8 +1,10 @@
 package com.charge.controller.student;
 
 import com.charge.param.student.StudentSearchParam;
+import com.charge.pojo.common.PageResultDTO;
 import com.charge.pojo.student.StudentInfo;
-import com.charge.service.student.StudentService;
+import com.charge.proxy.student.StudentProxy;
+import com.charge.vo.student.StudentInfoVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,7 @@ public class StudentController {
     private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
 
     @Autowired
-    private StudentService studentService;
+    private StudentProxy studentProxy;
 
     @RequestMapping("/index")
     public String toIndex(){
@@ -32,12 +34,10 @@ public class StudentController {
         ModelMap model = new ModelMap();
         studentSearchParam.setCurrentPage(page);
         studentSearchParam.setPageSize(rows);
-        int count = studentService.countStudent(studentSearchParam);
-        List<StudentInfo> studentInfoList =  studentService.queryStudentList(studentSearchParam);
-        model.put("rows", studentInfoList);
-        model.put("total", count);
+        PageResultDTO<List<StudentInfoVo>> pageResultDTO = studentProxy.queryStudentInfo(studentSearchParam);
+        model.put("rows", pageResultDTO.getData());
+        model.put("total", pageResultDTO.getTotalRecord());
         model.put("page", page);
-
         return model;
     }
 
