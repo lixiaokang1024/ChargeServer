@@ -1,5 +1,7 @@
 package com.charge.vo.student;
 
+import com.charge.enums.student.Sex;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -293,7 +295,7 @@ public class StudentInfoVo implements Serializable {
     }
 
     public String getSexStr() {
-        return sexStr;
+        return Sex.getEnum(sex).getValue();
     }
 
     public void setSexStr(String sexStr) {
@@ -301,7 +303,7 @@ public class StudentInfoVo implements Serializable {
     }
 
     public String getBornDate() {
-        return bornDate;
+        return year+"-"+month+"-"+day;
     }
 
     public void setBornDate(String bornDate) {

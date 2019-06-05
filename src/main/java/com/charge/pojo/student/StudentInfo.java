@@ -62,7 +62,7 @@ public class StudentInfo implements Serializable {
     /**
      * student_info.is_graduate 
      */
-    private Boolean graduate;
+    private Boolean graduate = false;
 
     /**
      * student_info.creat_time 

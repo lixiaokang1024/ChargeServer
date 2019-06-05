@@ -17,6 +17,10 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentInfoMapper studentInfoMapper;
 
+    public void insertSelective(StudentInfo studentInfo) {
+        studentInfoMapper.insertSelective(studentInfo);
+    }
+
     public int countStudent(StudentSearchParam studentSearchParam) {
         Map<String, Object> paramMap = RequestParamUtil.getRequestParamMap(studentSearchParam.getCurrentPage(), studentSearchParam.getPageSize(), studentSearchParam);
         return studentInfoMapper.countStudentInfo(paramMap);

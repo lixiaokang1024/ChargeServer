@@ -8,9 +8,12 @@
 	<thead>
 	<tr style="valign: middle">
 		<th field="name" sortable="true" width="150px">姓名</th>
-		<th field="sex" sortable="true" width="150px">性别</th>
-		<th field="parentName" sortable="true" width="130px">父母姓名</th>
-		<th field="relation" width="80px" >与学生关系</th>
+		<th field="sexStr" sortable="true" width="150px">性别</th>
+		<th field="bornDate" sortable="true" width="150px">出生日期</th>
+		<th field="parentName" sortable="true" width="130px">监护人姓名</th>
+		<th field="relation" sortable="true" width="130px">监护人关系</th>
+		<th field="mobile" width="80px" >联系方式</th>
+		<th field="address" width="80px" >地址</th>
 		<th field="operator"  width="50px">操作</th>
 	</tr>
 	</thead>
@@ -27,37 +30,12 @@
 				</td>
 				<td style="text-align: right;">入学时间：</td>
 				<td colspan="3">
-					<input id="createTimeBegin" style="width: 125px" name="createTimeBegin" class="Wdate"
-						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,maxDate:'#F{$dp.$D(\'createTimeEnd\')}'})"
+					<input id="admissionTimeBegin" style="width: 125px" name="admissionBegin" class="Wdate"
+						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,maxDate:'#F{$dp.$D(\'admissionTimeEnd\')}'})"
 						   value=""/>&nbsp;-&nbsp;
-					<input id="createTimeEnd" style="width: 125px" name="createTimeEnd" class="Wdate"
-						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,minDate:'#F{$dp.$D(\'createTimeBegin\')}'})"
+					<input id="admissionTimeEnd" style="width: 125px" name="admissionTimeEnd" class="Wdate"
+						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,minDate:'#F{$dp.$D(\'admissionTimeBegin\')}'})"
 						   value=""/>
-				</td>
-			</tr>
-			<tr>
-				<td style="text-align: right;">分公司：</td>
-				<td><select id="branchId" name="branchId" style="width:110px;"></select></td>
-				<td style="text-align: right;">门店名称：</td>
-				<td>
-					<input type="text" id="storeName" name="storeName" style="width: 110px;" value=""/>
-					<input type="hidden" id="storeCode" name="storeCode" style="width: 110px;" value=""/>
-				</td>
-				<td style="text-align: right;">门店类型：</td>
-				<td>
-					<select style="width:130px" name="storeType" id="storeType">
-						<option value="-1">请选择</option>
-						<option value="1">自营店</option>
-						<option value="4">委托店</option>
-					</select>
-				</td>
-				<td style="text-align: right;">是否赠品：</td>
-				<td>
-					<select style="width:90px" name="isGift" id="isGift">
-						<option value="-1">全部</option>
-						<option value="1">是</option>
-						<option value="0">否</option>
-					</select>
 				</td>
 			</tr>
 			<tr>&nbsp;</tr>
@@ -65,6 +43,7 @@
 				<td colspan="4">
 					<input type="button" class="button search" value="搜索" id="searchLink"/>
 					<input type="reset" class="button clear" value="清空" id="clearLink"/>
+					<input type="button" class="button add" value="批量导入" id="addExcel" />
 					<input type="button" class="button export" value="批量导出" id="exportLink"/>
 				</td>
 			</tr>
@@ -72,6 +51,27 @@
 	</form>
 </div>
 <!--搜索条件结束-->
+
+<!-- 学生信息批量导入 -->
+<div id="dialogExcel" class="easyui-dialog" title="学生信息批量导入" closed="true"
+	 style="width:500px; height:300px;overflow: auto;" iconCls="icon-edit">
+	<form name="ExcelForm" action="" id="ExcelForm" method="post" enctype="multipart/form-data">
+		<div style="margin:11px 11px 0px 25px">
+        <span id="moban">
+          <a href="javascript:;" onclick="location.href='${contextPath}/files/STUDENT_INFO_TEMPLATE.xlsx'">导入模板下载</a>
+        </span><br/><br/>
+          <label>选择文件：</label>
+          <input name="studentFileBuildInfo" id="studentFileBuildInfo" type="file" class="required"
+				 style="width: 200px;"/>
+        </span><br/><br/>
+			<p align="center">
+				<input id="saveExcel" type="button" value="导入Excel"/>
+				<input id="cancelExcel" type="button" value="取消"/>
+			</p><br>
+			<span style="display: none;" id="spanHidden">文件正在上传中.......</span>
+		</div>
+	</form>
+</div>
 
 
 <script type="text/javascript">
@@ -85,10 +85,19 @@
 		});
 
 	});
+	$('#addExcel').live('click',function(){
+		$("#dialogExcel").dialog("open");
+		$('#studentFileBuildInfo').val("");
+		return false;
+	});
+	$('#cancelExcel').live('click',function(){
+		$("#dialogExcel").dialog("close");
+		return false;
+	});
 	//导出
 	$('#exportLink').click(function () {
 		var datas = getFormData();
-		var url = '${contextPath}/purchasedmanagement/replenishmentOrderController/export';
+		var url = '${contextPath}/student/export';
 		$.messager.confirm('系统消息', "是否导出！", function (r) {
 			if (r) {
 				$.ajax({
@@ -117,20 +126,62 @@
 		});
 	});
 
-
 	function getFormData() {
 		var data = {
-			replenishmentSn: $('#replenishmentSn').val(),
-			purchaseCode: $('#purchaseCode').val(),
-			storeCode: $('#storeCode').val(),
-			storeType: $('#storeType').val(),
-			branchId: $("#branchId").val(),
-			createTimeBegin: $('#createTimeBegin').val(),
-			createTimeEnd: $('#createTimeEnd').val(),
-			isGift: $('#isGift').val()
+			studentName: $('#studentName').val(),
+			admissionTimeBegin: $('#createTimeBegin').val(),
+			admissionTimeEnd: $('#createTimeEnd').val(),
 		};
 		return data;
 	}
+
+	<!--批量导入-->
+	$('#saveExcel').live('click',function(){
+		var url = "${contextPath}/student/importStudentInfo";
+		var selNum = $('#studentFileBuildInfo').length;
+		var file = $('#studentFileBuildInfo').val();
+		var index = file.lastIndexOf(".");
+		var ext = file.substring(index + 1, file.length).toLowerCase();
+		if(parseInt(selNum)==0 || file=="" || file == null){
+			$.messager.alert('系统消息',"请选择Excel文件！！！！","info");
+		}
+		else if(ext != "xls" && ext != "xlsx"){
+			$.messager.alert('系统消息',"请选择Excel文件上传！！！！","info");
+		}else{
+			$('#ExcelForm').ajaxSubmit({
+				url: url,
+				cache:false,
+				dataType:'json',
+				beforeSend: function() {
+					$("#spanHidden").show();
+					$("#saveExcel").attr("disabled",true);
+					$("#cancelExcel").attr("disabled", true);
+				} ,
+				success: function (data) {
+					if (data.success) {
+						$.messager.alert('系统消息', '导入成功', "info");
+						$("#dialogExcel").dialog("close");
+						$('#studentFileBuildInfo').val("");
+						$("#datagrid").datagrid("reload");
+					} else {
+						layer.alert(data.msg);
+						if (data.fileName) {
+							window.location.href = '${contextPath}/download?fileName=' + msg.fileName + '&filePath=' + msg.filePath;
+						}
+					}
+				} ,
+				complete: function(){
+					$("#spanHidden").hide();
+					$("#saveExcel").attr("disabled",false);
+					$("#cancelExcel").attr("disabled", false);
+				},
+				error:function(data){
+					$.messager.alert('系统消息', data.msg,'error');
+				}
+			});
+		}
+
+	});
 
 </script>
 </body>

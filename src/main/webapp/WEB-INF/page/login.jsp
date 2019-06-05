@@ -116,13 +116,16 @@
             font-weight: bold;
             font: 14px/normal "microsoft yahei", "Times New Roman", "宋体", Times, serif;
         }
+        .glyphicon-user:before{content:none;}
+        .glyphicon-user{width:18px;height:18px;background:url("../images/login/login-n.png") no-repeat center center;}
+        .glyphicon-lock:before{content:none;}
+        .glyphicon-lock{width:18px;height:18px;background:url("../images/login/login-pwd.png") no-repeat center center;}
     </style>
 </head>
 <body>
 <div class="box">
     <div class="login-box">
         <div class="login-title text-center">
-            <span class="flag"><i class="fa fa-user"></i> 用户登陆</span>
             <h1>
                 <small>幼儿园缴费系统</small>
             </h1>
@@ -150,10 +153,10 @@
                     <div class="form-group form-actions">
                         <div class="col-xs-12 text-center">
                             <button type="button" id="login" class="btn btn-sm btn-success">
-                                <span class="fa fa-check-circle"></span> 登录
+                                登录
                             </button>
                             <button type="button" id="reset" class="btn btn-sm btn-danger">
-                                <span class="fa fa-close"></span> 重置
+                                重置
                             </button>
                         </div>
                     </div>

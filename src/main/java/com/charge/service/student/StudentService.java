@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface StudentService {
 
+    void insertSelective(StudentInfo studentInfo);
+
     int countStudent(StudentSearchParam studentSearchParam);
     List<StudentInfo> queryStudentList(StudentSearchParam studentSearchParam);
 

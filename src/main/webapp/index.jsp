@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="css/frame.css" />
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
-    <title>北京电子商务 - Powered By SfShop</title>
+    <title>沙河小马幼儿园</title>
     <link rel="shortcut icon" href="http://corp.sfbest.com/favicon.ico" />
     <link type="text/css" href="css/easyui/themes/default/easyui.css" rel="stylesheet" />
     <link type="text/css" href="css/admpanel.css" rel="stylesheet" media="screen, projection" />
@@ -65,8 +65,8 @@
                 </a>
             </div>
         </div>
-        <div class="top-link">
-            <img src="images/wms/contact_blue.gif">欢迎:${user.userName}
+        <div class="top-link" style="width:300px;">
+            <img src="images/wms/contact_blue.gif">欢迎:${user.userName}登陆
             <img src="images/wms/lock_edit.gif"><a href="/default/editPass" id="editPass">修改密码</a>
             <img src="images/wms/page_go.gif"><a href="/charge/user/logout">退出</a>
         </div>
@@ -161,8 +161,8 @@
 </div>
 <div region="center" style="background:#f1f1f1;padding:12px 12px 12px 4px;">
     <div class="easyui-tabs" fit="true" border="false" id="tab" >
-        <div title="后台首页">
-            <h5 style="position: relative;text-align: center;vertical-align:middle;font-size: larger">欢迎使用幼儿园收费系统</h5>
+        <div title="后台首页" style="background: url('images/school/main.jpg') no-repeat center 160px ">
+            <h5 style="text-align: center;font-size:24px;margin-top:320px;color: orangered;">欢迎使用幼儿园收费系统</h5>
         </div>
     </div>
 </div>
