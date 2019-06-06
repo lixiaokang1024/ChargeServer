@@ -79,13 +79,13 @@
             <ul>
                 <li>
                     <span>
-                        <a href="list.html" title="年级配置" class="newTab">年级配置</a>
+                        <a href="school/gradeIndex" title="年级配置" class="newTab">年级配置</a>
                     </span>
                     <span>
-                        <a href="list.html" title="班级配置" class="newTab">班级配置</a>
+                        <a href="school/classIndex" title="班级配置" class="newTab">班级配置</a>
                     </span>
                     <span>
-						<a href="/inprice/index" title="费用项目配置" class="newTab">费用项目配置</a>
+						<a href="charge/index" title="费用项目配置" class="newTab">费用项目配置</a>
 					</span>
                 </li>
             </ul>

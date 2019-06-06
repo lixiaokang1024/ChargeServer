@@ -1,4 +1,4 @@
-package com.charge.pojo.student;
+package com.charge.pojo.school;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +13,9 @@ public class ClassInfo implements Serializable {
      * class_info.name 
      */
     private String name;
+
+    private Integer gradeId;
+    private String gradeName;
 
     /**
      * class_info.creat_time 
@@ -55,6 +58,22 @@ public class ClassInfo implements Serializable {
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public Integer getGradeId() {
+        return gradeId;
+    }
+
+    public void setGradeId(Integer gradeId) {
+        this.gradeId = gradeId;
+    }
+
+    public String getGradeName() {
+        return gradeName;
+    }
+
+    public void setGradeName(String gradeName) {
+        this.gradeName = gradeName;
     }
 
     /**

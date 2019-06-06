@@ -1,9 +1,9 @@
-package com.charge.pojo.student;
+package com.charge.vo.school;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class GradeInfo implements Serializable {
+public class GradeInfoVo implements Serializable {
     /**
      * grade_info.id 
      */

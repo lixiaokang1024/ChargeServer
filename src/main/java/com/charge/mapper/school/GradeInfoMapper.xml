@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.charge.mapper.student.GradeInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.charge.pojo.student.GradeInfo" >
+<mapper namespace="com.charge.mapper.school.GradeInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.charge.pojo.school.GradeInfo" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="level" property="level" jdbcType="INTEGER" />
@@ -12,7 +12,7 @@
   <sql id="Base_Column_List" >
     id, name, level, create_time, modify_time, is_deleted
   </sql>
-  <insert id="insert" parameterType="com.charge.pojo.student.GradeInfo" >
+  <insert id="insert" parameterType="com.charge.pojo.school.GradeInfo" >
     insert into grade_info (id, name, level, 
       create_time, modify_time, is_deleted
       )
@@ -20,7 +20,7 @@
       #{createTime,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=TINYINT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.charge.pojo.student.GradeInfo" >
+  <insert id="insertSelective" parameterType="com.charge.pojo.school.GradeInfo" >
     insert into grade_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -59,7 +59,7 @@
       #{deleted,jdbcType=TINYINT},
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.charge.pojo.student.GradeInfo" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.charge.pojo.school.GradeInfo" >
     update grade_info
     <set >
       <if test="name != null" >
@@ -80,7 +80,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.charge.pojo.student.GradeInfo" >
+  <update id="updateByPrimaryKey" parameterType="com.charge.pojo.school.GradeInfo" >
     update grade_info
     set name = #{name,jdbcType=VARCHAR},
       level = #{level,jdbcType=INTEGER},
@@ -89,4 +89,11 @@
       is_deleted = #{deleted,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="countGradeInfo" resultType="java.lang.Integer">
+    SELECT count(id) FROM grade_info
+  </select>
+  <select id="queryGradeInfoPageList" resultMap="BaseResultMap">
+    SELECT * FROM grade_info
+  </select>
 </mapper>

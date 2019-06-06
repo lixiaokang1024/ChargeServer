@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.charge.mapper.student.ClassInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.charge.pojo.student.ClassInfo" >
+<mapper namespace="com.charge.mapper.school.ClassInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.charge.pojo.school.ClassInfo" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="grade_id" property="gradeId" jdbcType="INTEGER" />
+    <result column="grade_name" property="gradeName" jdbcType="VARCHAR" />
     <result column="creat_time" property="creatTime" jdbcType="INTEGER" />
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="deleted" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, creat_time, modify_time, is_deleted
+    id, name, grade_id, creat_time, modify_time, is_deleted
   </sql>
-  <insert id="insert" parameterType="com.charge.pojo.student.ClassInfo" >
-    insert into class_info (id, name, creat_time, 
+  <insert id="insert" parameterType="com.charge.pojo.school.ClassInfo" >
+    insert into class_info (id, name, grade_id, creat_time,
       modify_time, is_deleted)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{creatTime,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gradeId}, #{creatTime,jdbcType=INTEGER},
       #{modifyTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.charge.pojo.student.ClassInfo" >
+  <insert id="insertSelective" parameterType="com.charge.pojo.school.ClassInfo" >
     insert into class_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -25,6 +27,9 @@
       </if>
       <if test="name != null" >
         name,
+      </if>
+      <if test="gradeId != null" >
+        grade_id,
       </if>
       <if test="creatTime != null" >
         creat_time,
@@ -41,6 +46,9 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="gradeId != null" >
+        #{gradeId},
+      </if>
       <if test="creatTime != null" >
         #{creatTime,jdbcType=INTEGER},
       </if>
@@ -50,7 +58,7 @@
       #{deleted,jdbcType=TINYINT},
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.charge.pojo.student.ClassInfo" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.charge.pojo.school.ClassInfo" >
     update class_info
     <set >
       <if test="name != null" >
@@ -68,7 +76,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.charge.pojo.student.ClassInfo" >
+  <update id="updateByPrimaryKey" parameterType="com.charge.pojo.school.ClassInfo" >
     update class_info
     set name = #{name,jdbcType=VARCHAR},
       creat_time = #{creatTime,jdbcType=INTEGER},
@@ -76,4 +84,11 @@
       is_deleted = #{deleted,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="countClassInfo" resultType="java.lang.Integer">
+    SELECT count(id) FROM class_info
+  </select>
+  <select id="queryClassInfoPageList" resultMap="BaseResultMap">
+    SELECT a.*,b.name as grade_name FROM class_info a join grade_info b on a.grade_id=b.id
+  </select>
 </mapper>
