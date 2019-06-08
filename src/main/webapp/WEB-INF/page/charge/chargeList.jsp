@@ -51,7 +51,6 @@
 			<br/><br/>
 			所属年级：
 			<select id="gradeId" style="width: 150px;">
-				<option value="-1">全部</option>
 			</select>
 			<br/><br/>
 			<p align="center">
@@ -83,6 +82,21 @@
 
 	$('#addLink').live('click',function(){
 		$("#addDialog").dialog("open");
+        $('#gradeId').empty();
+		var param={page:1,rows:2000}
+		$.ajax({
+			url:"${contextPath}/school/gradeList",
+            dataType:'json',
+            data:param,
+            success:function(data){
+                var gradeList = data.rows;
+                $("#gradeId").append('<option value="-1">全部</option>');
+                for(i=0;i<gradeList.length;i++){
+                    var grade = gradeList[i];
+                    $("#gradeId").append('<option value="'+grade.id+'">'+grade.name+'</option>');
+                }
+			}
+		});
 		return false;
 	});
 	$('#cancel').live('click',function(){
@@ -109,7 +123,7 @@
 			success: function (data) {
 				$("#addDialog").dialog("close");
 				if (data.success) {
-					$.messager.alert('系统消息', '导入成功', "info");
+					$.messager.alert('系统消息', '添加成功', "info");
 					$("#datagrid").datagrid("reload");
 				} else {
 					layer.alert(data.msg);
@@ -118,6 +132,8 @@
 			complete: function(){
 				$("#save").attr("disabled",false);
 				$("#cancel").attr("disabled", false);
+                $('#name').val(""),
+				$('#amount').val("")
 			},
 			error:function(data){
 				$.messager.alert('系统消息', data.msg,'error');

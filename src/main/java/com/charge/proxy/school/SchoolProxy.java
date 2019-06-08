@@ -26,6 +26,16 @@ public class SchoolProxy {
     @Autowired
     private SchoolService schoolService;
 
+    public void saveClassInfo(ClassInfo classInfo){
+        logger.info("班级信息保存参数：{}", JsonUtil.toJson(classInfo));
+        schoolService.insertSelectiveClassInfo(classInfo);
+    }
+
+    public void saveGradeInfo(GradeInfo gradeInfo){
+        logger.info("年纪信息保存参数：{}", JsonUtil.toJson(gradeInfo));
+        schoolService.insertSelectiveGradeInfo(gradeInfo);
+    }
+
     public PageResultDTO<List<GradeInfoVo>> queryGradeInfo(GradeSearchParam searchParam){
         logger.info("查询年级信息搜索参数：{}", JsonUtil.toJson(searchParam));
         PageResultDTO<List<GradeInfoVo>> pageResultDTO = new PageResultDTO<List<GradeInfoVo>>();

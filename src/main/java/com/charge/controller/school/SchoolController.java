@@ -3,6 +3,8 @@ package com.charge.controller.school;
 import com.charge.param.school.ClassSearchParam;
 import com.charge.param.school.GradeSearchParam;
 import com.charge.pojo.common.PageResultDTO;
+import com.charge.pojo.school.ClassInfo;
+import com.charge.pojo.school.GradeInfo;
 import com.charge.proxy.school.SchoolProxy;
 import com.charge.vo.school.ClassInfoVo;
 import com.charge.vo.school.GradeInfoVo;
@@ -13,7 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("school")
@@ -58,6 +63,34 @@ public class SchoolController {
         model.put("total", pageResultDTO.getTotalRecord());
         model.put("page", page);
         return model;
+    }
+
+    @RequestMapping("/saveClassInfo")
+    @ResponseBody
+    public Map<String, Object> saveClassInfo(ClassInfo classInfo) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("success", true);
+        try {
+            schoolProxy.saveClassInfo(classInfo);
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
+    }
+
+    @RequestMapping("/saveGradeInfo")
+    @ResponseBody
+    public Map<String, Object> saveGradeInfo(GradeInfo gradeInfo) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("success", true);
+        try {
+            schoolProxy.saveGradeInfo(gradeInfo);
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
     }
 
 }

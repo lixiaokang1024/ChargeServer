@@ -34,12 +34,15 @@ public class UserController {
         logger.info("username = {}", user.getUserName());
         User userIndb = userService.getByUserName(user.getUserName());
         Map<String,Object> result = new HashMap<String,Object>();
+        result.put("status", true);
         if(userIndb == null){
             result.put("status", false);
             result.put("msg", "用户不存在");
+        }else if(!userIndb.getPassword().equals(user.getPassword())){
+            result.put("status", false);
+            result.put("msg", "密码不正确！");
         }
         session.setAttribute("user", userIndb);
-        result.put("status", true);
         return result;
     }
 

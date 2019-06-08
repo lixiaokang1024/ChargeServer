@@ -193,7 +193,6 @@
                 data: formData,
                 success: function (data) {
                     if (!data.status) {
-                        alert(data.msg);
                         $('#referer').html(data.msg).css("color","red");
                     } else {
                         window.location.href="/charge"
