@@ -195,7 +195,7 @@
                     if (!data.status) {
                         $('#referer').html(data.msg).css("color","red");
                     } else {
-                        window.location.href="/charge"
+                        top.location.href="/charge";
                     }
                 },
                 error: function () {
