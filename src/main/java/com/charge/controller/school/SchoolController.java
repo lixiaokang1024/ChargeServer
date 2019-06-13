@@ -71,7 +71,7 @@ public class SchoolController {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("success", true);
         try {
-            schoolProxy.saveClassInfo(classInfo);
+            schoolProxy.saveOrModifyClassInfo(classInfo);
         } catch (Exception e) {
             resultMap.put("success", false);
             resultMap.put("msg", e.getMessage());

@@ -91,6 +91,44 @@ public class DateUtil {
 		String date_string = getSimpleDateFormat("yyyy-MM-dd").format(date);
 		return getTimespan2(date_string);
 	}
+
+	public static int getYear(Date date){
+		return Integer.parseInt(String.format("%tY", date));
+	}
+	public static int getMonth(Date date){
+		return Integer.parseInt(String.format("%tm", date));
+	}
+	public static int getDay(Date date){
+		return Integer.parseInt(String.format("%td", date));
+	}
+
+	//由出生日期获得年龄
+	public static  int getAge(Date birthDay){
+		Calendar cal = Calendar.getInstance();
+		if (cal.before(birthDay)) {
+			throw new IllegalArgumentException(
+					"The birthDay is before Now.It's unbelievable!");
+		}
+		int yearNow = cal.get(Calendar.YEAR);
+		int monthNow = cal.get(Calendar.MONTH);
+		int dayOfMonthNow = cal.get(Calendar.DAY_OF_MONTH);
+		cal.setTime(birthDay);
+
+		int yearBirth = cal.get(Calendar.YEAR);
+		int monthBirth = cal.get(Calendar.MONTH);
+		int dayOfMonthBirth = cal.get(Calendar.DAY_OF_MONTH);
+
+		int age = yearNow - yearBirth;
+
+		if (monthNow <= monthBirth) {
+			if (monthNow == monthBirth) {
+				if (dayOfMonthNow < dayOfMonthBirth) age--;
+			}else{
+				age--;
+			}
+		}
+		return age;
+	}
 	
 	/**
 	 * 根据字符串时间获取对应的时间戳

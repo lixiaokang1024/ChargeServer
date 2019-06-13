@@ -13,6 +13,11 @@ public interface SchoolService {
 
     void insertSelectiveGradeInfo(GradeInfo gradeInfo);
     void insertSelectiveClassInfo(ClassInfo classInfo);
+    void updateClassInfo(ClassInfo classInfo);
+    void updateGradeInfo(GradeInfo gradeInfo);
+
+    ClassInfo getClassInfoById(Integer classId);
+    GradeInfo getGradeInfoById(Integer gradeId);
 
     int countGrade(GradeSearchParam gradeSearchParam);
     List<GradeInfo> queryGradeList(GradeSearchParam gradeSearchParam);

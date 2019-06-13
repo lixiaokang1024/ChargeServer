@@ -9,7 +9,7 @@
 	<tr style="valign: middle">
 		<th field="name" sortable="true" width="150px">年级名称</th>
 		<th field="level" sortable="true" width="150px">年级等级</th>
-		<th field="operator"  width="50px">操作</th>
+		<th field="operator" width="50px" formatter="settings">操作</th>
 	</tr>
 	</thead>
 </table>
@@ -42,6 +42,7 @@
 	 style="width:350px; height:200px;overflow: auto;" iconCls="icon-edit">
 	<form name="addForm" action="" id="addForm" method="post">
 		<div style="margin:11px 11px 0px 25px">
+			<input id="gradeId" type="hidden" value=""/>
 			年纪名称：
 			<input name="addGradeName" id="addGradeName" type="text" style="width: 150px;"/>
 			<br/><br/>
@@ -78,6 +79,7 @@
 		return data;
 	}
     $('#addLink').live('click',function(){
+		$("#addGradeName").val("");
         $("#addGradeDialog").dialog("open");
     	return false;
     });
@@ -90,6 +92,7 @@
     $('#save').live('click',function(){
         var url = "${contextPath}/school/saveGradeInfo";
         var data = {
+        	id: $('#gradeId').val(),
             name: $('#addGradeName').val(),
             level: $('#level').val()
         }
@@ -105,7 +108,7 @@
             success: function (data) {
                 $("#addGradeDialog").dialog("close");
                 if (data.success) {
-                    $.messager.alert('系统消息', '添加成功', "info");
+                    $.messager.alert('系统消息', '已完成', "info");
                     $("#datagrid").datagrid("reload");
                 } else {
                     layer.alert(data.msg);
@@ -114,7 +117,6 @@
             complete: function(){
                 $("#save").attr("disabled",false);
                 $("#cancel").attr("disabled", false);
-                $("#addGradeName").val("");
             },
             error:function(data){
                 $.messager.alert('系统消息', data.msg,'error');
@@ -122,6 +124,22 @@
         });
     });
 
+	function settings(value,row){
+		var gradeId = row.id;
+		var html = '<div style="text-align: center;">';
+		html += '<img style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" title="编辑" a src="${contextPath}/images/m_edit.gif" href="javascript:;" onclick="modifyGradeInfo(\''+row.name+'\',\''+gradeId+'\','+row.level+')" />';
+		html += '</div>';
+		return html;
+	}
+
+	function modifyGradeInfo(gradeName, gradeId, level){
+		$("#addGradeDialog").dialog("open");
+		$("#addGradeName").val(gradeName);
+		$("#gradeId").val(gradeId);
+		$("#save").val("更新");
+		$("#level").find("option[value=\'"+level+"\']").attr("selected",true);
+		return false;
+	}
 </script>
 </body>
 </html>

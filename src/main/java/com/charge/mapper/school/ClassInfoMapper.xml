@@ -64,6 +64,9 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="gradeId != null" >
+        grade_id = #{gradeId},
+      </if>
       <if test="creatTime != null" >
         creat_time = #{creatTime,jdbcType=INTEGER},
       </if>
@@ -76,6 +79,11 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getClassInfoById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT <include refid="Base_Column_List"/> FROM class_info WHERE id=#{id}
+  </select>
+
   <update id="updateByPrimaryKey" parameterType="com.charge.pojo.school.ClassInfo" >
     update class_info
     set name = #{name,jdbcType=VARCHAR},

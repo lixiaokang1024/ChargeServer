@@ -9,7 +9,7 @@
 	<tr style="valign: middle">
 		<th field="name" sortable="true" width="150px">班级名称</th>
 		<th field="gradeName" sortable="true" width="150px">所属年级</th>
-		<th field="operator"  width="50px">操作</th>
+		<th field="settings" width="50px" formatter="settings">操作</th>
 	</tr>
 	</thead>
 </table>
@@ -41,6 +41,7 @@
 	 style="width:350px; height:200px;overflow: auto;" iconCls="icon-edit">
 	<form name="addForm" action="" id="addForm" method="post">
 		<div style="margin:11px 11px 0px 25px">
+			<input id="classId" type="hidden" value=""/>
 			班级名称：
 			<input name="addClassName" id="addClassName" type="text" style="width: 150px;"/>
 			<br/><br/>
@@ -75,7 +76,9 @@
 	}
     $('#addLink').live('click',function(){
         $("#addClassDialog").dialog("open");
+		$("#addClassName").val("");
         $("#gradeId").empty();
+		$("#save").val("添加");
         var param={page:1,rows:2000}
         $.ajax({
             url:"${contextPath}/school/gradeList",
@@ -101,6 +104,7 @@
     $('#save').live('click',function(){
         var url = "${contextPath}/school/saveClassInfo";
         var data = {
+        	id: $('#classId').val(),
             name: $('#addClassName').val(),
             gradeId: $('#gradeId').val()
         }
@@ -116,7 +120,7 @@
             success: function (data) {
                 $("#addClassDialog").dialog("close");
                 if (data.success) {
-                    $.messager.alert('系统消息', '添加成功', "info");
+                    $.messager.alert('系统消息', '已完成', "info");
                     $("#datagrid").datagrid("reload");
                 } else {
                     layer.alert(data.msg);
@@ -125,13 +129,46 @@
             complete: function(){
                 $("#save").attr("disabled",false);
                 $("#cancel").attr("disabled", false);
-                $("#addClassName").val("");
             },
             error:function(data){
                 $.messager.alert('系统消息', data.msg,'error');
             }
         });
     });
+
+	function settings(value,row){
+		var classId = row.id;
+		var html = '<div style="text-align: center;">';
+		html += '<img style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" title="编辑" a src="${contextPath}/images/m_edit.gif" href="javascript:;" onclick="modifyClassInfo(\''+row.name+'\',\''+classId+'\',\''+row.gradeId+'\')" />';
+		html += '</div>';
+		return html;
+	}
+	function modifyClassInfo(className, classId, gradeId){
+		$("#addClassDialog").dialog("open");
+		$("#gradeId").empty();
+		$("#addClassName").val(className);
+		$("#classId").val(classId);
+		$("#save").val("更新");
+		var param={page:1,rows:2000}
+		$.ajax({
+			url:"${contextPath}/school/gradeList",
+			dataType:'json',
+			data:param,
+			success:function(data){
+				var gradeList = data.rows;
+				$("#gradeId").append('<option value="-1">全部</option>');
+				for(i=0;i<gradeList.length;i++){
+					var grade = gradeList[i];
+					if(gradeId == grade.id){
+						$("#gradeId").append('<option selected=\'selected\' value="'+grade.id+'">'+grade.name+'</option>');
+					}else{
+						$("#gradeId").append('<option value="'+grade.id+'">'+grade.name+'</option>');
+					}
+				}
+			}
+		});
+		return false;
+	}
 </script>
 </body>
 </html>

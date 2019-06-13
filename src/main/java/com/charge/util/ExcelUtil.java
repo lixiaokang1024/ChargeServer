@@ -5,6 +5,7 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -27,7 +28,8 @@ public class ExcelUtil {
                 Date date = xssfRow.getDateCellValue();
                 return sdf.format(date);
             }
-            return String.valueOf(xssfRow.getNumericCellValue()).trim();
+            DecimalFormat df = new DecimalFormat("#");//转换成整型
+            return String.valueOf(df.format(xssfRow.getNumericCellValue()).trim());
         } else if (xssfRow.getCellType() == XSSFCell.CELL_TYPE_FORMULA){
             XSSFFormulaEvaluator evaluator = xssfRow.getSheet().getWorkbook().getCreationHelper().createFormulaEvaluator();
             evaluator.evaluateFormulaCell(xssfRow);

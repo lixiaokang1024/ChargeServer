@@ -34,7 +34,7 @@
       #{address,jdbcType=VARCHAR}, #{graduate,jdbcType=BIT}, #{creatTime,jdbcType=INTEGER}, 
       #{modifyTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.charge.pojo.student.StudentInfo" >
+  <insert id="insertSelective" keyProperty="id" useGeneratedKeys="true" parameterType="com.charge.pojo.student.StudentInfo" >
     insert into student_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

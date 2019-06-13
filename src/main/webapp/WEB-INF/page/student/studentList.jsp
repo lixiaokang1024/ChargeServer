@@ -160,15 +160,12 @@
 				success: function (data) {
 					if (data.success) {
 						$.messager.alert('系统消息', '导入成功', "info");
-						$("#dialogExcel").dialog("close");
 						$('#studentFileBuildInfo').val("");
 						$("#datagrid").datagrid("reload");
 					} else {
-						layer.alert(data.msg);
-						if (data.fileName) {
-							window.location.href = '${contextPath}/download?fileName=' + msg.fileName + '&filePath=' + msg.filePath;
-						}
+						$.messager.alert('系统消息', data.msg, "error");
 					}
+					$("#dialogExcel").dialog("close");
 				} ,
 				complete: function(){
 					$("#spanHidden").hide();

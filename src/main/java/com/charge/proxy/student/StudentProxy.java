@@ -2,8 +2,10 @@ package com.charge.proxy.student;
 
 import com.charge.param.student.StudentSearchParam;
 import com.charge.pojo.common.PageResultDTO;
+import com.charge.pojo.student.StudentExtInfo;
 import com.charge.pojo.student.StudentInfo;
 import com.charge.service.student.StudentService;
+import com.charge.util.DateUtil;
 import com.charge.util.ExcelUtil;
 import com.charge.util.JsonUtil;
 import com.charge.vo.student.StudentInfoVo;
@@ -19,7 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -66,7 +70,7 @@ public class StudentProxy {
         return studentInfoVoList;
     }
 
-    public void importStudentInfo(InputStream is) throws IOException {
+    public void importStudentInfo(InputStream is) throws IOException, ParseException {
 
         XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
         for (int numSheet = 0; numSheet < xssfWorkbook.getNumberOfSheets(); numSheet++) {//到所有工作簿
@@ -78,16 +82,32 @@ public class StudentProxy {
             // Read the Row
             for (int rowNum = 1; rowNum <= totalRow; rowNum++) {
                 StudentInfo studentInfo = new StudentInfo();
+                StudentExtInfo studentExtInfo = new StudentExtInfo();
                 XSSFRow xssfRow = xssfSheet.getRow(rowNum);
                 if (xssfRow != null) {
                     XSSFCell name = xssfRow.getCell(0);
                     XSSFCell sex = xssfRow.getCell(1);
                     XSSFCell bornDate = xssfRow.getCell(2);
+                    XSSFCell parentName = xssfRow.getCell(3);
+                    XSSFCell relation = xssfRow.getCell(4);
+                    XSSFCell mobile = xssfRow.getCell(5);
+                    XSSFCell address = xssfRow.getCell(6);
+                    XSSFCell admissionTime = xssfRow.getCell(7);
                     studentInfo.setName(ExcelUtil.getValue(name).replace("\t", ""));
                     String sexStr = ExcelUtil.getValue(sex);
                     studentInfo.setSex(sexStr.equals("男")?0:1);
                     String bornDateStr = ExcelUtil.getValue(bornDate);
-                    studentService.insertSelective(studentInfo);
+                    Date born = DateUtil.getDateByString(bornDateStr);
+                    studentInfo.setYear(DateUtil.getYear(born));
+                    studentInfo.setMonth(DateUtil.getMonth(born));
+                    studentInfo.setDay(DateUtil.getDay(born));
+                    studentInfo.setAge(DateUtil.getAge(born));
+                    studentInfo.setParentName(ExcelUtil.getValue(parentName));
+                    studentInfo.setRelation(ExcelUtil.getValue(relation));
+                    studentInfo.setMobile(ExcelUtil.getValue(mobile));
+                    studentInfo.setAddress(ExcelUtil.getValue(address));
+                    studentExtInfo.setAdmissionTime(DateUtil.getTimespan2(ExcelUtil.getValue(admissionTime)));
+                    studentService.insertSelective(studentInfo, studentExtInfo);
                 }
             }
         }

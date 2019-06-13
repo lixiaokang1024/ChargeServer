@@ -1,5 +1,6 @@
 package com.charge.proxy.ChargeProxy;
 
+import com.charge.Exception.BusinessException;
 import com.charge.param.charge.ChargeSearchParam;
 import com.charge.pojo.charge.ChargeProject;
 import com.charge.pojo.common.PageResultDTO;
@@ -47,10 +48,17 @@ public class ChargeProxy {
         return pageResultDTO;
     }
 
-    public void saveChargeProject(ChargeProject chargeProject){
+    public void saveOrUpdateChargeProject(ChargeProject chargeProject){
         logger.info("收费项目信息保存参数：{}", JsonUtil.toJson(chargeProject));
-        chargeService.insertSelective(chargeProject);
-
+        if(chargeProject.getId() != null){
+            ChargeProject chargeProjectIndb = chargeService.getChargeProjectById(chargeProject.getId());
+            if(chargeProjectIndb == null){
+                throw new BusinessException("记录不存在！");
+            }
+            chargeService.updateChargeProject(chargeProject);
+        }else{
+            chargeService.insertSelective(chargeProject);
+        }
     }
 
     private List<ChargeProjectVo> transferToChargeProjectVo(List<ChargeProject> chargeProjectList) {

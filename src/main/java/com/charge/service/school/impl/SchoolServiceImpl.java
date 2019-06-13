@@ -32,6 +32,22 @@ public class SchoolServiceImpl implements SchoolService {
         classInfoMapper.insertSelective(classInfo);
     }
 
+    public void updateClassInfo(ClassInfo classInfo) {
+        classInfoMapper.updateByPrimaryKeySelective(classInfo);
+    }
+
+    public void updateGradeInfo(GradeInfo gradeInfo) {
+        gradeInfoMapper.updateByPrimaryKeySelective(gradeInfo);
+    }
+
+    public ClassInfo getClassInfoById(Integer classId) {
+        return classInfoMapper.getClassInfoById(classId);
+    }
+
+    public GradeInfo getGradeInfoById(Integer gradeId) {
+        return gradeInfoMapper.getGradeInfoById(gradeId);
+    }
+
     public int countGrade(GradeSearchParam gradeSearchParam) {
         Map<String, Object> paramMap = RequestParamUtil.getRequestParamMap(gradeSearchParam.getCurrentPage(), gradeSearchParam.getPageSize(), gradeSearchParam);
         return gradeInfoMapper.countGradeInfo(paramMap);

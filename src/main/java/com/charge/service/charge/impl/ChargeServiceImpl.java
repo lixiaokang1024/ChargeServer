@@ -23,6 +23,14 @@ public class ChargeServiceImpl implements ChargeService {
         chargeProjectMapper.insertSelective(chargeProject);
     }
 
+    public void updateChargeProject(ChargeProject chargeProject) {
+        chargeProjectMapper.updateByPrimaryKeySelective(chargeProject);
+    }
+
+    public ChargeProject getChargeProjectById(Integer id) {
+        return chargeProjectMapper.getChargeProjectById(id);
+    }
+
     public int countChargeProject(ChargeSearchParam chargeSearchParam) {
         Map<String, Object> paramMap = RequestParamUtil.getRequestParamMap(chargeSearchParam.getCurrentPage(), chargeSearchParam.getPageSize(), chargeSearchParam);
         return chargeProjectMapper.countChargeProject(paramMap);

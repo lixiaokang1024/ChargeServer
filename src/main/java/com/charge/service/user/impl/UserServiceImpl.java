@@ -1,8 +1,8 @@
-package com.charge.service.impl;
+package com.charge.service.user.impl;
 
 import com.charge.mapper.user.UserDao;
 import com.charge.pojo.User;
-import com.charge.service.UserService;
+import com.charge.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

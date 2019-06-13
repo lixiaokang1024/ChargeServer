@@ -1,4 +1,4 @@
-package com.charge.service;
+package com.charge.service.user;
 
 import com.charge.pojo.User;
 

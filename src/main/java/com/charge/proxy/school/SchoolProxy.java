@@ -1,5 +1,6 @@
 package com.charge.proxy.school;
 
+import com.charge.Exception.BusinessException;
 import com.charge.param.school.ClassSearchParam;
 import com.charge.param.school.GradeSearchParam;
 import com.charge.pojo.common.PageResultDTO;
@@ -26,14 +27,30 @@ public class SchoolProxy {
     @Autowired
     private SchoolService schoolService;
 
-    public void saveClassInfo(ClassInfo classInfo){
+    public void saveOrModifyClassInfo(ClassInfo classInfo){
         logger.info("班级信息保存参数：{}", JsonUtil.toJson(classInfo));
-        schoolService.insertSelectiveClassInfo(classInfo);
+        if(classInfo.getId() != null){
+            ClassInfo classInfoIndb = schoolService.getClassInfoById(classInfo.getId());
+            if(classInfoIndb == null){
+                throw new BusinessException("记录不存在！");
+            }
+            schoolService.updateClassInfo(classInfo);
+        }else{
+            schoolService.insertSelectiveClassInfo(classInfo);
+        }
     }
 
     public void saveGradeInfo(GradeInfo gradeInfo){
         logger.info("年纪信息保存参数：{}", JsonUtil.toJson(gradeInfo));
-        schoolService.insertSelectiveGradeInfo(gradeInfo);
+        if(gradeInfo.getId() != null){
+            GradeInfo gradeInfoIndb = schoolService.getGradeInfoById(gradeInfo.getId());
+            if(gradeInfoIndb == null){
+                throw new BusinessException("记录不存在！");
+            }
+            schoolService.updateGradeInfo(gradeInfo);
+        }else{
+            schoolService.insertSelectiveGradeInfo(gradeInfo);
+        }
     }
 
     public PageResultDTO<List<GradeInfoVo>> queryGradeInfo(GradeSearchParam searchParam){

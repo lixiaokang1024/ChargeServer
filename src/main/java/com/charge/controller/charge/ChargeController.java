@@ -51,7 +51,7 @@ public class ChargeController {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("success", true);
         try {
-            chargeProxy.saveChargeProject(chargeProject);
+            chargeProxy.saveOrUpdateChargeProject(chargeProject);
         } catch (Exception e) {
             resultMap.put("success", false);
             resultMap.put("msg", e.getMessage());

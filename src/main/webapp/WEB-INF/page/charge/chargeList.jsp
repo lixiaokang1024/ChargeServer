@@ -10,7 +10,7 @@
 		<th field="projectName" sortable="true" width="150px">收费项目</th>
 		<th field="amount" sortable="true" width="150px">收费金额</th>
 		<th field="gradeName" sortable="true" width="150px">所属年级</th>
-		<th field="operator"  width="50px">操作</th>
+		<th field="operator" width="50px" formatter="settings">操作</th>
 	</tr>
 	</thead>
 </table>
@@ -43,6 +43,7 @@
 	 style="width:350px; height:250px;overflow: auto;" iconCls="icon-edit">
 	<form name="addForm" action="" id="addForm" method="post">
 		<div style="margin:11px 11px 0px 25px">
+			<input id="chargeId" type="hidden" value=""/>
 			收费项目：
 			<input name="name" id="name" type="text" style="width: 150px;"/>
 			<br/><br/>
@@ -83,6 +84,8 @@
 	$('#addLink').live('click',function(){
 		$("#addDialog").dialog("open");
         $('#gradeId').empty();
+		$('#name').val("");
+		$('#amount').val("");
 		var param={page:1,rows:2000}
 		$.ajax({
 			url:"${contextPath}/school/gradeList",
@@ -107,6 +110,7 @@
 	$('#save').live('click',function(){
 		var url = "${contextPath}/charge/saveProject";
 		var data = {
+			id: $("#chargeId").val(),
 			projectName: $('#name').val(),
 			amount: $('#amount').val(),
 			gradeId: $('#gradeId').val()
@@ -123,7 +127,7 @@
 			success: function (data) {
 				$("#addDialog").dialog("close");
 				if (data.success) {
-					$.messager.alert('系统消息', '添加成功', "info");
+					$.messager.alert('系统消息', '已完成', "info");
 					$("#datagrid").datagrid("reload");
 				} else {
 					layer.alert(data.msg);
@@ -132,14 +136,48 @@
 			complete: function(){
 				$("#save").attr("disabled",false);
 				$("#cancel").attr("disabled", false);
-                $('#name').val(""),
-				$('#amount').val("")
 			},
 			error:function(data){
 				$.messager.alert('系统消息', data.msg,'error');
 			}
 		});
 	});
+
+	function settings(value,row){
+		var chargeId = row.id;
+		var html = '<div style="text-align: center;">';
+		html += '<img style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" title="编辑" a src="${contextPath}/images/m_edit.gif" href="javascript:;" onclick="modifyChargeInfo(\''+row.projectName+'\',\''+chargeId+'\',\''+row.amount+'\',\''+row.gradeId+'\')" />';
+		html += '</div>';
+		return html;
+	}
+
+	function modifyChargeInfo(chargeName, chargeId, amount, gradeId){
+		$("#addDialog").dialog("open");
+		$('#gradeId').empty();
+		$('#name').val(chargeName);
+		$('#amount').val(amount);
+		$('#chargeId').val(chargeId);
+		$("#save").val("更新");
+		var param={page:1,rows:2000}
+		$.ajax({
+			url:"${contextPath}/school/gradeList",
+			dataType:'json',
+			data:param,
+			success:function(data){
+				var gradeList = data.rows;
+				$("#gradeId").append('<option value="-1">全部</option>');
+				for(i=0;i<gradeList.length;i++){
+					var grade = gradeList[i];
+					if(gradeId == grade.id){
+						$("#gradeId").append('<option selected=\'selected\' value="'+grade.id+'">'+grade.name+'</option>');
+					}else{
+						$("#gradeId").append('<option value="'+grade.id+'">'+grade.name+'</option>');
+					}
+				}
+			}
+		});
+		return false;
+	}
 
 </script>
 </body>

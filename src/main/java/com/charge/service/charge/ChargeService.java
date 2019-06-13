@@ -12,7 +12,10 @@ import java.util.List;
 public interface ChargeService {
 
     void insertSelective(ChargeProject chargeProject);
+    void updateChargeProject(ChargeProject chargeProject);
 
+
+    ChargeProject getChargeProjectById(Integer id);
     int countChargeProject(ChargeSearchParam chargeSearchParam);
     List<ChargeProject> queryChargeProjectList(ChargeSearchParam chargeSearchParam);
 

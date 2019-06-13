@@ -13,6 +13,8 @@ public interface ClassInfoMapper {
 
     int updateByPrimaryKey(ClassInfo record);
 
+    ClassInfo getClassInfoById(Integer id);
+
     int countClassInfo(Map<String, Object> param);
     List<ClassInfo> queryClassInfoPageList(Map<String, Object> param);
 }

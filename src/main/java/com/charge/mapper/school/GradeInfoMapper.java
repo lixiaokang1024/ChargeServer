@@ -16,4 +16,6 @@ public interface GradeInfoMapper {
 
     int countGradeInfo(Map<String, Object> param);
     List<GradeInfo> queryGradeInfoPageList(Map<String, Object> param);
+
+    GradeInfo getGradeInfoById(Integer id);
 }

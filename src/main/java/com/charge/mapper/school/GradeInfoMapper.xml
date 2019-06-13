@@ -96,4 +96,8 @@
   <select id="queryGradeInfoPageList" resultMap="BaseResultMap">
     SELECT * FROM grade_info
   </select>
+
+  <select id="getGradeInfoById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT <include refid="Base_Column_List"/> FROM grade_info WHERE id=#{id}
+  </select>
 </mapper>

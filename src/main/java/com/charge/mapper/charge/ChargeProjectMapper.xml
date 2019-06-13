@@ -112,4 +112,8 @@
   <select id="queryChargeProjectPageList" resultMap="BaseResultMap">
     SELECT a.*,b.name as grade_name FROM charge_project a join grade_info b on a.grade_id=b.id
   </select>
+
+  <select id="getChargeProjectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT <include refid="Base_Column_List"/> FROM charge_project WHERE id=#{id}
+  </select>
 </mapper>

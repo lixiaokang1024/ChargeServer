@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-<!-- scan the package and the sub package -->
-    <context:component-scan base-package="com.charge"/>
+
+    <!-- 如果在springmvc配置文件，不使用com.charge.controller前缀，
+    而是使用com.charge，则service、dao层的bean可能也重新加载了，
+    但事务的AOP代理没有配置在springmvc配置文件中，从而造成新加载的bean覆盖了老的bean，
+    造成事务失效。只要使用use-default-filters=“false”禁用掉默认的行为就可以了。 -->
+    <context:component-scan base-package="com.charge" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
 
     <!-- don't handle the static resource -->
     <mvc:default-servlet-handler/>
