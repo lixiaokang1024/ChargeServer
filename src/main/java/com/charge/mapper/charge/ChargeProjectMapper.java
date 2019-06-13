@@ -16,4 +16,6 @@ public interface ChargeProjectMapper {
     ChargeProject getChargeProjectById(Integer id);
     int countChargeProject(Map<String, Object> param);
     List<ChargeProject> queryChargeProjectPageList(Map<String, Object> param);
+
+
 }

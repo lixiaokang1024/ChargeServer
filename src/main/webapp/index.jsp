@@ -111,7 +111,7 @@
                         <a href="student/index" title="学生基础信息" class="newTab">学生基础信息</a>
 					</span>
                     <span>
-                        <a href="student/list" title="学生班级维护" class="newTab">学生班级维护</a>
+                        <a href="studentClassInfo/index" title="学生班级维护" class="newTab">学生班级维护</a>
 					</span>
                     <span>
                         <a href="student/list" title="学生基础信息" class="newTab">学生基础信息</a>
@@ -125,7 +125,7 @@
             <ul>
                 <li>
                     <span>
-                        <a href="/order/index" title="学生预缴费" class="newTab">学生预缴费</a>
+                        <a href="studentChargeInfo/index" title="学生预缴费" class="newTab">学生预缴费</a>
 					</span>
                     <span>
                         <a href="/order/index" title="学生正常收费" class="newTab">学生正常收费</a>

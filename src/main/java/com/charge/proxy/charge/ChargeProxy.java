@@ -1,4 +1,4 @@
-package com.charge.proxy.ChargeProxy;
+package com.charge.proxy.charge;
 
 import com.charge.Exception.BusinessException;
 import com.charge.param.charge.ChargeSearchParam;
