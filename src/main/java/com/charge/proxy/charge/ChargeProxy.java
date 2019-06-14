@@ -2,9 +2,12 @@ package com.charge.proxy.charge;
 
 import com.charge.Exception.BusinessException;
 import com.charge.param.charge.ChargeSearchParam;
+import com.charge.param.school.GradeSearchParam;
 import com.charge.pojo.charge.ChargeProject;
 import com.charge.pojo.common.PageResultDTO;
+import com.charge.pojo.school.GradeInfo;
 import com.charge.service.charge.ChargeService;
+import com.charge.service.school.SchoolService;
 import com.charge.util.JsonUtil;
 import com.charge.vo.charge.ChargeProjectVo;
 import org.slf4j.Logger;
@@ -24,6 +27,9 @@ public class ChargeProxy {
 
     @Autowired
     private ChargeService chargeService;
+
+    @Autowired
+    private SchoolService schoolService;
 
     public PageResultDTO<List<ChargeProjectVo>> queryChargeProjectList(ChargeSearchParam chargeSearchParam){
         logger.info("查询收费项目信息搜索参数：{}", JsonUtil.toJson(chargeSearchParam));
@@ -57,7 +63,20 @@ public class ChargeProxy {
             }
             chargeService.updateChargeProject(chargeProject);
         }else{
-            chargeService.insertSelective(chargeProject);
+            if(chargeProject.getGradeId() == -1){
+                GradeSearchParam param = new GradeSearchParam();
+                param.setPageSize(100);
+                List<GradeInfo> gradeInfoList = schoolService.queryGradeList(param);
+                for(GradeInfo gradeInfo:gradeInfoList){
+                    ChargeProject chargeProjectIndb = chargeService.getChargeProjectByName(chargeProject.getProjectName(), gradeInfo.getId());
+                    if(chargeProjectIndb == null){
+                        chargeProject.setGradeId(gradeInfo.getId());
+                        chargeService.insertSelective(chargeProject);
+                    }
+                }
+            }else{
+                chargeService.insertSelective(chargeProject);
+            }
         }
     }
 

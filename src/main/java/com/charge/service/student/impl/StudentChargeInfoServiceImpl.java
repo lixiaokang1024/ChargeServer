@@ -4,7 +4,9 @@ import com.charge.mapper.student.StudentChargeInfoMapper;
 import com.charge.param.student.StudentChargeInfoSearchParam;
 import com.charge.pojo.student.StudentChargeInfo;
 import com.charge.service.student.StudentChargeInfoService;
+import com.charge.util.DateUtil;
 import com.charge.util.RequestParamUtil;
+import com.charge.vo.student.StudentChargeInfoDetailVo;
 import com.charge.vo.student.StudentChargeInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
     private StudentChargeInfoMapper studentChargeInfoMapper;
 
     public void insertSelective(StudentChargeInfo studentChargeInfo) {
+        studentChargeInfo.setCreateTime(DateUtil.getCurrentTimespan());
         studentChargeInfoMapper.insertSelective(studentChargeInfo);
     }
 
@@ -31,5 +34,9 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
     public List<StudentChargeInfoVo> queryStudentChargeInfoList(StudentChargeInfoSearchParam searchParam) {
         Map<String, Object> paramMap = RequestParamUtil.getRequestParamMap(searchParam.getCurrentPage(), searchParam.getPageSize(), searchParam);
         return studentChargeInfoMapper.queryStudentChargeInfoPageList(paramMap);
+    }
+
+    public List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetail(Integer studentId, Integer chargeStatus) {
+        return studentChargeInfoMapper.queryStudentChargeInfoDetail(studentId, chargeStatus);
     }
 }

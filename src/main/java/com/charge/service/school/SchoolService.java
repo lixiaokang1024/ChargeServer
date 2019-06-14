@@ -17,7 +17,10 @@ public interface SchoolService {
     void updateGradeInfo(GradeInfo gradeInfo);
 
     ClassInfo getClassInfoById(Integer classId);
+    List<ClassInfo> getClassInfoByName(String className);
+    ClassInfo getByClassNameGradeId(String className, Integer gradeId);
     GradeInfo getGradeInfoById(Integer gradeId);
+    GradeInfo getGradeInfoByName(String gradeName);
 
     int countGrade(GradeSearchParam gradeSearchParam);
     List<GradeInfo> queryGradeList(GradeSearchParam gradeSearchParam);

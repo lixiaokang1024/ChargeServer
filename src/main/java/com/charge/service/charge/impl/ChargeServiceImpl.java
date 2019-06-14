@@ -27,6 +27,10 @@ public class ChargeServiceImpl implements ChargeService {
         chargeProjectMapper.updateByPrimaryKeySelective(chargeProject);
     }
 
+    public ChargeProject getChargeProjectByName(String chargeName, Integer gradeId) {
+        return chargeProjectMapper.getChargeProjectByName(chargeName, gradeId);
+    }
+
     public ChargeProject getChargeProjectById(Integer id) {
         return chargeProjectMapper.getChargeProjectById(id);
     }

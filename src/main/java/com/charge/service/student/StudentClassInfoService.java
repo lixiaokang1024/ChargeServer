@@ -13,4 +13,6 @@ public interface StudentClassInfoService {
     int countStudentClassInfo(StudentClassInfoSearchParam searchParam);
     List<StudentClassInfoVo> queryStudentClassInfoList(StudentClassInfoSearchParam searchParam);
 
+    StudentClassInfo getByStudentId(Integer studentId);
+
 }

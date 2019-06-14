@@ -44,8 +44,20 @@ public class SchoolServiceImpl implements SchoolService {
         return classInfoMapper.getClassInfoById(classId);
     }
 
+    public List<ClassInfo> getClassInfoByName(String className) {
+        return classInfoMapper.getClassInfoByName(className);
+    }
+
+    public ClassInfo getByClassNameGradeId(String className, Integer gradeId) {
+        return classInfoMapper.getByClassNameGradeId(className, gradeId);
+    }
+
     public GradeInfo getGradeInfoById(Integer gradeId) {
         return gradeInfoMapper.getGradeInfoById(gradeId);
+    }
+
+    public GradeInfo getGradeInfoByName(String gradeName) {
+        return gradeInfoMapper.getGradeInfoByName(gradeName);
     }
 
     public int countGrade(GradeSearchParam gradeSearchParam) {

@@ -39,4 +39,12 @@ public class StudentServiceImpl implements StudentService {
         return resultList;
     }
 
+    public List<StudentInfo> getStudentInfoByName(String studentName) {
+        return studentInfoMapper.getStudentInfoByName(studentName);
+    }
+
+    public StudentInfo getStudentInfoById(Integer studentId) {
+        return studentInfoMapper.getStudentInfoById(studentId);
+    }
+
 }

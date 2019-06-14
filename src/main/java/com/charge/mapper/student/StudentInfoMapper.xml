@@ -204,4 +204,13 @@
   <select id="queryStudentInfoPageList" resultMap="BaseResultMap">
     SELECT * FROM student_info
   </select>
+
+  <select id="getStudentInfoByName" parameterType="java.lang.String" resultType="com.charge.pojo.student.StudentInfo">
+    SELECT <include refid="Base_Column_List"/> FROM student_info WHERE name=#{studentName}
+  </select>
+
+  <select id="getStudentInfoById" parameterType="java.lang.Integer" resultType="com.charge.pojo.student.StudentInfo">
+    SELECT <include refid="Base_Column_List"/> FROM student_info WHERE id=#{studentId}
+  </select>
+
 </mapper>

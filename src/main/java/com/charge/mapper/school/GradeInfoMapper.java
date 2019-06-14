@@ -1,6 +1,7 @@
 package com.charge.mapper.school;
 
 import com.charge.pojo.school.GradeInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -18,4 +19,5 @@ public interface GradeInfoMapper {
     List<GradeInfo> queryGradeInfoPageList(Map<String, Object> param);
 
     GradeInfo getGradeInfoById(Integer id);
+    GradeInfo getGradeInfoByName(@Param("gradeName") String gradeName);
 }

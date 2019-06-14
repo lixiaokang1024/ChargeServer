@@ -36,7 +36,20 @@ public class SchoolProxy {
             }
             schoolService.updateClassInfo(classInfo);
         }else{
-            schoolService.insertSelectiveClassInfo(classInfo);
+            if(classInfo.getGradeId() == -1){
+                GradeSearchParam param = new GradeSearchParam();
+                param.setPageSize(100);
+                List<GradeInfo> gradeInfoList = schoolService.queryGradeList(param);
+                for(GradeInfo gradeInfo:gradeInfoList){
+                    ClassInfo classInfoIndb = schoolService.getByClassNameGradeId(classInfo.getName(), gradeInfo.getId());
+                    if(classInfoIndb == null){
+                        classInfo.setGradeId(gradeInfo.getId());
+                        schoolService.insertSelectiveClassInfo(classInfo);
+                    }
+                }
+            }else{
+                schoolService.insertSelectiveClassInfo(classInfo);
+            }
         }
     }
 

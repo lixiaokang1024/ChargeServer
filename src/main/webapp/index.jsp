@@ -125,10 +125,10 @@
             <ul>
                 <li>
                     <span>
-                        <a href="studentChargeInfo/index" title="学生预缴费" class="newTab">学生预缴费</a>
+                        <a href="studentChargeInfo/index" title="学生应(预)缴费" class="newTab">学生应(预)缴费</a>
 					</span>
                     <span>
-                        <a href="/order/index" title="学生正常收费" class="newTab">学生正常收费</a>
+                        <a href="studentChargeInfo/historyIndex" title="学生历史缴费" class="newTab">学生历史缴费</a>
 					</span>
                     <span>
                         <a href="/order/index" title="退费管理" class="newTab">退费管理</a>

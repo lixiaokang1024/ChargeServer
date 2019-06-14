@@ -50,15 +50,15 @@
 <!--搜索条件结束-->
 
 <!-- 学生信息批量导入 -->
-<div id="dialogExcel" class="easyui-dialog" title="学生信息批量导入" closed="true"
+<div id="dialogExcel" class="easyui-dialog" title="学生班级信息批量导入" closed="true"
 	 style="width:500px; height:300px;overflow: auto;" iconCls="icon-edit">
 	<form name="ExcelForm" action="" id="ExcelForm" method="post" enctype="multipart/form-data">
 		<div style="margin:11px 11px 0px 25px">
         <span id="moban">
-          <a href="javascript:;" onclick="location.href='${contextPath}/files/STUDENT_INFO_TEMPLATE.xlsx'">导入模板下载</a>
+          <a href="javascript:;" onclick="location.href='${contextPath}/files/STUDENT_CLASS_INFO_TEMPLATE.xlsx'">导入模板下载</a>
         </span><br/><br/>
           <label>选择文件：</label>
-          <input name="studentFileBuildInfo" id="studentFileBuildInfo" type="file" class="required"
+          <input name="studentClassFileBuildInfo" id="studentClassFileBuildInfo" type="file" class="required"
 				 style="width: 200px;"/>
         </span><br/><br/>
 			<p align="center">
@@ -84,7 +84,7 @@
 	});
 	$('#addExcel').live('click',function(){
 		$("#dialogExcel").dialog("open");
-		$('#studentFileBuildInfo').val("");
+		$('#studentClassFileBuildInfo').val("");
 		return false;
 	});
 	$('#cancelExcel').live('click',function(){
@@ -134,9 +134,9 @@
 
 	<!--批量导入-->
 	$('#saveExcel').live('click',function(){
-		var url = "${contextPath}/student/importStudentInfo";
-		var selNum = $('#studentFileBuildInfo').length;
-		var file = $('#studentFileBuildInfo').val();
+		var url = "${contextPath}/studentClassInfo/importStudentClassInfo";
+		var selNum = $('#studentClassFileBuildInfo').length;
+		var file = $('#studentClassFileBuildInfo').val();
 		var index = file.lastIndexOf(".");
 		var ext = file.substring(index + 1, file.length).toLowerCase();
 		if(parseInt(selNum)==0 || file=="" || file == null){
@@ -157,7 +157,7 @@
 				success: function (data) {
 					if (data.success) {
 						$.messager.alert('系统消息', '导入成功', "info");
-						$('#studentFileBuildInfo').val("");
+						$('#studentClassFileBuildInfo').val("");
 						$("#datagrid").datagrid("reload");
 					} else {
 						$.messager.alert('系统消息', data.msg, "error");

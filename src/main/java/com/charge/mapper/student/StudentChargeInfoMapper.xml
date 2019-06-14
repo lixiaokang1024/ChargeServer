@@ -142,25 +142,46 @@
   </update>
 
   <select id="countStudentChargeInfo" resultType="java.lang.Integer">
-    SELECT count(1) FROM student_charge_info
+    SELECT COUNT(DISTINCT(a.student_id)) FROM student_charge_info a JOIN student_info b on a.student_id=b.id JOIN student_ext_info c on a.student_id=c.student_id
+     JOIN charge_project d on a.charge_project_id=d.id <include refid="wheresql"/>
   </select>
   <select id="queryStudentChargeInfoPageList" resultType="com.charge.vo.student.StudentChargeInfoVo">
     SELECT
       a.id,
       a.student_id,
-      b.name as studentName,
-      a.charge_project_id,
-      d.project_name as chargeProjectName,
-      a.charge_amount,
-      a.charge_time,
-      a.pay_type,
-      a.status,
+      b.name AS studentName,
+      SUM(a.charge_amount) as chargeAmount,
       c.prepayment_amount,
       c.deposit
-     FROM student_charge_info a JOIN student_info b  on a.student_id=b.id JOIN student_ext_info c on a.student_id=c.student_id
+     FROM student_info b JOIN student_ext_info c on b.id=c.student_id
+      LEFT JOIN student_charge_info a on a.student_id=b.id
      JOIN charge_project d on a.charge_project_id=d.id
     <include refid="wheresql"/>
+    GROUP BY a.student_id
   </select>
   <sql id="wheresql">
+    WHERE a.is_deleted = 0
+    <if test="param.chargeStatus != null">
+      AND a.status=#{param.chargeStatus}
+    </if>
+    <if test="param.name != null">
+      AND b.name=#{param.name}
+    </if>
   </sql>
+
+  <select id="queryStudentChargeInfoDetail" resultType="com.charge.vo.student.StudentChargeInfoDetailVo">
+    SELECT
+    a.id,
+    a.student_id,
+    b.name as studentName,
+    a.charge_project_id,
+    d.project_name as chargeProjectName,
+    a.charge_amount,
+    a.charge_time,
+    a.pay_type,
+    a.status
+    FROM student_charge_info a JOIN student_info b  on a.student_id=b.id
+    JOIN charge_project d on a.charge_project_id=d.id
+    WHERE a.student_id=#{studentId} AND a.status=#{chargeStatus}
+  </select>
 </mapper>

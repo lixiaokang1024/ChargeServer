@@ -84,6 +84,14 @@
     SELECT <include refid="Base_Column_List"/> FROM class_info WHERE id=#{id}
   </select>
 
+  <select id="getClassInfoByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT <include refid="Base_Column_List"/> FROM class_info WHERE name=#{className}
+  </select>
+
+  <select id="getByClassNameGradeId" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/> FROM class_info WHERE name=#{className} AND grade_id=#{gradeId}
+  </select>
+
   <update id="updateByPrimaryKey" parameterType="com.charge.pojo.school.ClassInfo" >
     update class_info
     set name = #{name,jdbcType=VARCHAR},

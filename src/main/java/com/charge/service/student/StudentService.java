@@ -13,4 +13,7 @@ public interface StudentService {
     int countStudent(StudentSearchParam studentSearchParam);
     List<StudentInfo> queryStudentList(StudentSearchParam studentSearchParam);
 
+    List<StudentInfo> getStudentInfoByName(String studentName);
+    StudentInfo getStudentInfoById(Integer studentId);
+
 }

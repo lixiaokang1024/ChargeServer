@@ -132,4 +132,8 @@
   <sql id="wheresql">
   </sql>
 
+  <select id="getByStudentId" parameterType="java.lang.Integer" resultType="com.charge.pojo.student.StudentClassInfo">
+    SELECT <include refid="Base_Column_List"/> FROM student_class_info WHERE student_id = #{studentId}
+  </select>
+
 </mapper>

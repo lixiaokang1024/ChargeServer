@@ -116,4 +116,9 @@
   <select id="getChargeProjectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     SELECT <include refid="Base_Column_List"/> FROM charge_project WHERE id=#{id}
   </select>
+
+  <select id="getChargeProjectByName" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/> FROM charge_project WHERE project_name=#{projectName} AND grade_id = #{gradeId}
+  </select>
+
 </mapper>

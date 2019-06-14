@@ -16,4 +16,7 @@ public interface StudentInfoMapper {
 
     int countStudentInfo(Map<String, Object> param);
     List<StudentInfo> queryStudentInfoPageList(Map<String, Object> param);
+
+    List<StudentInfo> getStudentInfoByName(String studentName);
+    StudentInfo getStudentInfoById(Integer studentId);
 }
