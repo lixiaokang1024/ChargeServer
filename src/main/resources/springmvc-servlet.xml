@@ -31,8 +31,8 @@
             <mvc:exclude-mapping path="/images/**" />
             <mvc:exclude-mapping path="/js/**" />
             <mvc:exclude-mapping path="/files/**" />
-            <mvc:exclude-mapping path="/charge/user/**" />
-            <mvc:exclude-mapping path="/charge/hello/helloworld" />
+            <mvc:exclude-mapping path="/user/**" />
+            <mvc:exclude-mapping path="/hello/helloworld" />
             <bean class="com.charge.interceptor.LoginInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>

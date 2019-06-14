@@ -189,13 +189,13 @@
             };
             $.ajax({
                 type: 'POST',
-                url: '/charge/user/login',
+                url: '<%=request.getContextPath()%>/user/login',
                 data: formData,
                 success: function (data) {
                     if (!data.status) {
                         $('#referer').html(data.msg).css("color","red");
                     } else {
-                        top.location.href="/charge";
+                        top.location.href="<%=request.getContextPath()%>";
                     }
                 },
                 error: function () {

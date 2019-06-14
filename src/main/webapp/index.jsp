@@ -8,7 +8,6 @@
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
     <title>沙河小马幼儿园</title>
-    <link rel="shortcut icon" href="http://corp.sfbest.com/favicon.ico" />
     <link type="text/css" href="css/easyui/themes/default/easyui.css" rel="stylesheet" />
     <link type="text/css" href="css/admpanel.css" rel="stylesheet" media="screen, projection" />
     <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
@@ -68,7 +67,7 @@
         <div class="top-link" style="width:300px;">
             <img src="images/wms/contact_blue.gif">欢迎:${user.userName}登陆
             <img src="images/wms/lock_edit.gif"><a href="/default/editPass" id="editPass">修改密码</a>
-            <img src="images/wms/page_go.gif"><a href="/charge/user/logout">退出</a>
+            <img src="images/wms/page_go.gif"><a href="<%=request.getContextPath()%>/user/logout">退出</a>
         </div>
     </div>
 </div>
