@@ -1027,6 +1027,9 @@ a.add, input.add {
 	background-image:url(../images/m_add.gif);
 }
 
+input.upgrade {
+	background-image:url(../images/m_refresh.gif);
+}
 
 a.refuse, input.refuse {
 	background-image:url(../images/m_error.gif);

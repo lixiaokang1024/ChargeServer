@@ -8,7 +8,7 @@
 	<thead>
 	<tr style="valign: middle">
 		<th field="studentName" sortable="true" width="150px">学生姓名</th>
-		<th field="chargeAmount" sortable="true" width="150px">应缴费金额</th>
+		<th field="chargeAmount" sortable="true" width="150px">已缴费金额</th>
 		<th field="prepaymentAmount" sortable="true" width="150px">预缴费剩余金额</th>
 		<th field="deposit" width="130px" >押金</th>
 		<th field="operator" width="50px" formatter="settings">操作</th>

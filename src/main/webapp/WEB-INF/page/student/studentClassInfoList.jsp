@@ -41,6 +41,7 @@
 					<input type="button" class="button search" value="搜索" id="searchLink"/>
 					<input type="reset" class="button clear" value="清空" id="clearLink"/>
 					<input type="button" class="button add" value="批量导入" id="addExcel" />
+					<input type="button" class="button upgrade" value="年级一键升级" id="upGrade"/>
 					<input type="button" class="button export" value="批量导出" id="exportLink"/>
 				</td>
 			</tr>
