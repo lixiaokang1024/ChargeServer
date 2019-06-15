@@ -127,6 +127,29 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <update id="updateByStudentIdSelective" parameterType="com.charge.pojo.student.StudentExtInfo" >
+    update student_ext_info
+    <set >
+      <if test="graduate != null" >
+        is_graduate = #{graduate,jdbcType=INTEGER},
+      </if>
+      <if test="admissionTime != null" >
+        admission_time = #{admissionTime,jdbcType=INTEGER},
+      </if>
+      <if test="graduateTime != null" >
+        graduate_time = #{graduateTime,jdbcType=INTEGER},
+      </if>
+      <if test="prepaymentAmount != null" >
+        prepayment_amount = #{prepaymentAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="deposit != null" >
+        deposit = #{deposit,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where student_id = #{studentId}
+  </update>
+
   <update id="updateByPrimaryKey" parameterType="com.charge.pojo.student.StudentExtInfo" >
     update student_ext_info
     set student_id = #{studentId,jdbcType=INTEGER},

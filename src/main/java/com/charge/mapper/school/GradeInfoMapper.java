@@ -19,5 +19,8 @@ public interface GradeInfoMapper {
     List<GradeInfo> queryGradeInfoPageList(Map<String, Object> param);
 
     GradeInfo getGradeInfoById(Integer id);
+    GradeInfo getGradeInfoByLevel(Integer level);
     GradeInfo getGradeInfoByName(@Param("gradeName") String gradeName);
+
+    int getMaxGradeLevel();
 }

@@ -63,4 +63,18 @@ public class StudentClassInfoController {
         return resultMap;
     }
 
+    @RequestMapping("/upStudentClass")
+    @ResponseBody
+    public ModelMap upStudentClass() {
+        ModelMap model = new ModelMap();
+        model.put("success", true);
+        try {
+            studentClassInfoProxy.upStudentClass();
+        }catch(Exception e){
+            model.put("success", true);
+            model.put("msg", e.getMessage());
+        }
+        return model;
+    }
+
 }

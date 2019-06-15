@@ -15,4 +15,6 @@ public interface StudentClassInfoService {
 
     StudentClassInfo getByStudentId(Integer studentId);
 
+    void upStudentClass(List<StudentClassInfoVo> studentClassInfoVoList);
+
 }

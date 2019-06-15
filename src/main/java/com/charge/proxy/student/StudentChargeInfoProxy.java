@@ -5,11 +5,13 @@ import com.charge.param.student.StudentChargeInfoSearchParam;
 import com.charge.param.student.StudentSearchParam;
 import com.charge.pojo.charge.ChargeProject;
 import com.charge.pojo.common.PageResultDTO;
+import com.charge.pojo.school.ClassInfo;
 import com.charge.pojo.student.StudentChargeInfo;
 import com.charge.pojo.student.StudentClassInfo;
 import com.charge.pojo.student.StudentExtInfo;
 import com.charge.pojo.student.StudentInfo;
 import com.charge.service.charge.ChargeService;
+import com.charge.service.school.SchoolService;
 import com.charge.service.student.StudentChargeInfoService;
 import com.charge.service.student.StudentClassInfoService;
 import com.charge.service.student.StudentService;
@@ -50,6 +52,9 @@ public class StudentChargeInfoProxy {
 
     @Autowired
     private ChargeService chargeService;
+
+    @Autowired
+    private SchoolService schoolService;
 
     public PageResultDTO<List<StudentChargeInfoVo>> queryStudentChargeInfo(StudentChargeInfoSearchParam searchParam){
         logger.info("查询学生应缴费信息搜索参数：{}", JsonUtil.toJson(searchParam));
@@ -103,11 +108,12 @@ public class StudentChargeInfoProxy {
                     XSSFCell chargeProjectName = xssfRow.getCell(2);
                     String chargeProjectNameStr = ExcelUtil.getValue(chargeProjectName);
                     StudentClassInfo studentClassInfo = studentClassInfoService.getByStudentId(studentIdInt);
+                    ClassInfo classInfo = schoolService.getClassInfoById(studentClassInfo.getClassId());
                     if(studentClassInfo == null){
                         throw new BusinessException("无【"+studentNameStr+"】学生");
                     }
                     studentChargeInfo.setStudentId(studentIdInt);
-                    ChargeProject chargeProject = chargeService.getChargeProjectByName(chargeProjectNameStr, studentClassInfo.getGradeId());
+                    ChargeProject chargeProject = chargeService.getChargeProjectByName(chargeProjectNameStr, classInfo.getGradeId());
                     if(chargeProject == null){
                         throw new BusinessException("无【"+chargeProjectNameStr+"】收费项目");
                     }

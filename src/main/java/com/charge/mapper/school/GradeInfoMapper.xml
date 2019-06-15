@@ -100,7 +100,13 @@
   <select id="getGradeInfoById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     SELECT <include refid="Base_Column_List"/> FROM grade_info WHERE id=#{id}
   </select>
+  <select id="getGradeInfoByLevel" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT <include refid="Base_Column_List"/> FROM grade_info WHERE level=#{level}
+  </select>
   <select id="getGradeInfoByName" resultMap="BaseResultMap" parameterType="java.lang.String">
     SELECT <include refid="Base_Column_List"/> FROM grade_info WHERE name=#{gradeName}
+  </select>
+  <select id="getMaxGradeLevel" resultType="int">
+    SELECT max(level) FROM grade_info
   </select>
 </mapper>

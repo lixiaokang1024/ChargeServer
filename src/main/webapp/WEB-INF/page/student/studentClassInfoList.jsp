@@ -178,6 +178,32 @@
 
 	});
 
+    <!--一键升级-->
+    $('#upGrade').live('click',function(){
+        var url = "${contextPath}/studentClassInfo/upStudentClass";
+		$.ajax({
+			url: url,
+			cache:false,
+			dataType:'json',
+			beforeSend: function() {
+				$("#upGrade").attr("disabled",true);
+			} ,
+			success: function (data) {
+				if (data.success) {
+					$.messager.alert('系统消息', '升级成功', "info");
+					$("#datagrid").datagrid("reload");
+				} else {
+					$.messager.alert('系统消息', data.msg, "error");
+				}
+			} ,
+			complete: function(){
+				$("#upGrade").attr("disabled",false);
+			},
+			error:function(data){
+				$.messager.alert('系统消息', data.msg,'error');
+			}
+		});
+    });
 </script>
 </body>
 </html>

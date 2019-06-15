@@ -5,21 +5,19 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="student_id" property="studentId" jdbcType="INTEGER" />
     <result column="class_id" property="classId" jdbcType="INTEGER" />
-    <result column="grade_id" property="gradeId" jdbcType="INTEGER" />
     <result column="is_graduate" property="graduate" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="INTEGER" />
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="deleted" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, student_id, class_id, grade_id, is_graduate, create_time, modify_time, is_deleted
+    id, student_id, class_id, is_graduate, create_time, modify_time, is_deleted
   </sql>
   <insert id="insert" parameterType="com.charge.pojo.student.StudentClassInfo" >
-    insert into student_class_info (id, student_id, class_id, 
-      grade_id, is_graduate, create_time, 
+    insert into student_class_info (id, student_id, class_id,is_graduate, create_time,
       modify_time, is_deleted)
-    values (#{id,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{classId,jdbcType=INTEGER}, 
-      #{gradeId,jdbcType=INTEGER}, #{graduate,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{classId,jdbcType=INTEGER},
+     #{graduate,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER},
       #{modifyTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.charge.pojo.student.StudentClassInfo" >
@@ -33,9 +31,6 @@
       </if>
       <if test="classId != null" >
         class_id,
-      </if>
-      <if test="gradeId != null" >
-        grade_id,
       </if>
       <if test="graduate != null" >
         is_graduate,
@@ -58,9 +53,6 @@
       <if test="classId != null" >
         #{classId,jdbcType=INTEGER},
       </if>
-      <if test="gradeId != null" >
-        #{gradeId,jdbcType=INTEGER},
-      </if>
       <if test="graduate != null" >
         #{graduate,jdbcType=INTEGER},
       </if>
@@ -82,9 +74,6 @@
       <if test="classId != null" >
         class_id = #{classId,jdbcType=INTEGER},
       </if>
-      <if test="gradeId != null" >
-        grade_id = #{gradeId,jdbcType=INTEGER},
-      </if>
       <if test="graduate != null" >
         is_graduate = #{graduate,jdbcType=INTEGER},
       </if>
@@ -104,7 +93,6 @@
     update student_class_info
     set student_id = #{studentId,jdbcType=INTEGER},
       class_id = #{classId,jdbcType=INTEGER},
-      grade_id = #{gradeId,jdbcType=INTEGER},
       is_graduate = #{graduate,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=INTEGER},
       modify_time = #{modifyTime,jdbcType=TIMESTAMP},
@@ -122,11 +110,12 @@
     b.name as studentName,
     a.class_id,
     c.name as className,
-    a.grade_id,
+    d.id as gradeId,
     d.name as gradeName,
+    d.level as gradeLevel,
     b.is_graduate
     FROM student_class_info a JOIN student_info b  on a.student_id=b.id JOIN class_info c on a.class_id=c.id
-    JOIN grade_info d on a.grade_id=d.id
+    JOIN grade_info d on c.grade_id=d.id
     <include refid="wheresql"/>
   </select>
   <sql id="wheresql">

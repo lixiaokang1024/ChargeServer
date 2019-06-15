@@ -8,6 +8,7 @@ public interface StudentExtInfoMapper {
     int insertSelective(StudentExtInfo record);
 
     int updateByPrimaryKeySelective(StudentExtInfo record);
+    int updateByStudentIdSelective(StudentExtInfo record);
 
     int updateByPrimaryKey(StudentExtInfo record);
 }

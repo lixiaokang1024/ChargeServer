@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -90,10 +91,23 @@ public class StudentClassInfoProxy {
                     }
                     studentClassInfo.setStudentId(studentIdInt);
                     studentClassInfo.setClassId(classInfo.getId());
-                    studentClassInfo.setGradeId(classInfo.getGradeId());
                     studentClassInfoService.insertSelective(studentClassInfo);
                 }
             }
+        }
+    }
+
+    public void upStudentClass(){
+        StudentClassInfoSearchParam searchParam = new StudentClassInfoSearchParam();
+        searchParam.setPageSize(100);
+        searchParam.setIsGraduate(0);
+        while(true){
+            List<StudentClassInfoVo> studentClassInfoVoList = studentClassInfoService.queryStudentClassInfoList(searchParam);
+            if(CollectionUtils.isEmpty(studentClassInfoVoList)){
+                break;
+            }
+            studentClassInfoService.upStudentClass(studentClassInfoVoList);
+            searchParam.setCurrentPage(searchParam.getCurrentPage() + 1);
         }
     }
 }

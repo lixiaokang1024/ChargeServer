@@ -20,11 +20,6 @@ public class StudentClassInfo implements Serializable {
     private Integer classId;
 
     /**
-     * student_class_info.grade_id 
-     */
-    private Integer gradeId;
-
-    /**
      * student_class_info.is_graduate 
      */
     private Integer graduate;
@@ -84,20 +79,6 @@ public class StudentClassInfo implements Serializable {
      */
     public void setClassId(Integer classId) {
         this.classId = classId;
-    }
-
-    /**
-     * @return student_class_info.grade_id 
-     */
-    public Integer getGradeId() {
-        return gradeId;
-    }
-
-    /**
-     * @param gradeId the value for student_class_info.grade_id 
-     */
-    public void setGradeId(Integer gradeId) {
-        this.gradeId = gradeId;
     }
 
     /**

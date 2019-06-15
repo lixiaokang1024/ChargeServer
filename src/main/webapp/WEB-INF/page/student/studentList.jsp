@@ -7,6 +7,7 @@
 	   rownumbers="true" pagination="true" pageSize="20" showFooter="true">
 	<thead>
 	<tr style="valign: middle">
+		<th field="id" sortable="true" width="150px">学号</th>
 		<th field="name" sortable="true" width="150px">姓名</th>
 		<th field="sexStr" sortable="true" width="150px">性别</th>
 		<th field="bornDate" sortable="true" width="150px">出生日期</th>

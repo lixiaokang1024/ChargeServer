@@ -13,6 +13,7 @@ public class StudentClassInfoVo implements Serializable {
     private String className;
     private Integer gradeId;
     private String gradeName;
+    private Integer gradeLevel;
     private Integer isGraduate;
     private String isGraduateStr;
 
@@ -70,6 +71,14 @@ public class StudentClassInfoVo implements Serializable {
 
     public void setGradeName(String gradeName) {
         this.gradeName = gradeName;
+    }
+
+    public Integer getGradeLevel() {
+        return gradeLevel;
+    }
+
+    public void setGradeLevel(Integer gradeLevel) {
+        this.gradeLevel = gradeLevel;
     }
 
     public Integer getIsGraduate() {
