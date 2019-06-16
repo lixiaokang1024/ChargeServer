@@ -7,14 +7,14 @@
 	   rownumbers="true" pagination="true" pageSize="20" showFooter="true">
 	<thead>
 	<tr style="valign: middle">
-		<th field="id" sortable="true" width="150px">学号</th>
-		<th field="name" sortable="true" width="150px">姓名</th>
-		<th field="sexStr" sortable="true" width="150px">性别</th>
-		<th field="bornDate" sortable="true" width="150px">出生日期</th>
-		<th field="parentName" sortable="true" width="130px">监护人姓名</th>
-		<th field="relation" sortable="true" width="130px">监护人关系</th>
+		<th field="id" sortable="true" width="80px">学号</th>
+		<th field="name" sortable="true" width="80px">姓名</th>
+		<th field="sexStr" sortable="true" width="80px">性别</th>
+		<th field="bornDate" sortable="true" width="80px">出生日期</th>
+		<th field="parentName" sortable="true" width="80px">监护人姓名</th>
+		<th field="relation" sortable="true" width="80px">监护人关系</th>
 		<th field="mobile" width="80px" >联系方式</th>
-		<th field="address" width="80px" >地址</th>
+		<th field="address" width="180px" >地址</th>
 		<th field="operator"  width="50px">操作</th>
 	</tr>
 	</thead>
@@ -31,11 +31,11 @@
 				</td>
 				<td style="text-align: right;">入学时间：</td>
 				<td colspan="3">
-					<input id="admissionTimeBegin" style="width: 125px" name="admissionBegin" class="Wdate"
-						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,maxDate:'#F{$dp.$D(\'admissionTimeEnd\')}'})"
+					<input id="createTimeBegin" style="width: 125px" name="createTimeBegin" class="Wdate"
+						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,maxDate:'#F{$dp.$D(\'createTimeEnd\')}'})"
 						   value=""/>&nbsp;-&nbsp;
-					<input id="admissionTimeEnd" style="width: 125px" name="admissionTimeEnd" class="Wdate"
-						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,minDate:'#F{$dp.$D(\'admissionTimeBegin\')}'})"
+					<input id="createTimeEnd" style="width: 125px" name="createTimeEnd" class="Wdate"
+						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,minDate:'#F{$dp.$D(\'createTimeBegin\')}'})"
 						   value=""/>
 				</td>
 			</tr>
@@ -130,8 +130,8 @@
 	function getFormData() {
 		var data = {
 			studentName: $('#studentName').val(),
-			admissionTimeBegin: $('#createTimeBegin').val(),
-			admissionTimeEnd: $('#createTimeEnd').val(),
+            createTimeBegin: $('#createTimeBegin').val(),
+            createTimeEnd: $('#createTimeEnd').val(),
 		};
 		return data;
 	}

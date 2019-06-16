@@ -102,9 +102,18 @@
   </update>
 
   <select id="countClassInfo" resultType="java.lang.Integer">
-    SELECT count(id) FROM class_info
+    SELECT count(a.id) FROM class_info a join grade_info b on a.grade_id=b.id
+    <include refid="wheresql"/>
   </select>
   <select id="queryClassInfoPageList" resultMap="BaseResultMap">
     SELECT a.*,b.name as grade_name FROM class_info a join grade_info b on a.grade_id=b.id
+    <include refid="wheresql"/>
   </select>
+
+  <sql id="wheresql">
+    WHERE a.is_deleted=0
+    <if test="param.className != null and param.className != ''">
+      AND a.name=#{param.className}
+    </if>
+  </sql>
 </mapper>

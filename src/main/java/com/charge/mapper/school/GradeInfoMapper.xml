@@ -91,11 +91,18 @@
   </update>
 
   <select id="countGradeInfo" resultType="java.lang.Integer">
-    SELECT count(id) FROM grade_info
+    SELECT count(id) FROM grade_info <include refid="wheresql"/>
   </select>
   <select id="queryGradeInfoPageList" resultMap="BaseResultMap">
-    SELECT * FROM grade_info
+    SELECT * FROM grade_info <include refid="wheresql"/>
   </select>
+
+  <sql id="wheresql">
+    WHERE is_deleted=0
+    <if test="param.gradeName != null and param.gradeName != ''">
+      AND name=#{param.gradeName}
+    </if>
+  </sql>
 
   <select id="getGradeInfoById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     SELECT <include refid="Base_Column_List"/> FROM grade_info WHERE id=#{id}

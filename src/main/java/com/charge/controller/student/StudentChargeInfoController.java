@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,9 @@ public class StudentChargeInfoController {
         searchParam.setPageSize(rows);
         searchParam.setChargeStatus(0);
         PageResultDTO<List<StudentChargeInfoVo>> pageResultDTO = chargeInfoProxy.queryStudentChargeInfo(searchParam);
+        if(pageResultDTO.getData() == null){
+            pageResultDTO.setData(new ArrayList<StudentChargeInfoVo>());
+        }
         model.put("rows", pageResultDTO.getData());
         model.put("total", pageResultDTO.getTotalRecord());
         model.put("page", page);

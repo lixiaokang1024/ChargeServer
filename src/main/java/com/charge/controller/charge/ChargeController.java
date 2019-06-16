@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,9 @@ public class ChargeController {
         chargeSearchParam.setCurrentPage(page);
         chargeSearchParam.setPageSize(rows);
         PageResultDTO<List<ChargeProjectVo>> pageResultDTO = chargeProxy.queryChargeProjectList(chargeSearchParam);
+        if(pageResultDTO.getData() == null){
+            pageResultDTO.setData(new ArrayList<ChargeProjectVo>());
+        }
         model.put("rows", pageResultDTO.getData());
         model.put("total", pageResultDTO.getTotalRecord());
         model.put("page", page);

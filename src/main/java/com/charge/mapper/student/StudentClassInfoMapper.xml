@@ -119,6 +119,19 @@
     <include refid="wheresql"/>
   </select>
   <sql id="wheresql">
+    WHEN a.is_deleted = 0
+    <if test="param.studentName != null and param.studentName != ''">
+      b.name = #{param.studentName}
+    </if>
+    <if test="param.className != null and param.className != ''">
+      c.name = #{param.className}
+    </if>
+    <if test="param.gradeName != null and param.gradeName != ''">
+      d.name = #{param.gradeName}
+    </if>
+    <if test="param.isGraduate != null and param.isGraduate != 0">
+      b.is_graduate = #{param.isGraduate}
+    </if>
   </sql>
 
   <select id="getByStudentId" parameterType="java.lang.Integer" resultType="com.charge.pojo.student.StudentClassInfo">

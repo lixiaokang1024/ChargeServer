@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,9 @@ public class SchoolController {
         searchParam.setCurrentPage(page);
         searchParam.setPageSize(rows);
         PageResultDTO<List<GradeInfoVo>> pageResultDTO = schoolProxy.queryGradeInfo(searchParam);
+        if(pageResultDTO.getData() == null){
+           pageResultDTO.setData(new ArrayList<GradeInfoVo>());
+        }
         model.put("rows", pageResultDTO.getData());
         model.put("total", pageResultDTO.getTotalRecord());
         model.put("page", page);
@@ -59,6 +63,9 @@ public class SchoolController {
         searchParam.setCurrentPage(page);
         searchParam.setPageSize(rows);
         PageResultDTO<List<ClassInfoVo>> pageResultDTO = schoolProxy.queryClassInfo(searchParam);
+        if(pageResultDTO.getData() == null){
+            pageResultDTO.setData(new ArrayList<ClassInfoVo>());
+        }
         model.put("rows", pageResultDTO.getData());
         model.put("total", pageResultDTO.getTotalRecord());
         model.put("page", page);

@@ -199,11 +199,21 @@
   </update>
 
   <select id="countStudentInfo" resultType="java.lang.Integer">
-    SELECT count(id) FROM student_info
+    SELECT count(id) FROM student_info <include refid="wheresql"/>
   </select>
   <select id="queryStudentInfoPageList" resultMap="BaseResultMap">
-    SELECT * FROM student_info
+    SELECT * FROM student_info <include refid="wheresql"/>
   </select>
+
+  <sql id="wheresql">
+    WHERE is_deleted=0
+    <if test="param.name != null and param.name != ''">
+      AND name=#{param.name}
+    </if>
+    <if test="param.mobile != null and param.mobile != ''">
+      AND mobile=#{param.mobile}
+    </if>
+  </sql>
 
   <select id="getStudentInfoByName" parameterType="java.lang.String" resultType="com.charge.pojo.student.StudentInfo">
     SELECT <include refid="Base_Column_List"/> FROM student_info WHERE name=#{studentName}

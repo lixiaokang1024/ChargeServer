@@ -1,6 +1,7 @@
 package com.charge.pojo.common;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 
 /**
  * 功能概述：返回结果数据传输对象
@@ -70,6 +71,4 @@ public class ResultDTO<T> implements Serializable {
     public void setData(T data) {
         this.data = data;
     }
-
-
 }
