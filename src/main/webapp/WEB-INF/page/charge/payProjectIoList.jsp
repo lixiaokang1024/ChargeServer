@@ -60,7 +60,7 @@
 			支出金额：
 			<input name="payAmount" id="payAmount" type="text" style="width: 150px;"/>
 			<br/><br/>
-			备注：
+			特别备注：
 			<input name="addRemark" id="addRemark" type="text" style="width: 150px;"/>
 			<br/><br/>
 			<p align="center">
