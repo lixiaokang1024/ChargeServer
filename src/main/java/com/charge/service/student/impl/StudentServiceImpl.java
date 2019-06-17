@@ -6,6 +6,7 @@ import com.charge.param.student.StudentSearchParam;
 import com.charge.pojo.student.StudentExtInfo;
 import com.charge.pojo.student.StudentInfo;
 import com.charge.service.student.StudentService;
+import com.charge.util.DateUtil;
 import com.charge.util.RequestParamUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,10 @@ public class StudentServiceImpl implements StudentService {
     private StudentExtInfoMapper studentExtInfoMapper;
 
     public void insertSelective(StudentInfo studentInfo, StudentExtInfo studentExtInfo) {
+        studentInfo.setCreatTime(DateUtil.getCurrentTimespan());
         studentInfoMapper.insertSelective(studentInfo);
         studentExtInfo.setStudentId(studentInfo.getId());
+        studentExtInfo.setCreateTime(DateUtil.getCurrentTimespan());
         studentExtInfoMapper.insertSelective(studentExtInfo);
     }
 

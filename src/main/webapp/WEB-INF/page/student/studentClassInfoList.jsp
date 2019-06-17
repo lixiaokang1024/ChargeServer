@@ -7,6 +7,7 @@
 	   rownumbers="true" pagination="true" pageSize="20" showFooter="true">
 	<thead>
 	<tr style="valign: middle">
+		<th field="studentId" sortable="true" width="150px">学号</th>
 		<th field="studentName" sortable="true" width="150px">学生姓名</th>
 		<th field="className" sortable="true" width="150px">班级</th>
 		<th field="gradeName" sortable="true" width="150px">年级</th>

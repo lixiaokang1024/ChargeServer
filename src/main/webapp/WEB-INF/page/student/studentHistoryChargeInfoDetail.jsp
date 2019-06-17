@@ -6,6 +6,7 @@
 <div style="padding:5px;height:auto">
 	<table class="division">
 		<tr>
+			<th width="150px">学号</th>
 			<th width="150px">学生姓名</th>
 			<th width="150px">缴费项目</th>
 			<th width="150px">缴费金额</th>
@@ -15,6 +16,7 @@
 		</tr>
 		<c:forEach var="basic" items="${data}">
 			<tr align="center">
+				<td>${ basic.studentId }</td>
 				<td>${ basic.studentName }</td>
 				<td>${ basic.chargeProjectName }</td>
 				<td>${ basic.chargeAmount }</td>

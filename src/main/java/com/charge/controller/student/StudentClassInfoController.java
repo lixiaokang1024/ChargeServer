@@ -75,7 +75,7 @@ public class StudentClassInfoController {
         try {
             studentClassInfoProxy.upStudentClass();
         }catch(Exception e){
-            model.put("success", true);
+            model.put("success", false);
             model.put("msg", e.getMessage());
         }
         return model;

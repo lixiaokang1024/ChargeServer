@@ -7,6 +7,7 @@
 	   rownumbers="true" pagination="true" pageSize="20" showFooter="true">
 	<thead>
 	<tr style="valign: middle">
+		<th field="studentId" sortable="true" width="150px">学号</th>
 		<th field="studentName" sortable="true" width="150px">学生姓名</th>
 		<th field="chargeAmount" sortable="true" width="150px">已缴费金额</th>
 		<th field="prepaymentAmount" sortable="true" width="150px">预缴费剩余金额</th>

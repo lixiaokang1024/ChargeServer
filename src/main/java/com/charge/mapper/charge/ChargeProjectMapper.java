@@ -1,6 +1,7 @@
 package com.charge.mapper.charge;
 
 import com.charge.pojo.charge.ChargeProject;
+import com.charge.pojo.charge.PayProject;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -19,6 +20,5 @@ public interface ChargeProjectMapper {
     ChargeProject getChargeProjectByName(@Param("projectName") String projectName, @Param("gradeId") Integer gradeId);
     int countChargeProject(Map<String, Object> param);
     List<ChargeProject> queryChargeProjectPageList(Map<String, Object> param);
-
 
 }

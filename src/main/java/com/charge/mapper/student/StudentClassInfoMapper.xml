@@ -119,7 +119,7 @@
     <include refid="wheresql"/>
   </select>
   <sql id="wheresql">
-    WHEN a.is_deleted = 0
+    WHERE a.is_deleted = 0
     <if test="param.studentName != null and param.studentName != ''">
       b.name = #{param.studentName}
     </if>

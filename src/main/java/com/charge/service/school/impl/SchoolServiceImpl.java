@@ -7,6 +7,7 @@ import com.charge.param.school.GradeSearchParam;
 import com.charge.pojo.school.ClassInfo;
 import com.charge.pojo.school.GradeInfo;
 import com.charge.service.school.SchoolService;
+import com.charge.util.DateUtil;
 import com.charge.util.RequestParamUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,12 @@ public class SchoolServiceImpl implements SchoolService {
 
 
     public void insertSelectiveGradeInfo(GradeInfo gradeInfo) {
+        gradeInfo.setCreateTime(DateUtil.getCurrentTimespan());
         gradeInfoMapper.insertSelective(gradeInfo);
     }
 
     public void insertSelectiveClassInfo(ClassInfo classInfo) {
+        classInfo.setCreatTime(DateUtil.getCurrentTimespan());
         classInfoMapper.insertSelective(classInfo);
     }
 

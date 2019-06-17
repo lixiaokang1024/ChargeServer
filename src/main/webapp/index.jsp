@@ -55,7 +55,12 @@
             </div>
             <div class="top-menu" >
                 <a class="tab" href="javascript:void(0)" id="menu_3">
-                    <span>缴费管理</span>
+                    <span>费用管理</span>
+                </a>
+            </div>
+            <div class="top-menu" >
+                <a class="tab" href="javascript:void(0)" id="menu_5">
+                    <span>统计管理</span>
                 </a>
             </div>
             <div class="top-menu" >
@@ -84,7 +89,10 @@
                         <a href="school/classIndex" title="班级配置" class="newTab">班级配置</a>
                     </span>
                     <span>
-						<a href="charge/index" title="费用项目配置" class="newTab">费用项目配置</a>
+						<a href="charge/index" title="缴费项目配置" class="newTab">缴费项目配置</a>
+					</span>
+                    <span>
+						<a href="charge/payProjectIndex" title="支出项目配置" class="newTab">支出项目配置</a>
 					</span>
                 </li>
             </ul>
@@ -132,8 +140,27 @@
                     <span>
                         <a href="/order/index" title="退费管理" class="newTab">退费管理</a>
 					</span>
+                </li>
+            </ul>
+            <a class="parent" href="javascript:void(0);">支出管理</a>
+            <ul>
+                <li>
                     <span>
-                        <a href="/order/index" title="报表管理" class="newTab">报表管理</a>
+                        <a href="charge/payProjectIoIndex" title="日常支出" class="newTab">日常支出</a>
+					</span>
+                </li>
+            </ul>
+        </li>
+
+        <li class="leftMenu menu_5">
+            <a class="parent" href="javascript:void(0);">收支统计</a>
+            <ul>
+                <li>
+                    <span>
+                        <a href="studentChargeInfo/historyIndex" title="收入统计" class="newTab">收入统计</a>
+					</span>
+                    <span>
+                        <a href="studentChargeInfo/historyIndex" title="支出统计" class="newTab">支出统计</a>
 					</span>
                 </li>
             </ul>

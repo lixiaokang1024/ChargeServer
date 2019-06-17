@@ -108,9 +108,11 @@
 
   <select id="countChargeProject" resultType="java.lang.Integer">
     SELECT count(a.id) FROM charge_project a join grade_info b on a.grade_id=b.id
+    <include refid="wheresql"/>
   </select>
   <select id="queryChargeProjectPageList" resultMap="BaseResultMap">
     SELECT a.*,b.name as grade_name FROM charge_project a join grade_info b on a.grade_id=b.id
+    <include refid="wheresql"/>
   </select>
 
   <sql id="wheresql">
