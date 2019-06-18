@@ -164,7 +164,7 @@
     <if test="param.chargeStatus != null">
       AND a.status=#{param.chargeStatus}
     </if>
-    <if test="param.name != null">
+    <if test="param.name != null and param.name != ''">
       AND b.name=#{param.name}
     </if>
   </sql>
