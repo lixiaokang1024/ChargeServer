@@ -31,6 +31,10 @@ public class StudentServiceImpl implements StudentService {
         studentExtInfoMapper.insertSelective(studentExtInfo);
     }
 
+    public void updateSelective(StudentInfo studentInfo) {
+        studentInfoMapper.updateByPrimaryKeySelective(studentInfo);
+    }
+
     public int countStudent(StudentSearchParam studentSearchParam) {
         Map<String, Object> paramMap = RequestParamUtil.getRequestParamMap(studentSearchParam.getCurrentPage(), studentSearchParam.getPageSize(), studentSearchParam);
         return studentInfoMapper.countStudentInfo(paramMap);
@@ -48,6 +52,10 @@ public class StudentServiceImpl implements StudentService {
 
     public StudentInfo getStudentInfoById(Integer studentId) {
         return studentInfoMapper.getStudentInfoById(studentId);
+    }
+
+    public void saveOrUpdateStudentInfo(StudentInfo studentInfo) {
+
     }
 
 }

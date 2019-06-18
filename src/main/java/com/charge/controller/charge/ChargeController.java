@@ -33,16 +33,28 @@ public class ChargeController {
     @Autowired
     private ChargeProxy chargeProxy;
 
+    /**
+     * 缴费项目
+     * @return
+     */
     @RequestMapping("/index")
     public String toIndex(){
         return "charge/chargeList";
     }
 
+    /**
+     * 支出项目
+     * @return
+     */
     @RequestMapping("/payProjectIndex")
     public String toPayProjectIndex(){
         return "charge/payProjectList";
     }
 
+    /**
+     * 支出历史
+     * @return
+     */
     @RequestMapping("/payProjectIoIndex")
     public String toPayProjectIoIndex(){
         return "charge/payProjectIoList";

@@ -43,7 +43,7 @@ public class ExportStudentInfoCSVHandler extends AbstractExportCSVRandomHandler<
     @Override
     protected String initColumnHeader() {
         StringBuilder columnHeader = new StringBuilder();
-        columnHeader.append("\"").append("自动入库单号").append("\",");
+        columnHeader.append("\"").append("学生姓名").append("\",");
         columnHeader.append("\"").append("运单号").append("\"\r\n");
         return columnHeader.toString();
     }

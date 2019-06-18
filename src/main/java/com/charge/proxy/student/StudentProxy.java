@@ -1,5 +1,6 @@
 package com.charge.proxy.student;
 
+import com.charge.Exception.BusinessException;
 import com.charge.param.student.StudentSearchParam;
 import com.charge.pojo.common.PageResultDTO;
 import com.charge.pojo.student.StudentExtInfo;
@@ -110,6 +111,23 @@ public class StudentProxy {
                     studentService.insertSelective(studentInfo, studentExtInfo);
                 }
             }
+        }
+    }
+
+    public void saveOrUpdateStudentInfo(StudentInfo studentInfo) throws ParseException {
+        logger.info("学生信息保存参数：{}", JsonUtil.toJson(studentInfo));
+        String bornDateStr = studentInfo.getYear()+"-"+studentInfo.getMonth()+"-"+studentInfo.getDay();
+        Date born = DateUtil.getDateByString(bornDateStr);
+        studentInfo.setAge(DateUtil.getAge(born));
+        if(studentInfo.getId() != null){
+            StudentInfo studentInfoIndb = studentService.getStudentInfoById(studentInfo.getId());
+            if(studentInfoIndb == null){
+                throw new BusinessException("记录不存在！");
+            }
+            studentService.updateSelective(studentInfo);
+        }else{
+            StudentExtInfo studentExtInfo = new StudentExtInfo();
+            studentService.insertSelective(studentInfo, studentExtInfo);
         }
     }
 }
