@@ -2,7 +2,7 @@ package com.charge.enums.charge;
 
 public enum ChargeStatus {
 
-    CHARGED(0, "未缴费"), NOT_CHARGED(1,"已缴费");
+    NOT_CHARGED(0, "未缴费"), PART_CHARGED(1,"部分缴费"), CHARGED(2, "已缴费");
 
     private Integer code;
     private String value;

@@ -6,7 +6,10 @@
     <result column="student_id" property="studentId" jdbcType="INTEGER" />
     <result column="charge_project_id" property="chargeProjectId" jdbcType="INTEGER" />
     <result column="charge_amount" property="chargeAmount" jdbcType="DECIMAL" />
+    <result column="actual_charge_amount" property="actualChargeAmount" jdbcType="DECIMAL" />
+    <result column="use_deposit_amount" property="useDepositAmount" jdbcType="DECIMAL" />
     <result column="charge_time" property="chargeTime" jdbcType="INTEGER" />
+    <result column="actual_charge_time" property="actualChargeTime" jdbcType="INTEGER" />
     <result column="pay_type" property="payType" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="INTEGER" />
@@ -14,16 +17,17 @@
     <result column="is_deleted" property="deleted" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, student_id, charge_project_id, charge_amount, charge_time, pay_type, status, 
-    create_time, modify_time, is_deleted
+    id, student_id, charge_project_id, charge_amount, actual_charge_amount,use_deposit_amount,charge_time,
+    actual_charge_time,pay_type, status,create_time, modify_time, is_deleted
   </sql>
   <insert id="insert" parameterType="com.charge.pojo.student.StudentChargeInfo" >
     insert into student_charge_info (id, student_id, charge_project_id, 
-      charge_amount, charge_time, pay_type, 
+      charge_amount, actual_charge_amount,use_deposit_amount,charge_time, actual_charge_time,pay_type,
       status, create_time, modify_time, 
       is_deleted)
     values (#{id,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{chargeProjectId,jdbcType=INTEGER}, 
-      #{chargeAmount,jdbcType=DECIMAL}, #{chargeTime,jdbcType=INTEGER}, #{payType,jdbcType=INTEGER}, 
+      #{chargeAmount,jdbcType=DECIMAL}, #{actualChargeAmount},#{useDepositAmount},#{chargeTime,jdbcType=INTEGER},
+       #{actualChargeTime},#{payType,jdbcType=INTEGER},
       #{status,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, 
       #{deleted,jdbcType=INTEGER})
   </insert>
@@ -42,8 +46,17 @@
       <if test="chargeAmount != null" >
         charge_amount,
       </if>
+      <if test="actualChargeAmount != null" >
+        actual_charge_amount,
+      </if>
+      <if test="useDepositAmount != null" >
+        use_deposit_amount,
+      </if>
       <if test="chargeTime != null" >
         charge_time,
+      </if>
+      <if test="actualChargeTime != null" >
+        actual_charge_time,
       </if>
       <if test="payType != null" >
         pay_type,
@@ -74,8 +87,17 @@
       <if test="chargeAmount != null" >
         #{chargeAmount,jdbcType=DECIMAL},
       </if>
+      <if test="actualChargeAmount != null" >
+        #{actualChargeAmount},
+      </if>
+      <if test="useDepositAmount != null" >
+        #{useDepositAmount},
+      </if>
       <if test="chargeTime != null" >
         #{chargeTime,jdbcType=INTEGER},
+      </if>
+      <if test="actualChargeTime != null" >
+        #{actualChargeTime},
       </if>
       <if test="payType != null" >
         #{payType,jdbcType=INTEGER},
@@ -106,8 +128,17 @@
       <if test="chargeAmount != null" >
         charge_amount = #{chargeAmount,jdbcType=DECIMAL},
       </if>
+      <if test="actualChargeAmount != null" >
+        actual_charge_amount = #{actualChargeAmount},
+      </if>
+      <if test="useDepositAmount != null" >
+        use_deposit_amount = #{useDepositAmount},
+      </if>
       <if test="chargeTime != null" >
         charge_time = #{chargeTime,jdbcType=INTEGER},
+      </if>
+      <if test="actualChargeTime != null" >
+        actual_charge_time = #{actualChargeTime},
       </if>
       <if test="payType != null" >
         pay_type = #{payType,jdbcType=INTEGER},
@@ -132,7 +163,10 @@
     set student_id = #{studentId,jdbcType=INTEGER},
       charge_project_id = #{chargeProjectId,jdbcType=INTEGER},
       charge_amount = #{chargeAmount,jdbcType=DECIMAL},
+      actual_charge_amount = #{actualChargeAmount},
+      use_deposit_amount = #{useDepositAmount},
       charge_time = #{chargeTime,jdbcType=INTEGER},
+      actual_charge_time = #{actualChargeTime},
       pay_type = #{payType,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=INTEGER},
@@ -151,6 +185,7 @@
       a.student_id,
       b.name AS studentName,
       SUM(a.charge_amount) as chargeAmount,
+      SUM(a.actual_charge_amount+a.use_deposit_amount) as actualChargeAmount,
       c.prepayment_amount,
       c.deposit
      FROM student_info b JOIN student_ext_info c on b.id=c.student_id
@@ -162,7 +197,10 @@
   <sql id="wheresql">
     WHERE a.is_deleted = 0
     <if test="param.chargeStatus != null">
-      AND a.status=#{param.chargeStatus}
+      AND a.status IN
+      <foreach collection="param.chargeStatus" open="(" close=")" separator="," item="item">
+        #{item}
+      </foreach>
     </if>
     <if test="param.name != null and param.name != ''">
       AND b.name=#{param.name}
@@ -177,11 +215,29 @@
     a.charge_project_id,
     d.project_name as chargeProjectName,
     a.charge_amount,
+    a.actual_charge_amount,
+    a.use_deposit_amount,
     a.charge_time,
+    a.actual_charge_time,
     a.pay_type,
     a.status
     FROM student_charge_info a JOIN student_info b  on a.student_id=b.id
     JOIN charge_project d on a.charge_project_id=d.id
-    WHERE a.student_id=#{studentId} AND a.status=#{chargeStatus}
+    WHERE a.student_id=#{studentId} AND a.status IN
+     <foreach collection="chargeStatusList" open="(" close=")" separator="," item="item">
+       #{item}
+     </foreach>
+  </select>
+
+  <select id="updateStudentChargeInfo" parameterType="com.charge.pojo.student.StudentChargeInfo">
+    UPDATE student_charge_info SET
+    actual_charge_amount = actual_charge_amount + #{actualChargeAmount},
+    use_deposit_amount = use_deposit_amount + #{useDepositAmount},
+    actual_charge_time = #{actualChargeTime},
+    <if test="payType != null">
+      pay_type = #{payType},
+    </if>
+    status = #{status}
+    WHERE id=#{id}
   </select>
 </mapper>

@@ -107,7 +107,7 @@ public class StudentProxy {
                     studentInfo.setRelation(ExcelUtil.getValue(relation));
                     studentInfo.setMobile(ExcelUtil.getValue(mobile));
                     studentInfo.setAddress(ExcelUtil.getValue(address));
-                    studentExtInfo.setAdmissionTime(DateUtil.getTimespan2(ExcelUtil.getValue(admissionTime)));
+                    studentExtInfo.setAdmissionTime(DateUtil.getTimespan(ExcelUtil.getValue(admissionTime)));
                     studentService.insertSelective(studentInfo, studentExtInfo);
                 }
             }

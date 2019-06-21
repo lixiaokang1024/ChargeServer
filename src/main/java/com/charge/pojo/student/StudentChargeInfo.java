@@ -24,10 +24,16 @@ public class StudentChargeInfo implements Serializable {
      */
     private Double chargeAmount;
 
+    private Double actualChargeAmount;//实际缴费金额
+
+    private Double useDepositAmount;//使用预缴费金额
+
     /**
-     * student_charge_info.charge_time 缴费日期
+     * student_charge_info.charge_time 应缴费日期
      */
     private Integer chargeTime;
+
+    private Integer actualChargeTime;
 
     /**
      * student_charge_info.pay_type 缴费方式(0:现金 1:预缴费扣除 2:其他)
@@ -108,6 +114,30 @@ public class StudentChargeInfo implements Serializable {
      */
     public void setChargeAmount(Double chargeAmount) {
         this.chargeAmount = chargeAmount;
+    }
+
+    public Double getActualChargeAmount() {
+        return actualChargeAmount;
+    }
+
+    public void setActualChargeAmount(Double actualChargeAmount) {
+        this.actualChargeAmount = actualChargeAmount;
+    }
+
+    public Double getUseDepositAmount() {
+        return useDepositAmount;
+    }
+
+    public void setUseDepositAmount(Double useDepositAmount) {
+        this.useDepositAmount = useDepositAmount;
+    }
+
+    public Integer getActualChargeTime() {
+        return actualChargeTime;
+    }
+
+    public void setActualChargeTime(Integer actualChargeTime) {
+        this.actualChargeTime = actualChargeTime;
     }
 
     /**

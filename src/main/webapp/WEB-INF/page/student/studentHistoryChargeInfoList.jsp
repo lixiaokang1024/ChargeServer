@@ -7,12 +7,13 @@
 	   rownumbers="true" pagination="true" pageSize="20" showFooter="true">
 	<thead>
 	<tr style="valign: middle">
-		<th field="studentId" sortable="true" width="150px">学号</th>
-		<th field="studentName" sortable="true" width="150px">学生姓名</th>
-		<th field="chargeAmount" sortable="true" width="150px">已缴费金额</th>
-		<th field="prepaymentAmount" sortable="true" width="150px">预缴费剩余金额</th>
-		<th field="deposit" width="130px" >押金</th>
-		<th field="operator" width="50px" formatter="settings">操作</th>
+		<th field="studentId" sortable="true" align="center" width="150px">学号</th>
+		<th field="studentName" sortable="true" align="center" width="150px">学生姓名</th>
+		<th field="chargeAmount" sortable="true" align="center" width="150px">应缴费金额</th>
+		<th field="actualChargeAmount" sortable="true" align="center" width="150px">实际缴费金额</th>
+		<th field="prepaymentAmount" sortable="true" align="center" width="150px">预缴费剩余金额</th>
+		<th field="deposit" align="center" width="130px" >押金</th>
+		<th field="operator" width="300px" align="center" formatter="settings">操作</th>
 	</tr>
 	</thead>
 </table>

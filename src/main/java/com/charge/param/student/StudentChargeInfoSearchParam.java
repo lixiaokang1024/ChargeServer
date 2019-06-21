@@ -3,6 +3,7 @@ package com.charge.param.student;
 import com.charge.param.common.BaseDataPaginationParam;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class StudentChargeInfoSearchParam extends BaseDataPaginationParam implements Serializable {
 
@@ -12,7 +13,7 @@ public class StudentChargeInfoSearchParam extends BaseDataPaginationParam implem
 
     private Boolean graduate;
 
-    private Integer chargeStatus;
+    private List<Integer> chargeStatus;
 
     public String getName() {
         return name;
@@ -38,11 +39,11 @@ public class StudentChargeInfoSearchParam extends BaseDataPaginationParam implem
         this.graduate = graduate;
     }
 
-    public Integer getChargeStatus() {
+    public List<Integer> getChargeStatus() {
         return chargeStatus;
     }
 
-    public void setChargeStatus(Integer chargeStatus) {
+    public void setChargeStatus(List<Integer> chargeStatus) {
         this.chargeStatus = chargeStatus;
     }
 }

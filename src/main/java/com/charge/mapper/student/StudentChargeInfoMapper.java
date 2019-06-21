@@ -20,5 +20,8 @@ public interface StudentChargeInfoMapper {
     int countStudentChargeInfo(Map<String, Object> searchParam);
     List<StudentChargeInfoVo> queryStudentChargeInfoPageList(Map<String, Object> searchParam);
 
-    List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetail(@Param("studentId") Integer studentId, @Param("chargeStatus") Integer chargeStatus);
+    List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetail(@Param("studentId") Integer studentId, @Param("chargeStatusList") List<Integer> chargeStatus);
+
+    void updateStudentChargeInfo(StudentChargeInfo record);
+
 }

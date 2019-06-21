@@ -2,6 +2,7 @@ package com.charge.proxy.student;
 
 import com.charge.Exception.BusinessException;
 import com.charge.param.student.StudentChargeInfoSearchParam;
+import com.charge.param.student.StudentChargeParam;
 import com.charge.param.student.StudentSearchParam;
 import com.charge.pojo.charge.ChargeProject;
 import com.charge.pojo.common.PageResultDTO;
@@ -76,7 +77,7 @@ public class StudentChargeInfoProxy {
         return pageResultDTO;
     }
 
-    public List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetail(Integer studentId, Integer chargeStatus){
+    public List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetail(Integer studentId, List<Integer> chargeStatus){
         logger.info("查询学生应缴费信息详情搜索参数：{}", studentId);
         List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = new ArrayList<StudentChargeInfoDetailVo>();
         try {
@@ -123,5 +124,13 @@ public class StudentChargeInfoProxy {
                 }
             }
         }
+    }
+
+    public void doCharge(StudentChargeParam chargeParam){
+        studentChargeInfoService.doCharge(chargeParam);
+    }
+
+    public void doDepositCharge(StudentChargeParam chargeParam){
+        studentChargeInfoService.addPrepaymentAmount(chargeParam);
     }
 }

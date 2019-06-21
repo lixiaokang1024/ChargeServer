@@ -3,6 +3,7 @@ package com.charge.controller.student;
 import com.charge.export.common.ExportCSVService;
 import com.charge.export.student.ExportStudentHistoryChargeInfoCSVHandler;
 import com.charge.param.student.StudentChargeInfoSearchParam;
+import com.charge.param.student.StudentChargeParam;
 import com.charge.pojo.common.PageResultDTO;
 import com.charge.proxy.student.StudentChargeInfoProxy;
 import com.charge.vo.student.StudentChargeInfoDetailVo;
@@ -52,7 +53,10 @@ public class StudentChargeInfoController {
         ModelMap model = new ModelMap();
         searchParam.setCurrentPage(page);
         searchParam.setPageSize(rows);
-        searchParam.setChargeStatus(0);
+        List<Integer> chargeStatus = new ArrayList<Integer>();
+        chargeStatus.add(0);
+        chargeStatus.add(1);
+        searchParam.setChargeStatus(chargeStatus);
         PageResultDTO<List<StudentChargeInfoVo>> pageResultDTO = chargeInfoProxy.queryStudentChargeInfo(searchParam);
         if(pageResultDTO.getData() == null){
             pageResultDTO.setData(new ArrayList<StudentChargeInfoVo>());
@@ -65,7 +69,10 @@ public class StudentChargeInfoController {
 
     @RequestMapping("/detail/{studentId}")
     public String getStudentChargeInfoDetail(Model model, @PathVariable Integer studentId) {
-        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = chargeInfoProxy.queryStudentChargeInfoDetail(studentId, 0);
+        List<Integer> chargeStatus = new ArrayList<Integer>();
+        chargeStatus.add(0);
+        chargeStatus.add(1);
+        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = chargeInfoProxy.queryStudentChargeInfoDetail(studentId, chargeStatus);
         model.addAttribute("data", studentChargeInfoDetailVoList);
         return "student/studentChargeInfoDetail";
     }
@@ -76,7 +83,9 @@ public class StudentChargeInfoController {
         ModelMap model = new ModelMap();
         searchParam.setCurrentPage(page);
         searchParam.setPageSize(rows);
-        searchParam.setChargeStatus(1);
+        List<Integer> chargeStatus = new ArrayList<Integer>();
+        chargeStatus.add(2);
+        searchParam.setChargeStatus(chargeStatus);
         PageResultDTO<List<StudentChargeInfoVo>> pageResultDTO = chargeInfoProxy.queryStudentChargeInfo(searchParam);
         model.put("rows", pageResultDTO.getData());
         model.put("total", pageResultDTO.getTotalRecord());
@@ -86,7 +95,9 @@ public class StudentChargeInfoController {
 
     @RequestMapping("/historyDetail/{studentId}")
     public String getStudentHistoryChargeInfoDetail(Model model, @PathVariable Integer studentId) {
-        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = chargeInfoProxy.queryStudentChargeInfoDetail(studentId, 1);
+        List<Integer> chargeStatus = new ArrayList<Integer>();
+        chargeStatus.add(2);
+        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = chargeInfoProxy.queryStudentChargeInfoDetail(studentId, chargeStatus);
         model.addAttribute("data", studentChargeInfoDetailVoList);
         return "student/studentHistoryChargeInfoDetail";
     }
@@ -120,6 +131,35 @@ public class StudentChargeInfoController {
         try {
             InputStream io = buildInfo.getInputStream();
             chargeInfoProxy.importStudentChargeInfo(io);
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
+    }
+
+    @RequestMapping("/doCharge")
+    @ResponseBody
+    public Map<String, Object> doCharge(StudentChargeParam chargeParam) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("success", true);
+        try {
+            chargeInfoProxy.doCharge(chargeParam);
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
+    }
+
+    //预缴费
+    @RequestMapping("/doDepositCharge")
+    @ResponseBody
+    public Map<String, Object> doDepositCharge(StudentChargeParam chargeParam) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("success", true);
+        try {
+            chargeInfoProxy.doDepositCharge(chargeParam);
         } catch (Exception e) {
             resultMap.put("success", false);
             resultMap.put("msg", e.getMessage());

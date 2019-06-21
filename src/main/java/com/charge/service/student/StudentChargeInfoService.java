@@ -1,6 +1,7 @@
 package com.charge.service.student;
 
 import com.charge.param.student.StudentChargeInfoSearchParam;
+import com.charge.param.student.StudentChargeParam;
 import com.charge.pojo.student.StudentChargeInfo;
 import com.charge.vo.student.StudentChargeInfoDetailVo;
 import com.charge.vo.student.StudentChargeInfoVo;
@@ -14,5 +15,9 @@ public interface StudentChargeInfoService {
     int countStudentChargeInfo(StudentChargeInfoSearchParam searchParam);
     List<StudentChargeInfoVo> queryStudentChargeInfoList(StudentChargeInfoSearchParam searchParam);
 
-    List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetail(Integer studentId, Integer chargeStatus);
+    List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetail(Integer studentId, List<Integer> chargeStatus);
+
+    void addPrepaymentAmount(StudentChargeParam chargeParam);
+
+    void doCharge(StudentChargeParam chargeParam);
 }

@@ -87,7 +87,7 @@ public class StudentClassInfoServiceImpl implements StudentClassInfoService {
     private void upGraduateStudent(StudentClassInfoVo studentClassInfoVo) {
         StudentClassInfo studentClassInfo = new StudentClassInfo();
         studentClassInfo.setId(studentClassInfoVo.getId());
-        studentClassInfo.setGraduate(GraduateStatus.UN_GRADUATE.getCode());
+        studentClassInfo.setGraduate(GraduateStatus.GRADUATE.getCode());
         studentClassInfoMapper.updateByPrimaryKeySelective(studentClassInfo);
 
         StudentInfo studentInfo = new StudentInfo();

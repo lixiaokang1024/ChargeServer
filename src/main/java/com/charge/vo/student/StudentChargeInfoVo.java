@@ -7,6 +7,7 @@ public class StudentChargeInfoVo implements Serializable {
     private Integer studentId;
     private String studentName;
     private Double chargeAmount;//应缴费金额
+    private Double actualChargeAmount;//实际缴费金额
     private Double prepaymentAmount;//预缴费剩余金额
     private Double deposit;//押金
 
@@ -32,6 +33,14 @@ public class StudentChargeInfoVo implements Serializable {
 
     public void setChargeAmount(Double chargeAmount) {
         this.chargeAmount = chargeAmount;
+    }
+
+    public Double getActualChargeAmount() {
+        return actualChargeAmount;
+    }
+
+    public void setActualChargeAmount(Double actualChargeAmount) {
+        this.actualChargeAmount = actualChargeAmount;
     }
 
     public Double getPrepaymentAmount() {

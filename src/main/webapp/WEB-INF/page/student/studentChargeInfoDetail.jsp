@@ -6,13 +6,16 @@
 <div style="padding:5px;height:auto">
 	<table class="division">
 		<tr>
-			<th width="150px">学号</th>
-			<th width="150px">学生姓名</th>
-			<th width="150px">缴费项目</th>
-			<th width="150px">缴费金额</th>
-			<th width="130px">缴费时间</th>
-			<th width="130px">缴费方式</th>
-			<th width="130px">缴费状态</th>
+			<th align="center" width="150px">学号</th>
+			<th align="center" width="150px">学生姓名</th>
+			<th align="center" width="150px">缴费项目</th>
+			<th align="center" width="150px">应缴费金额</th>
+			<th align="center" width="150px">实际缴费金额</th>
+			<th align="center" width="150px">使用预缴费金额</th>
+			<th align="center" width="130px">应缴费时间</th>
+			<th align="center" width="130px">实际缴费时间</th>
+			<th align="center" width="130px">缴费方式</th>
+			<th align="center" width="130px">缴费状态</th>
 		</tr>
 		<c:forEach var="basic" items="${data}">
 			<tr align="center">
@@ -20,7 +23,10 @@
 				<td>${ basic.studentName }</td>
 				<td>${ basic.chargeProjectName }</td>
 				<td>${ basic.chargeAmount }</td>
+				<td>${ basic.actualChargeAmount }</td>
+				<td>${ basic.useDepositAmount }</td>
 				<td>${ basic.chargeTimeStr }</td>
+				<td>${ basic.actualChargeTimeStr }</td>
 				<td>${ basic.payTypeStr }</td>
 				<td>${ basic.statusStr }</td>
 			</tr>

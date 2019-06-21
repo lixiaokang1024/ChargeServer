@@ -163,4 +163,15 @@
       is_deleted = #{deleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <update id="updatePrepaymentAmount">
+    update student_ext_info
+    set
+    prepayment_amount = prepayment_amount + #{prepaymentAmount}
+    where student_id = #{studentId}
+  </update>
+
+  <select id="getByStudentId" resultType="com.charge.pojo.student.StudentExtInfo">
+    SELECT * FROM student_ext_info WHERE student_id = #{studentId}
+  </select>
 </mapper>

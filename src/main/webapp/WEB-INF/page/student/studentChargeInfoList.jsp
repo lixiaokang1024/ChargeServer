@@ -7,12 +7,13 @@
 	   rownumbers="true" pagination="true" pageSize="20" showFooter="true">
 	<thead>
 	<tr style="valign: middle">
-		<th field="studentId" sortable="true" width="150px">学号</th>
-		<th field="studentName" sortable="true" width="150px">学生姓名</th>
-		<th field="chargeAmount" sortable="true" width="150px">应缴费金额</th>
-		<th field="prepaymentAmount" sortable="true" width="150px">预缴费剩余金额</th>
-		<th field="deposit" width="130px" >押金</th>
-		<th field="operator" width="50px" formatter="settings">操作</th>
+		<th field="studentId" sortable="true" align="center" width="150px">学号</th>
+		<th field="studentName" sortable="true" align="center" width="150px">学生姓名</th>
+		<th field="chargeAmount" sortable="true" align="center" width="150px">应缴费金额</th>
+		<th field="actualChargeAmount" sortable="true" align="center" width="150px">实际缴费金额</th>
+		<th field="prepaymentAmount" sortable="true" align="center" width="150px">预缴费剩余金额</th>
+		<th field="deposit" align="center" width="130px" >押金</th>
+		<th field="operator" width="300px" align="center" formatter="settings">操作</th>
 	</tr>
 	</thead>
 </table>
@@ -70,6 +71,30 @@
 	</form>
 </div>
 
+<!-- 缴费弹框 -->
+<div id="chargeDialog" class="easyui-dialog" title="缴费" closed="true"
+	 style="width:350px; height:200px;overflow: auto;" iconCls="icon-edit">
+	<form name="chargeForm" action="" id="chargeForm" method="post">
+		<div style="margin:11px 11px 0px 25px">
+			<input id="studentId" type="hidden" value=""/>
+			<input id="isDeposit" type="hidden" value=""/>
+			缴费金额：
+			<input name="chargeAmount" id="chargeAmount" type="text" style="width: 150px;"/>
+			<br/><br/>
+			<span id="useDeposit" hidden="hidden">
+				使用预缴费金额：
+				<input type="radio" name="useDeposit" checked="checked" value="0"/>不使用
+				<input type="radio" name="useDeposit" value="1"/>使用
+				<br/><br/>
+			</span>
+			<p align="center">
+				<input id="save" type="button" value="缴费"/>
+				<input id="cancel" type="button" value="取消"/>
+			</p><br>
+		</div>
+	</form>
+</div>
+
 
 <script type="text/javascript">
 	$(function() {
@@ -89,6 +114,10 @@
 	});
 	$('#cancelExcel').live('click',function(){
 		$("#dialogExcel").dialog("close");
+		return false;
+	});
+	$('#cancel').live('click',function(){
+		$("#chargeDialog").dialog("close");
 		return false;
 	});
 	//导出
@@ -182,9 +211,64 @@
 		html += '<span style="margin-right: 10px;"><a href="javascript:;" ';
 		html += 'onclick="addTab(\'学生应缴费详情\',\''+url+'\',true)">';
 		html += '<img style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" title="查看详情" src="${contextPath}/images/m_view.gif">';
-		html += '</a></span></div>';
+		html += '</a></span>';
+
+		html += '<a style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" onclick="openChargeDialog(\''+row.studentId+'\',\''+1+'\')">预缴费</a>';
+		html += '<a style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" onclick="openChargeDialog(\''+row.studentId+'\',\''+0+'\')">缴费</a>';
+
+		html += '</div>';
 		return html;
 	}
+
+	function openChargeDialog(studentId,deposit) {
+		$("#chargeDialog").dialog("open");
+		$("#chargeAmount").val("");
+		$("#studentId").val(studentId);
+		$("#isDeposit").val(deposit);
+		$("#useDeposit").css("display","none");
+		if(deposit == 0){
+			$("#useDeposit").css("display","block");
+		}
+		return false;
+	}
+
+	$('#save').live('click',function(){
+		var isDeposit = $("#isDeposit").val();
+		var url = "${contextPath}/studentChargeInfo/doCharge";
+		if(isDeposit == 1){
+			url = "${contextPath}/studentChargeInfo/doDepositCharge";
+		}
+		var data = {
+			studentId: $('#studentId').val(),
+			chargeAmount: $('#chargeAmount').val(),
+			isUseDeposit: $('input:radio[name="useDeposit"]:checked').val()
+		}
+		$.messager.confirm('系统消息', "确认缴费！", function (r) {
+			if (r) {
+				$.ajax({
+					url: url,
+					cache: false,
+					dataType: 'json',
+					data: data,
+					type: "post",
+					success: function (data) {
+						if (data.success) {
+							$.messager.alert('系统消息', '已完成', "info");
+							$("#datagrid").datagrid("reload");
+						} else {
+							$.messager.alert('系统消息', data.msg,'error');
+						}
+						$("#chargeDialog").dialog("close");
+					},
+					error: function (data) {
+						$("#chargeDialog").dialog("close");
+						$.messager.alert('系统消息', data.msg,'error');
+					}
+
+				});
+			}
+		});
+	});
 
 </script>
 </body>

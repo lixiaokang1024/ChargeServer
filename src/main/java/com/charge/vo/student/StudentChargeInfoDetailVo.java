@@ -2,6 +2,7 @@ package com.charge.vo.student;
 
 import com.charge.enums.charge.ChargeStatus;
 import com.charge.enums.charge.ChargeType;
+import com.charge.util.DateUtil;
 
 import java.io.Serializable;
 
@@ -13,8 +14,12 @@ public class StudentChargeInfoDetailVo implements Serializable {
     private Integer chargeProjectId;
     private String chargeProjectName;
     private Double chargeAmount;
-    private Integer chargeTime;
+    private Double actualChargeAmount;//实际缴费金额
+    private Double useDepositAmount;//使用预缴费金额
+    private Integer chargeTime;//应缴费时间
     private String chargeTimeStr;
+    private Integer actualChargeTime;//实际缴费时间
+    private String actualChargeTimeStr;
     private Integer payType;
     private String payTypeStr;//缴费方式(0:现金 1:预缴费扣除 2:其他)
     private Integer status;
@@ -77,7 +82,7 @@ public class StudentChargeInfoDetailVo implements Serializable {
     }
 
     public String getChargeTimeStr() {
-        return chargeTimeStr;
+        return DateUtil.getDatetime(chargeTime);
     }
 
     public void setChargeTimeStr(String chargeTimeStr) {
@@ -116,4 +121,35 @@ public class StudentChargeInfoDetailVo implements Serializable {
         this.statusStr = statusStr;
     }
 
+    public Double getActualChargeAmount() {
+        return actualChargeAmount;
+    }
+
+    public void setActualChargeAmount(Double actualChargeAmount) {
+        this.actualChargeAmount = actualChargeAmount;
+    }
+
+    public Double getUseDepositAmount() {
+        return useDepositAmount;
+    }
+
+    public void setUseDepositAmount(Double useDepositAmount) {
+        this.useDepositAmount = useDepositAmount;
+    }
+
+    public Integer getActualChargeTime() {
+        return actualChargeTime;
+    }
+
+    public void setActualChargeTime(Integer actualChargeTime) {
+        this.actualChargeTime = actualChargeTime;
+    }
+
+    public String getActualChargeTimeStr() {
+        return DateUtil.getDatetime(actualChargeTime);
+    }
+
+    public void setActualChargeTimeStr(String actualChargeTimeStr) {
+        this.actualChargeTimeStr = actualChargeTimeStr;
+    }
 }
