@@ -29,14 +29,9 @@
 				<td style="width: 150px">
 					<input type="text" id="studentName" name="studentName" style="width: 110px;" value=""/>
 				</td>
-				<td style="text-align: right;">入学时间：</td>
-				<td colspan="3">
-					<input id="createTimeBegin" style="width: 125px" name="createTimeBegin" class="Wdate"
-						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,maxDate:'#F{$dp.$D(\'createTimeEnd\')}'})"
-						   value=""/>&nbsp;-&nbsp;
-					<input id="createTimeEnd" style="width: 125px" name="createTimeEnd" class="Wdate"
-						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,minDate:'#F{$dp.$D(\'createTimeBegin\')}'})"
-						   value=""/>
+				<td style="text-align: right;">手机号：</td>
+				<td style="width: 150px">
+					<input type="text" id="mobile" name="mobile" style="width: 110px;" value=""/>
 				</td>
 			</tr>
 			<tr>&nbsp;</tr>
@@ -70,6 +65,22 @@
 				<input id="cancelExcel" type="button" value="取消"/>
 			</p><br>
 			<span style="display: none;" id="spanHidden">文件正在上传中.......</span>
+		</div>
+	</form>
+</div>
+
+<div id="chargeDialog" class="easyui-dialog" title="预缴费" closed="true"
+	 style="width:350px; height:200px;overflow: auto;" iconCls="icon-edit">
+	<form name="chargeForm" action="" id="chargeForm" method="post">
+		<div style="margin:11px 11px 0px 25px">
+			<input id="chargeStudentId" type="hidden" value=""/>
+			缴费金额：
+			<input name="chargeAmount" id="chargeAmount" type="text" style="width: 150px;"/>
+			<br/><br/>
+			<p align="center">
+				<input id="chargeSave" type="button" value="预缴费"/>
+				<input id="chargeCancel" type="button" value="取消"/>
+			</p><br>
 		</div>
 	</form>
 </div>
@@ -131,6 +142,10 @@
 		$("#dialogExcel").dialog("close");
 		return false;
 	});
+    $('#chargeCancel').live('click',function(){
+        $("#chargeDialog").dialog("close");
+        return false;
+    });
 	//导出
 	$('#exportLink').click(function () {
 		var datas = getFormData();
@@ -165,9 +180,8 @@
 
 	function getFormData() {
 		var data = {
-			studentName: $('#studentName').val(),
-            createTimeBegin: $('#createTimeBegin').val(),
-            createTimeEnd: $('#createTimeEnd').val(),
+			name: $('#studentName').val(),
+            mobile: $('#mobile').val()
 		};
 		return data;
 	}
@@ -220,9 +234,50 @@
 		var studentId = row.id;
 		var html = '<div style="text-align: center;">';
 		html += "<img style='margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;' title='编辑' a src='${contextPath}/images/m_edit.gif' href='javascript:;' onclick='modifyStudentInfo("+JSON.stringify(row)+")' />";
+        html += '<a style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" onclick="openChargeDialog(\''+row.id+'\')">预缴费</a>';
 		html += '</div>';
 		return html;
 	}
+
+    function openChargeDialog(studentId) {
+        $("#chargeDialog").dialog("open");
+        $("#chargeAmount").val("");
+        $("#chargeStudentId").val(studentId);
+        return false;
+    }
+
+    $('#chargeSave').live('click',function(){
+		url = "${contextPath}/studentChargeInfo/doDepositCharge";
+        var data = {
+            studentId: $('#chargeStudentId').val(),
+            chargeAmount: $('#chargeAmount').val()
+        }
+        $.messager.confirm('系统消息', "确认缴费！", function (r) {
+            if (r) {
+                $.ajax({
+                    url: url,
+                    cache: false,
+                    dataType: 'json',
+                    data: data,
+                    type: "post",
+                    success: function (data) {
+                        if (data.success) {
+                            $.messager.alert('系统消息', '已完成', "info");
+                            $("#datagrid").datagrid("reload");
+                        } else {
+                            $.messager.alert('系统消息', data.msg,'error');
+                        }
+                        $("#chargeDialog").dialog("close");
+                    },
+                    error: function (data) {
+                        $("#chargeDialog").dialog("close");
+                        $.messager.alert('系统消息', data.msg,'error');
+                    }
+
+                });
+            }
+        });
+    });
 
 	function modifyStudentInfo(row){
 		$("#addDialog").dialog("open");

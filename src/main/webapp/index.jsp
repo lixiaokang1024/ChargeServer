@@ -92,7 +92,10 @@
 						<a href="charge/index" title="缴费项目配置" class="newTab">缴费项目配置</a>
 					</span>
                     <span>
-						<a href="charge/payProjectIndex" title="支出项目配置" class="newTab">支出项目配置</a>
+						<a href="charge/payProjectIndex" title="日常支出项目配置" class="newTab">日常支出项目配置</a>
+					</span>
+                    <span>
+						<a href="charge/incomeProjectIndex" title="日常收入项目配置" class="newTab">日常收入项目配置</a>
 					</span>
                 </li>
             </ul>
@@ -132,7 +135,7 @@
             <ul>
                 <li>
                     <span>
-                        <a href="studentChargeInfo/index" title="学生应(预)缴费" class="newTab">学生应(预)缴费</a>
+                        <a href="studentChargeInfo/index" title="学生应缴费" class="newTab">学生应缴费</a>
 					</span>
                     <span>
                         <a href="studentChargeInfo/historyIndex" title="学生历史缴费" class="newTab">学生历史缴费</a>

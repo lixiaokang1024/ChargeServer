@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -75,6 +72,18 @@ public class StudentChargeInfoController {
         List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = chargeInfoProxy.queryStudentChargeInfoDetail(studentId, chargeStatus);
         model.addAttribute("data", studentChargeInfoDetailVoList);
         return "student/studentChargeInfoDetail";
+    }
+
+    @RequestMapping("/getByStudentId")
+    @ResponseBody
+    public ModelMap getByStudentId(Integer studentId) {
+        ModelMap model = new ModelMap();
+        List<Integer> chargeStatus = new ArrayList<Integer>();
+        chargeStatus.add(0);
+        chargeStatus.add(1);
+        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = chargeInfoProxy.queryStudentChargeInfoDetail(studentId, chargeStatus);
+        model.put("rows", studentChargeInfoDetailVoList);
+        return model;
     }
 
     @RequestMapping("/historyList")
@@ -140,11 +149,26 @@ public class StudentChargeInfoController {
 
     @RequestMapping("/doCharge")
     @ResponseBody
-    public Map<String, Object> doCharge(StudentChargeParam chargeParam) {
+    public Map<String, Object> doCharge(@RequestBody StudentChargeParam chargeParam) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("success", true);
         try {
             chargeInfoProxy.doCharge(chargeParam);
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
+    }
+
+    @RequestMapping("/doProjectCharge")
+    @ResponseBody
+    public Map<String, Object> doProjectCharge(@RequestBody StudentChargeParam chargeParam) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("success", true);
+        try {
+            List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = chargeInfoProxy.doProjectCharge(chargeParam);
+            resultMap.put("data",studentChargeInfoDetailVoList);
         } catch (Exception e) {
             resultMap.put("success", false);
             resultMap.put("msg", e.getMessage());

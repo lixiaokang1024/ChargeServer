@@ -133,4 +133,8 @@ public class StudentChargeInfoProxy {
     public void doDepositCharge(StudentChargeParam chargeParam){
         studentChargeInfoService.addPrepaymentAmount(chargeParam);
     }
+
+    public List<StudentChargeInfoDetailVo> doProjectCharge(StudentChargeParam chargeParam) {
+        return studentChargeInfoService.doProjectCharge(chargeParam);
+    }
 }

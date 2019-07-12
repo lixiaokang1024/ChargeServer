@@ -15,6 +15,11 @@ public class PayProject implements Serializable {
     private String projectName;
 
     /**
+     * 0:收入 1:支出
+     */
+    private Integer projectType;
+
+    /**
      * pay_project.create_time 
      */
     private Integer createTime;
@@ -55,6 +60,14 @@ public class PayProject implements Serializable {
      */
     public void setProjectName(String projectName) {
         this.projectName = projectName == null ? null : projectName.trim();
+    }
+
+    public Integer getProjectType() {
+        return projectType;
+    }
+
+    public void setProjectType(Integer projectType) {
+        this.projectType = projectType;
     }
 
     /**

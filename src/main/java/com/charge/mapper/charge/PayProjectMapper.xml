@@ -4,17 +4,18 @@
   <resultMap id="BaseResultMap" type="com.charge.pojo.charge.PayProject" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_type" property="projectType" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="INTEGER" />
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="deleted" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, project_name, create_time, modify_time, is_deleted
+    id, project_name, project_type, create_time, modify_time, is_deleted
   </sql>
   <insert id="insert" parameterType="com.charge.pojo.charge.PayProject" >
-    insert into pay_project (id, project_name, create_time, 
+    insert into pay_project (id, project_name, project_type, create_time,
       modify_time, is_deleted)
-    values (#{id,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, #{createTime,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, #{projectType}, #{createTime,jdbcType=INTEGER},
       #{modifyTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.charge.pojo.charge.PayProject" >
@@ -25,6 +26,9 @@
       </if>
       <if test="projectName != null" >
         project_name,
+      </if>
+      <if test="projectType != null" >
+        project_type,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -42,6 +46,9 @@
       </if>
       <if test="projectName != null" >
         #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectType != null" >
+        #{projectType},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=INTEGER},
@@ -96,6 +103,9 @@
     WHERE is_deleted=0
     <if test="param.projectName != null and param.projectName != ''">
       AND project_name=#{param.projectName}
+    </if>
+    <if test="param.projectType != null">
+      AND project_type=#{param.projectType}
     </if>
   </sql>
 </mapper>

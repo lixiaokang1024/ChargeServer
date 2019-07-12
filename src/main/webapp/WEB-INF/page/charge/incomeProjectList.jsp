@@ -3,11 +3,11 @@
 <html>
 <body>
 <table id="datagrid" class="easyui-datagrid"
-	   url="${ contextPath }/charge/payProjectlist" title="支出项目列表" toolbar="#tb"
+	   url="${ contextPath }/charge/incomeProjectlist" title="收入项目列表" toolbar="#tb"
 	   rownumbers="true" pagination="true" pageSize="20" showFooter="true">
 	<thead>
 	<tr style="valign: middle">
-		<th field="projectName" sortable="true" width="150px">支出项目</th>
+		<th field="projectName" sortable="true" width="150px">收入项目</th>
 		<th field="operator" width="50px" formatter="settings">操作</th>
 	</tr>
 	</thead>
@@ -18,7 +18,7 @@
 	<form id="advanced_search" method="post">
 		<table>
 			<tr>
-				<td style="text-align: right;">支出项目：</td>
+				<td style="text-align: right;">收入项目：</td>
 				<td style="width: 150px">
 					<input type="text" id="projectName" name="projectName" style="width: 110px;" value=""/>
 				</td>
@@ -36,13 +36,13 @@
 </div>
 <!--搜索条件结束-->
 
-<!-- 添加支出项目 -->
-<div id="addDialog" class="easyui-dialog" title="添加支出项目" closed="true"
+<!-- 添加收入项目 -->
+<div id="addDialog" class="easyui-dialog" title="添加收入项目" closed="true"
 	 style="width:350px; height:250px;overflow: auto;" iconCls="icon-edit">
 	<form name="addForm" action="" id="addForm" method="post">
 		<div style="margin:11px 11px 0px 25px">
 			<input id="payProjectId" type="hidden" value=""/>
-			支出项目：
+			收入项目：
 			<input name="name" id="name" type="text" style="width: 150px;"/>
 			<br/><br/>
 			<p align="center">
@@ -87,7 +87,7 @@
 		var data = {
 			id: $("#payProjectId").val(),
 			projectName: $('#name').val(),
-            projectType: 1
+            projectType: 0
 		}
 		$('#addForm').ajaxSubmit({
 			url: url,

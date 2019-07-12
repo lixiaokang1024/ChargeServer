@@ -1,9 +1,11 @@
 package com.charge.service.student.impl;
 
+import com.charge.Exception.BusinessException;
 import com.charge.enums.charge.ChargeStatus;
 import com.charge.enums.charge.ChargeType;
 import com.charge.mapper.student.StudentChargeInfoMapper;
 import com.charge.mapper.student.StudentExtInfoMapper;
+import com.charge.param.student.ProjectChargeParam;
 import com.charge.param.student.StudentChargeInfoSearchParam;
 import com.charge.param.student.StudentChargeParam;
 import com.charge.pojo.student.StudentChargeInfo;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -113,5 +116,67 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             studentChargeInfoMapper.updateStudentChargeInfo(studentChargeInfo);
         }
         studentExtInfoMapper.updatePrepaymentAmount(chargeParam.getStudentId(), -changePrepaymentAmount);
+    }
+
+    public List<StudentChargeInfoDetailVo> doProjectCharge(StudentChargeParam chargeParam) {
+        List<Integer> chargeStatus = new ArrayList<Integer>();
+        chargeStatus.add(0);
+        chargeStatus.add(1);
+        List<StudentChargeInfoDetailVo> result = new ArrayList<StudentChargeInfoDetailVo>();
+        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = studentChargeInfoMapper.queryStudentChargeInfoDetail(chargeParam.getStudentId(), chargeStatus);
+        if(CollectionUtils.isEmpty(studentChargeInfoDetailVoList)){
+            return result;
+        }
+        List<ProjectChargeParam> projectChargeParamList = chargeParam.getProjectChargeParamList();
+        Map<Integer, Double> projectAmountMap = new HashMap<Integer, Double>();
+        for(ProjectChargeParam projectChargeParam:projectChargeParamList){
+            projectAmountMap.put(projectChargeParam.getProjectId(), projectChargeParam.getProjectAmount());
+        }
+        Boolean useDeposit = chargeParam.getIsUseDeposit() == 1;
+        Double prepaymentAmount = 0.00; //学生预缴费金额
+        Double changePrepaymentAmount = 0.00; //使用预缴费金额
+        if(useDeposit){
+            prepaymentAmount = studentExtInfoMapper.getByStudentId(chargeParam.getStudentId()).getPrepaymentAmount();
+        }
+        for(StudentChargeInfoDetailVo vo:studentChargeInfoDetailVoList){
+            Double chargeAmount = vo.getChargeAmount();
+            Double actureChargeAmount = projectAmountMap.get(vo.getChargeProjectId());
+            Double useDepositAmount = 0.00;
+            if(actureChargeAmount < chargeAmount){
+                useDepositAmount = chargeAmount - actureChargeAmount;
+                if(prepaymentAmount < useDepositAmount){
+                    useDepositAmount = prepaymentAmount;
+                }
+                prepaymentAmount -= useDepositAmount;
+                changePrepaymentAmount += useDepositAmount;
+            }
+            StudentChargeInfo studentChargeInfo = new StudentChargeInfo();
+            studentChargeInfo.setId(vo.getId());
+            studentChargeInfo.setActualChargeAmount(actureChargeAmount);
+            studentChargeInfo.setUseDepositAmount(useDepositAmount);
+            studentChargeInfo.setActualChargeTime(DateUtil.getCurrentTimespan());
+            if((actureChargeAmount + useDepositAmount) < chargeAmount){
+                if((actureChargeAmount + useDepositAmount) > 0.00){
+                    studentChargeInfo.setStatus(ChargeStatus.PART_CHARGED.getCode());
+                }
+            }else{
+                studentChargeInfo.setStatus(ChargeStatus.CHARGED.getCode());
+            }
+            studentChargeInfo.setPayType(ChargeType.CASH.getCode());
+            if(useDepositAmount > 0.00){
+                studentChargeInfo.setPayType(ChargeType.ADVANCE_CHARGE.getCode());
+            }
+            studentChargeInfoMapper.updateStudentChargeInfo(studentChargeInfo);
+            if((actureChargeAmount + useDepositAmount) > 0.00){
+                vo.setActualChargeAmount(actureChargeAmount);
+                vo.setActualChargeTime(studentChargeInfo.getActualChargeTime());
+                vo.setUseDepositAmount(studentChargeInfo.getUseDepositAmount());
+                vo.setPayType(studentChargeInfo.getPayType());
+                vo.setStatus(studentChargeInfo.getStatus());
+                result.add(vo);
+            }
+        }
+        studentExtInfoMapper.updatePrepaymentAmount(chargeParam.getStudentId(), -changePrepaymentAmount);
+        return result;
     }
 }

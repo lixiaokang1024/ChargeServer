@@ -20,4 +20,6 @@ public interface StudentChargeInfoService {
     void addPrepaymentAmount(StudentChargeParam chargeParam);
 
     void doCharge(StudentChargeParam chargeParam);
+
+    List<StudentChargeInfoDetailVo> doProjectCharge(StudentChargeParam chargeParam);
 }

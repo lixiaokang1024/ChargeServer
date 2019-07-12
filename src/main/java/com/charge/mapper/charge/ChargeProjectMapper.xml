@@ -117,7 +117,7 @@
 
   <sql id="wheresql">
     WHERE a.is_deleted=0
-    <if test="param.projectName != null">
+    <if test="param.projectName != null and param.projectName != ''">
       AND a.project_name=#{param.projectName}
     </if>
   </sql>

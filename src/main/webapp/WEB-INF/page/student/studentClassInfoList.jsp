@@ -127,9 +127,7 @@
 
 	function getFormData() {
 		var data = {
-			studentName: $('#studentName').val(),
-			admissionTimeBegin: $('#createTimeBegin').val(),
-			admissionTimeEnd: $('#createTimeEnd').val(),
+			studentName: $('#studentName').val()
 		};
 		return data;
 	}

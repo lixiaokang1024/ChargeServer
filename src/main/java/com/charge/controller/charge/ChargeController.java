@@ -43,7 +43,16 @@ public class ChargeController {
     }
 
     /**
-     * 支出项目
+     * 日常收入项目
+     * @return
+     */
+    @RequestMapping("/incomeProjectIndex")
+    public String toIncomeProjectIndex(){
+        return "charge/incomeProjectList";
+    }
+
+    /**
+     * 日常支出项目
      * @return
      */
     @RequestMapping("/payProjectIndex")
@@ -76,12 +85,30 @@ public class ChargeController {
         return model;
     }
 
+    @RequestMapping("/incomeProjectlist")
+    @ResponseBody
+    public ModelMap getIncomeProjectList(PayProjectSearchParam searchParam, Integer page, Integer rows) {
+        ModelMap model = new ModelMap();
+        searchParam.setCurrentPage(page);
+        searchParam.setPageSize(rows);
+        searchParam.setProjectType(0);
+        PageResultDTO<List<PayProjectVo>> pageResultDTO = chargeProxy.queryPayProjectList(searchParam);
+        if(pageResultDTO.getData() == null){
+            pageResultDTO.setData(new ArrayList<PayProjectVo>());
+        }
+        model.put("rows", pageResultDTO.getData());
+        model.put("total", pageResultDTO.getTotalRecord());
+        model.put("page", page);
+        return model;
+    }
+
     @RequestMapping("/payProjectlist")
     @ResponseBody
     public ModelMap getPayProjectList(PayProjectSearchParam searchParam, Integer page, Integer rows) {
         ModelMap model = new ModelMap();
         searchParam.setCurrentPage(page);
         searchParam.setPageSize(rows);
+        searchParam.setProjectType(1);
         PageResultDTO<List<PayProjectVo>> pageResultDTO = chargeProxy.queryPayProjectList(searchParam);
         if(pageResultDTO.getData() == null){
             pageResultDTO.setData(new ArrayList<PayProjectVo>());

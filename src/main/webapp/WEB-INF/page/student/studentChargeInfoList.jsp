@@ -77,11 +77,9 @@
 	<form name="chargeForm" action="" id="chargeForm" method="post">
 		<div style="margin:11px 11px 0px 25px">
 			<input id="studentId" type="hidden" value=""/>
-			<input id="isDeposit" type="hidden" value=""/>
-			缴费金额：
-			<input name="chargeAmount" id="chargeAmount" type="text" style="width: 150px;"/>
+			<span id="chargeProject"></span>
 			<br/><br/>
-			<span id="useDeposit" hidden="hidden">
+			<span id="useDeposit">
 				使用预缴费金额：
 				<input type="radio" name="useDeposit" checked="checked" value="0"/>不使用
 				<input type="radio" name="useDeposit" value="1"/>使用
@@ -212,36 +210,45 @@
 		html += 'onclick="addTab(\'学生应缴费详情\',\''+url+'\',true)">';
 		html += '<img style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" title="查看详情" src="${contextPath}/images/m_view.gif">';
 		html += '</a></span>';
-
-		html += '<a style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" onclick="openChargeDialog(\''+row.studentId+'\',\''+1+'\')">预缴费</a>';
-		html += '<a style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" onclick="openChargeDialog(\''+row.studentId+'\',\''+0+'\')">缴费</a>';
-
+		html += '<a style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" onclick="openChargeDialog(\''+row.studentId+'\')">缴费</a>';
 		html += '</div>';
 		return html;
 	}
 
-	function openChargeDialog(studentId,deposit) {
+	function openChargeDialog(studentId) {
 		$("#chargeDialog").dialog("open");
 		$("#chargeAmount").val("");
 		$("#studentId").val(studentId);
-		$("#isDeposit").val(deposit);
-		$("#useDeposit").css("display","none");
-		if(deposit == 0){
-			$("#useDeposit").css("display","block");
-		}
+        $.ajax({
+            url:"${contextPath}/studentChargeInfo/getByStudentId",
+            dataType:'json',
+            data:{"studentId":studentId},
+            success:function(data){
+                $("#chargeProject").empty();
+                var row = data.rows;
+                $("#chargeProject").append('');
+                for(i=0;i<row.length;i++){
+                    var rowData = row[i];
+                    $("#chargeProject").append(rowData.chargeProjectName + '：<input style="width: 150px;" id='+rowData.chargeProjectId+' type="text" value='+rowData.chargeAmount+'></input><br/><br/>');
+                }
+            },
+			error:function () {
+				alert("error");
+            }
+        });
 		return false;
 	}
 
 	$('#save').live('click',function(){
-		var isDeposit = $("#isDeposit").val();
-		var url = "${contextPath}/studentChargeInfo/doCharge";
-		if(isDeposit == 1){
-			url = "${contextPath}/studentChargeInfo/doDepositCharge";
-		}
-		var data = {
+		var url = "${contextPath}/studentChargeInfo/doProjectCharge";
+		var projectChargeParamList = new Array();
+		$('#chargeProject').find('input').each(function (index, element) {
+            projectChargeParamList.push({projectId:element.id,projectAmount:element.value});
+        });
+        var data = {
 			studentId: $('#studentId').val(),
-			chargeAmount: $('#chargeAmount').val(),
-			isUseDeposit: $('input:radio[name="useDeposit"]:checked').val()
+			isUseDeposit: $('input:radio[name="useDeposit"]:checked').val(),
+            projectChargeParamList:projectChargeParamList
 		}
 		$.messager.confirm('系统消息', "确认缴费！", function (r) {
 			if (r) {
@@ -249,10 +256,16 @@
 					url: url,
 					cache: false,
 					dataType: 'json',
-					data: data,
+					data: JSON.stringify(data),
+                    contentType : 'application/json;charset=utf-8',
 					type: "post",
 					success: function (data) {
 						if (data.success) {
+                            $.messager.confirm('系统消息', "是否打印！", function (r) {
+                                if(r){
+                                    doPrint(data.data);
+								}
+							});
 							$.messager.alert('系统消息', '已完成', "info");
 							$("#datagrid").datagrid("reload");
 						} else {
@@ -269,6 +282,21 @@
 			}
 		});
 	});
+
+    function doPrint(data) {
+        var printHtml = '<div style="margin:11px 11px 0px 25px">';
+        for(i = 0;i<data.length;i++){
+            var row = data[i];
+            var amount = row.actualChargeAmount+row.useDepositAmount;
+            printHtml += '<span>缴费项目：'+row.chargeProjectName+'</span><br/><br/>';
+            printHtml += '<span>缴费金额：'+amount+'</span><br/><br/>';
+        }
+        printHtml += '<span>学生姓名：'+data[0].studentName+'</span><br/><br/>';
+        printHtml += '<span>缴费日期：'+data[0].actualChargeTimeStr+'</span><br/><br/>';
+        printHtml += '</div>';
+        window.document.body.innerHTML=printHtml;
+        window.print();
+    }
 
 </script>
 </body>
