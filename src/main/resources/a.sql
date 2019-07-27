@@ -1,8 +1,9 @@
 /*
-SQLyog v10.2 
-MySQL - 5.5.36 : Database - test
+SQLyog Professional v12.08 (64 bit)
+MySQL - 5.5.62 : Database - test
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -30,7 +31,7 @@ CREATE TABLE `charge_project` (
   `is_deleted` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `project_unique` (`project_name`,`grade_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='收费项目';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='收费项目';
 
 /*Table structure for table `class_info` */
 
@@ -44,7 +45,7 @@ CREATE TABLE `class_info` (
   `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_deleted` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='班级信息';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='班级信息';
 
 /*Table structure for table `grade_info` */
 
@@ -59,7 +60,7 @@ CREATE TABLE `grade_info` (
   `is_deleted` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='年级信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='年级信息表';
 
 /*Table structure for table `pay_project` */
 
@@ -68,12 +69,13 @@ DROP TABLE IF EXISTS `pay_project`;
 CREATE TABLE `pay_project` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `project_name` varchar(32) NOT NULL DEFAULT '',
+  `project_type` int(11) NOT NULL DEFAULT '0' COMMENT '0:收入 1:支出',
   `create_time` int(11) NOT NULL DEFAULT '0',
   `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_deleted` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `project_name` (`project_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='支出费用项目';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='支出费用项目';
 
 /*Table structure for table `pay_project_io` */
 
@@ -89,7 +91,7 @@ CREATE TABLE `pay_project_io` (
   `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_deleted` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='支出流水表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='支出流水表';
 
 /*Table structure for table `student_charge_info` */
 
@@ -100,14 +102,17 @@ CREATE TABLE `student_charge_info` (
   `student_id` int(11) NOT NULL DEFAULT '0',
   `charge_project_id` int(11) NOT NULL DEFAULT '0',
   `charge_amount` decimal(8,2) NOT NULL DEFAULT '0.00',
+  `actual_charge_amount` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '实际缴费金额',
+  `use_deposit_amount` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '使用预缴费金额',
   `charge_time` int(11) NOT NULL DEFAULT '0' COMMENT '缴费日期',
+  `actual_charge_time` int(11) NOT NULL DEFAULT '0',
   `pay_type` int(11) NOT NULL DEFAULT '0' COMMENT '缴费方式(0:现金 1:预缴费扣除 2:其他)',
-  `status` int(11) NOT NULL DEFAULT '0' COMMENT '缴费状态(0:未缴费 1:已缴费)',
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT '缴费状态(0:未缴费 1:部分缴费 2:已缴费)',
   `create_time` int(11) NOT NULL DEFAULT '0',
   `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_deleted` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='学生缴费信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='学生缴费信息表';
 
 /*Table structure for table `student_class_info` */
 
@@ -117,13 +122,13 @@ CREATE TABLE `student_class_info` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `student_id` int(11) NOT NULL DEFAULT '0',
   `class_id` int(11) NOT NULL DEFAULT '0',
-  `grade_id` int(11) NOT NULL DEFAULT '0',
   `is_graduate` int(11) NOT NULL DEFAULT '0',
   `create_time` int(11) NOT NULL DEFAULT '0',
   `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_deleted` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `student_class_index` (`student_id`,`class_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 /*Table structure for table `student_ext_info` */
 
@@ -141,7 +146,7 @@ CREATE TABLE `student_ext_info` (
   `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_deleted` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='学生扩展表信息';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='学生扩展表信息';
 
 /*Table structure for table `student_info` */
 
@@ -164,7 +169,7 @@ CREATE TABLE `student_info` (
   `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
 
 /*Table structure for table `test_table` */
 
@@ -189,7 +194,7 @@ CREATE TABLE `user` (
   `password` varchar(32) NOT NULL,
   `age` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
