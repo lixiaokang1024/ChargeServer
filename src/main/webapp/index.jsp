@@ -123,9 +123,6 @@
                     <span>
                         <a href="studentClassInfo/index" title="学生班级维护" class="newTab">学生班级维护</a>
 					</span>
-                    <span>
-                        <a href="student/list" title="学生基础信息" class="newTab">学生基础信息</a>
-					</span>
                 </li>
             </ul>
         </li>
@@ -140,16 +137,18 @@
                     <span>
                         <a href="studentChargeInfo/historyIndex" title="学生历史缴费" class="newTab">学生历史缴费</a>
 					</span>
-                    <span>
-                        <a href="/order/index" title="退费管理" class="newTab">退费管理</a>
-					</span>
                 </li>
             </ul>
-            <a class="parent" href="javascript:void(0);">支出管理</a>
+            <a class="parent" href="javascript:void(0);">日常收支管理</a>
             <ul>
                 <li>
                     <span>
                         <a href="charge/payProjectIoIndex" title="日常支出" class="newTab">日常支出</a>
+					</span>
+                </li>
+                <li>
+                    <span>
+                        <a href="charge/incomeProjectIoIndex" title="日常收入" class="newTab">日常收入</a>
 					</span>
                 </li>
             </ul>

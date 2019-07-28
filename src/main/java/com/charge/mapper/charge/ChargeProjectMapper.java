@@ -16,6 +16,8 @@ public interface ChargeProjectMapper {
 
     int updateByPrimaryKey(ChargeProject record);
 
+    void deleteChargeProjectById(Integer id);
+
     ChargeProject getChargeProjectById(Integer id);
     ChargeProject getChargeProjectByName(@Param("projectName") String projectName, @Param("gradeId") Integer gradeId);
     int countChargeProject(Map<String, Object> param);

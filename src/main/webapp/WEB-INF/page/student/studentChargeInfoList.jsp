@@ -27,15 +27,19 @@
 				<td style="width: 150px">
 					<input type="text" id="studentName" name="studentName" style="width: 110px;" value=""/>
 				</td>
-				<td style="text-align: right;">入学时间：</td>
-				<td colspan="3">
-					<input id="admissionTimeBegin" style="width: 125px" name="admissionBegin" class="Wdate"
-						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,maxDate:'#F{$dp.$D(\'admissionTimeEnd\')}'})"
-						   value=""/>&nbsp;-&nbsp;
-					<input id="admissionTimeEnd" style="width: 125px" name="admissionTimeEnd" class="Wdate"
-						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,minDate:'#F{$dp.$D(\'admissionTimeBegin\')}'})"
-						   value=""/>
+
+				<td style="text-align: right;">年级：</td>
+				<td>
+					<select id="gradeId" style="width: 150px;">
+					</select>
 				</td>
+
+				<td style="text-align: right;">班级：</td>
+				<td>
+					<select id="classId" style="width: 150px;">
+					</select>
+				</td>
+
 			</tr>
 			<tr>&nbsp;</tr>
 			<tr>
@@ -104,7 +108,46 @@
 			});
 		});
 
+		$(function () {
+			$("#gradeId").empty();
+			var param={page:1,rows:2000}
+			$.ajax({
+				url:"${contextPath}/school/gradeList",
+				dataType:'json',
+				data:param,
+				success:function(data){
+					var gradeList = data.rows;
+					$("#gradeId").append('<option value="-1">全部</option>');
+					for(i=0;i<gradeList.length;i++){
+						var grade = gradeList[i];
+						$("#gradeId").append('<option value="'+grade.id+'">'+grade.name+'</option>');
+					}
+				}
+			});
+		});
+
 	});
+
+	$('#gradeId').live('click',function(){
+		$("#classId").empty();
+		var gradeId = $("#gradeId").val();
+		var param={page:1,rows:2000,gradeId:gradeId}
+		$.ajax({
+			url:"${contextPath}/school/calssList",
+			dataType:'json',
+			data:param,
+			success:function(data){
+				var classList = data.rows;
+				$("#classId").append('<option value="-1">全部</option>');
+				for(i=0;i<classList.length;i++){
+					var classInfo = classList[i];
+					$("#classId").append('<option value="'+classInfo.id+'">'+classInfo.name+'</option>');
+				}
+			}
+		});
+		return false;
+	});
+
 	$('#addExcel').live('click',function(){
 		$("#dialogExcel").dialog("open");
 		$('#studentChargeFileBuildInfo').val("");
@@ -152,9 +195,8 @@
 
 	function getFormData() {
 		var data = {
-			name: $('#studentName').val(),
-			admissionTimeBegin: $('#createTimeBegin').val(),
-			admissionTimeEnd: $('#createTimeEnd').val()
+			name: $('#studentName').val()
+
 		};
 		return data;
 	}

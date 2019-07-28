@@ -43,6 +43,14 @@ public class SchoolServiceImpl implements SchoolService {
         gradeInfoMapper.updateByPrimaryKeySelective(gradeInfo);
     }
 
+    public void deleteGradeInfo(Integer gradeId) {
+        gradeInfoMapper.deleteById(gradeId);
+    }
+
+    public void deleteClassInfo(Integer classId) {
+        classInfoMapper.deleteById(classId);
+    }
+
     public ClassInfo getClassInfoById(Integer classId) {
         return classInfoMapper.getClassInfoById(classId);
     }

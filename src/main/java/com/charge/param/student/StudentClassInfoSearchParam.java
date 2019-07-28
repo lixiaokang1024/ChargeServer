@@ -8,6 +8,7 @@ public class StudentClassInfoSearchParam extends BaseDataPaginationParam impleme
 
     private String studentName;
     private String className;
+    private Integer classId;
     private String gradeName;
     private Integer isGraduate;
 
@@ -25,6 +26,14 @@ public class StudentClassInfoSearchParam extends BaseDataPaginationParam impleme
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 
     public String getGradeName() {

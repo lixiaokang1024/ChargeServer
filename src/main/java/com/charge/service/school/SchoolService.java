@@ -16,6 +16,9 @@ public interface SchoolService {
     void updateClassInfo(ClassInfo classInfo);
     void updateGradeInfo(GradeInfo gradeInfo);
 
+    void deleteGradeInfo(Integer gradeId);
+    void deleteClassInfo(Integer classId);
+
     ClassInfo getClassInfoById(Integer classId);
     List<ClassInfo> getClassInfoByName(String className);
     ClassInfo getByClassNameGradeId(String className, Integer gradeId);

@@ -127,8 +127,14 @@
 
   <sql id="wheresql">
     WHERE a.is_deleted=0
+    <if test="param.projectType != null">
+      AND b.project_type=#{param.projectType}
+    </if>
     <if test="param.projectName != null and param.projectName != ''">
       AND b.project_name=#{param.projectName}
+    </if>
+    <if test="param.payProjectId != null">
+      AND b.id=#{param.payProjectId}
     </if>
     <if test="param.payTimeBegin != null and param.payTimeBegin != ''">
       AND a.pay_time &gt;= UNIX_TIMESTAMP(#{param.payTimeBegin})

@@ -100,4 +100,34 @@ public class SchoolController {
         return resultMap;
     }
 
+    @RequestMapping("/deleteGradeInfo")
+    @ResponseBody
+    public Map<String, Object> deleteGradeInfo(Integer gradeId) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("success", true);
+        resultMap.put("msg", "删除成功");
+        try {
+            schoolProxy.deleteGradeInfo(gradeId);
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
+    }
+
+    @RequestMapping("/deleteClassInfo")
+    @ResponseBody
+    public Map<String, Object> deleteClassInfo(Integer classId) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("success", true);
+        resultMap.put("msg", "删除成功");
+        try {
+            schoolProxy.deleteClassInfo(classId);
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
+    }
+
 }

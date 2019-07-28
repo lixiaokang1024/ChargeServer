@@ -205,6 +205,9 @@
     <if test="param.name != null and param.name != ''">
       AND b.name=#{param.name}
     </if>
+    <if test="param.chargeProjectId != null">
+      AND a.charge_project_id=#{param.chargeProjectId}
+    </if>
   </sql>
 
   <select id="queryStudentChargeInfoDetail" resultType="com.charge.vo.student.StudentChargeInfoDetailVo">

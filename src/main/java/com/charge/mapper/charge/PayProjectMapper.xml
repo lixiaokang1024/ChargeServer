@@ -79,15 +79,11 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.charge.pojo.charge.PayProject" >
-    update pay_project
-    set project_name = #{projectName,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=INTEGER},
-      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-      is_deleted = #{deleted,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
 
+
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from pay_project where id=#{id}
+  </delete>
   <select id="getPayProjectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     SELECT <include refid="Base_Column_List"/> FROM pay_project WHERE id=#{id}
   </select>

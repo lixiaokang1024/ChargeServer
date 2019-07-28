@@ -147,6 +147,7 @@
 		var chargeId = row.id;
 		var html = '<div style="text-align: center;">';
 		html += '<img style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" title="编辑" a src="${contextPath}/images/m_edit.gif" href="javascript:;" onclick="modifyChargeInfo(\''+row.projectName+'\',\''+chargeId+'\',\''+row.amount+'\',\''+row.gradeId+'\')" />';
+		html += '<img style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" title="删除" a src="${contextPath}/images/m_delete.gif" href="javascript:;" onclick="deleteChargeInfo(\''+chargeId+'\')" />';
 		html += '</div>';
 		return html;
 	}
@@ -177,6 +178,27 @@
 			}
 		});
 		return false;
+	}
+
+	//删除
+	function deleteChargeInfo(chargeId){
+		$.messager.confirm('系统消息', "确认删除！", function (r) {
+			if (r) {
+				$.ajax({
+					url:  '${contextPath}/charge/deleteChargeInfo',
+					cache: false,
+					dataType: 'json',
+					data: {chargeId:chargeId},
+					type: "post",
+					success: function (json) {
+						$.messager.alert('系统消息', json.msg,'error');
+						if (json.success) {
+							$("#datagrid").datagrid("reload");
+						}
+					},
+				});
+			}
+		});
 	}
 
 </script>

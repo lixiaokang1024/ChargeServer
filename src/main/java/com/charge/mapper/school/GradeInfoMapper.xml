@@ -80,6 +80,11 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from grade_info WHERE id=#{id}
+  </delete>
+
   <update id="updateByPrimaryKey" parameterType="com.charge.pojo.school.GradeInfo" >
     update grade_info
     set name = #{name,jdbcType=VARCHAR},

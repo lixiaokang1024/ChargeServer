@@ -15,6 +15,8 @@ public interface ClassInfoMapper {
 
     int updateByPrimaryKey(ClassInfo record);
 
+    void deleteById(Integer id);
+
     ClassInfo getClassInfoById(Integer id);
     List<ClassInfo> getClassInfoByName(String className);
     ClassInfo getByClassNameGradeId(@Param("className") String className, @Param("gradeId") Integer gradeId);

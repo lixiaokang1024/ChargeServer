@@ -106,6 +106,10 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <delete id="deleteChargeProjectById" parameterType="java.lang.Integer">
+    delete from charge_project where id = #{id}
+  </delete>
+
   <select id="countChargeProject" resultType="java.lang.Integer">
     SELECT count(a.id) FROM charge_project a join grade_info b on a.grade_id=b.id
     <include refid="wheresql"/>

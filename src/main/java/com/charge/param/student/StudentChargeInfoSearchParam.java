@@ -13,6 +13,8 @@ public class StudentChargeInfoSearchParam extends BaseDataPaginationParam implem
 
     private Boolean graduate;
 
+    private Integer chargeProjectId;
+
     private List<Integer> chargeStatus;
 
     public String getName() {
@@ -37,6 +39,14 @@ public class StudentChargeInfoSearchParam extends BaseDataPaginationParam implem
 
     public void setGraduate(Boolean graduate) {
         this.graduate = graduate;
+    }
+
+    public Integer getChargeProjectId() {
+        return chargeProjectId;
+    }
+
+    public void setChargeProjectId(Integer chargeProjectId) {
+        this.chargeProjectId = chargeProjectId;
     }
 
     public List<Integer> getChargeStatus() {

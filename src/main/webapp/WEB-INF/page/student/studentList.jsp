@@ -7,15 +7,15 @@
 	   rownumbers="true" pagination="true" pageSize="20" showFooter="true">
 	<thead>
 	<tr style="valign: middle">
-		<th field="id" sortable="true" width="80px">学号</th>
-		<th field="name" sortable="true" width="80px">姓名</th>
-		<th field="sexStr" sortable="true" width="80px">性别</th>
-		<th field="bornDate" sortable="true" width="80px">出生日期</th>
-		<th field="parentName" sortable="true" width="80px">监护人姓名</th>
-		<th field="relation" sortable="true" width="80px">监护人关系</th>
-		<th field="mobile" width="80px" >联系方式</th>
-		<th field="address" width="180px" >地址</th>
-		<th field="operator"  width="50px" formatter="settings">操作</th>
+		<th field="id" sortable="true" align="center" width="50px">学号</th>
+		<th field="name" sortable="true" align="center" width="80px">姓名</th>
+		<th field="sexStr" sortable="true" align="center" width="50px">性别</th>
+		<th field="bornDate" sortable="true" align="center" width="80px">出生日期</th>
+		<th field="parentName" sortable="true" align="center" width="80px">监护人姓名</th>
+		<th field="relation" sortable="true" align="center" width="80px">监护人关系</th>
+		<th field="mobile" align="center" width="100px" >联系方式</th>
+		<th field="address" align="center" width="250px" >地址</th>
+		<th field="operator" align="center" width="150px" formatter="settings">操作</th>
 	</tr>
 	</thead>
 </table>
@@ -231,7 +231,6 @@
 	});
 
 	function settings(value,row){
-		var studentId = row.id;
 		var html = '<div style="text-align: center;">';
 		html += "<img style='margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;' title='编辑' a src='${contextPath}/images/m_edit.gif' href='javascript:;' onclick='modifyStudentInfo("+JSON.stringify(row)+")' />";
         html += '<a style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" onclick="openChargeDialog(\''+row.id+'\')">预缴费</a>';

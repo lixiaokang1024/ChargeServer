@@ -3,10 +3,12 @@ package com.charge.proxy.school;
 import com.charge.Exception.BusinessException;
 import com.charge.param.school.ClassSearchParam;
 import com.charge.param.school.GradeSearchParam;
+import com.charge.param.student.StudentClassInfoSearchParam;
 import com.charge.pojo.common.PageResultDTO;
 import com.charge.pojo.school.ClassInfo;
 import com.charge.pojo.school.GradeInfo;
 import com.charge.service.school.SchoolService;
+import com.charge.service.student.StudentClassInfoService;
 import com.charge.util.JsonUtil;
 import com.charge.vo.school.ClassInfoVo;
 import com.charge.vo.school.GradeInfoVo;
@@ -26,6 +28,9 @@ public class SchoolProxy {
 
     @Autowired
     private SchoolService schoolService;
+
+    @Autowired
+    private StudentClassInfoService studentClassInfoService;
 
     public void saveOrModifyClassInfo(ClassInfo classInfo){
         logger.info("班级信息保存参数：{}", JsonUtil.toJson(classInfo));
@@ -138,4 +143,27 @@ public class SchoolProxy {
         return classInfoVoList;
     }
 
+    public void deleteGradeInfo(Integer gradeId) {
+        if(schoolService.getGradeInfoById(gradeId) == null){
+            throw new BusinessException("年级信息已删除，请勿重复操作。");
+        }
+        ClassSearchParam classSearchParam = new ClassSearchParam();
+        classSearchParam.setGradeId(gradeId);
+        if(schoolService.countClass(classSearchParam) > 0){
+            throw new BusinessException("有班级属于此年级，请先删除班级信息。");
+        }
+        schoolService.deleteGradeInfo(gradeId);
+    }
+
+    public void deleteClassInfo(Integer classId) {
+        if(schoolService.getClassInfoById(classId) == null){
+            throw new BusinessException("班级信息已删除，请勿重复操作。");
+        }
+        StudentClassInfoSearchParam studentClassInfoSearchParam = new StudentClassInfoSearchParam();
+        studentClassInfoSearchParam.setClassId(classId);
+        if(studentClassInfoService.countStudentClassInfo(studentClassInfoSearchParam) > 0){
+            throw new BusinessException("有学生属于此班级，无法删除班级信息。");
+        }
+        schoolService.deleteClassInfo(classId);
+    }
 }

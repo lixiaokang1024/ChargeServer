@@ -16,6 +16,7 @@ public interface ChargeService {
 
     ChargeProject getChargeProjectByName(String chargeName, Integer gradeId);
     ChargeProject getChargeProjectById(Integer id);
+    void deleteChargeProjectById(Integer id);
     int countChargeProject(ChargeSearchParam chargeSearchParam);
     List<ChargeProject> queryChargeProjectList(ChargeSearchParam chargeSearchParam);
 
@@ -24,6 +25,7 @@ public interface ChargeService {
     void updatePayProject(PayProject payProject);
 
     PayProject getPayProjectById(Integer id);
+    void deletePayProjectById(Integer id);
     int countPayProject(PayProjectSearchParam searchParam);
     List<PayProject> queryPayProjectList(PayProjectSearchParam searchParam);
 

@@ -5,6 +5,7 @@ import com.charge.param.charge.ChargeSearchParam;
 import com.charge.param.charge.PayProjectIoSearchParam;
 import com.charge.param.charge.PayProjectSearchParam;
 import com.charge.param.school.GradeSearchParam;
+import com.charge.param.student.StudentChargeInfoSearchParam;
 import com.charge.pojo.charge.ChargeProject;
 import com.charge.pojo.charge.PayProject;
 import com.charge.pojo.charge.PayProjectIo;
@@ -12,6 +13,7 @@ import com.charge.pojo.common.PageResultDTO;
 import com.charge.pojo.school.GradeInfo;
 import com.charge.service.charge.ChargeService;
 import com.charge.service.school.SchoolService;
+import com.charge.service.student.StudentChargeInfoService;
 import com.charge.util.JsonUtil;
 import com.charge.vo.charge.ChargeProjectVo;
 import com.charge.vo.charge.PayProjectIoVo;
@@ -36,6 +38,9 @@ public class ChargeProxy {
 
     @Autowired
     private SchoolService schoolService;
+
+    @Autowired
+    private StudentChargeInfoService studentChargeInfoService;
 
     public PageResultDTO<List<ChargeProjectVo>> queryChargeProjectList(ChargeSearchParam chargeSearchParam){
         logger.info("查询收费项目信息搜索参数：{}", JsonUtil.toJson(chargeSearchParam));
@@ -191,4 +196,27 @@ public class ChargeProxy {
         return chargeProjectVoList;
     }
 
+    public void deleteChargeInfo(Integer chargeId) {
+        if(chargeService.getChargeProjectById(chargeId) == null){
+            throw new BusinessException("缴费项目信息已删除，请勿重复操作。");
+        }
+        StudentChargeInfoSearchParam studentChargeInfoSearchParam = new StudentChargeInfoSearchParam();
+        studentChargeInfoSearchParam.setChargeProjectId(chargeId);
+        if(studentChargeInfoService.countStudentChargeInfo(studentChargeInfoSearchParam) > 0){
+            throw new BusinessException("存在此项目未缴费的学生，不能删除。");
+        }
+        chargeService.deleteChargeProjectById(chargeId);
+    }
+
+    public void deletePayProjectInfo(Integer payProjectId) {
+        if(chargeService.getPayProjectById(payProjectId) == null){
+            throw new BusinessException("项目信息已删除，请勿重复操作。");
+        }
+        PayProjectIoSearchParam payProjectIoSearchParam = new PayProjectIoSearchParam();
+        payProjectIoSearchParam.setPayProjectId(payProjectId);
+        if(chargeService.countPayProjectIo(payProjectIoSearchParam) > 0){
+            throw new BusinessException("已产生此项目的流水，不能删除。");
+        }
+        chargeService.deletePayProjectById(payProjectId);
+    }
 }

@@ -14,6 +14,8 @@ public interface PayProjectMapper {
 
     int updateByPrimaryKey(PayProject record);
 
+    void deleteById(Integer id);
+
     PayProject getPayProjectById(Integer id);
 
     int countPayProject(Map<String, Object> param);

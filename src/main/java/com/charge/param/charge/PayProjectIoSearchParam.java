@@ -6,9 +6,27 @@ import java.io.Serializable;
 
 public class PayProjectIoSearchParam extends BaseDataPaginationParam implements Serializable {
 
+    private Integer projectType;
+    private Integer payProjectId;
     private String projectName;
     private String payTimeBegin;
     private String payTimeEnd;
+
+    public Integer getProjectType() {
+        return projectType;
+    }
+
+    public void setProjectType(Integer projectType) {
+        this.projectType = projectType;
+    }
+
+    public Integer getPayProjectId() {
+        return payProjectId;
+    }
+
+    public void setPayProjectId(Integer payProjectId) {
+        this.payProjectId = payProjectId;
+    }
 
     public String getProjectName() {
         return projectName;

@@ -15,6 +15,8 @@ public interface GradeInfoMapper {
 
     int updateByPrimaryKey(GradeInfo record);
 
+    void deleteById(Integer id);
+
     int countGradeInfo(Map<String, Object> param);
     List<GradeInfo> queryGradeInfoPageList(Map<String, Object> param);
 

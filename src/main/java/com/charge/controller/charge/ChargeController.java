@@ -61,12 +61,21 @@ public class ChargeController {
     }
 
     /**
-     * 支出历史
+     * 日常支出历史
      * @return
      */
     @RequestMapping("/payProjectIoIndex")
     public String toPayProjectIoIndex(){
         return "charge/payProjectIoList";
+    }
+
+    /**
+     * 日常收入历史
+     * @return
+     */
+    @RequestMapping("/incomeProjectIoIndex")
+    public String toIncomeProjectIoIndex(){
+        return "charge/incomeProjectIoList";
     }
 
     @RequestMapping("/list")
@@ -92,6 +101,20 @@ public class ChargeController {
         searchParam.setCurrentPage(page);
         searchParam.setPageSize(rows);
         searchParam.setProjectType(0);
+        return getModelMap(searchParam, page, model);
+    }
+
+    @RequestMapping("/payProjectlist")
+    @ResponseBody
+    public ModelMap getPayProjectList(PayProjectSearchParam searchParam, Integer page, Integer rows) {
+        ModelMap model = new ModelMap();
+        searchParam.setCurrentPage(page);
+        searchParam.setPageSize(rows);
+        searchParam.setProjectType(1);
+        return getModelMap(searchParam, page, model);
+    }
+
+    private ModelMap getModelMap(PayProjectSearchParam searchParam, Integer page, ModelMap model) {
         PageResultDTO<List<PayProjectVo>> pageResultDTO = chargeProxy.queryPayProjectList(searchParam);
         if(pageResultDTO.getData() == null){
             pageResultDTO.setData(new ArrayList<PayProjectVo>());
@@ -102,16 +125,20 @@ public class ChargeController {
         return model;
     }
 
-    @RequestMapping("/payProjectlist")
+    @RequestMapping("/incomeProjectIolist")
     @ResponseBody
-    public ModelMap getPayProjectList(PayProjectSearchParam searchParam, Integer page, Integer rows) {
+    public ModelMap getIncomeProjectIolist(PayProjectIoSearchParam searchParam, Integer page, Integer rows) {
         ModelMap model = new ModelMap();
         searchParam.setCurrentPage(page);
         searchParam.setPageSize(rows);
-        searchParam.setProjectType(1);
-        PageResultDTO<List<PayProjectVo>> pageResultDTO = chargeProxy.queryPayProjectList(searchParam);
+        searchParam.setProjectType(0);
+        return getModelMap(searchParam, page, model);
+    }
+
+    private ModelMap getModelMap(PayProjectIoSearchParam searchParam, Integer page, ModelMap model) {
+        PageResultDTO<List<PayProjectIoVo>> pageResultDTO = chargeProxy.queryPayProjectIoList(searchParam);
         if(pageResultDTO.getData() == null){
-            pageResultDTO.setData(new ArrayList<PayProjectVo>());
+            pageResultDTO.setData(new ArrayList<PayProjectIoVo>());
         }
         model.put("rows", pageResultDTO.getData());
         model.put("total", pageResultDTO.getTotalRecord());
@@ -125,14 +152,8 @@ public class ChargeController {
         ModelMap model = new ModelMap();
         searchParam.setCurrentPage(page);
         searchParam.setPageSize(rows);
-        PageResultDTO<List<PayProjectIoVo>> pageResultDTO = chargeProxy.queryPayProjectIoList(searchParam);
-        if(pageResultDTO.getData() == null){
-            pageResultDTO.setData(new ArrayList<PayProjectIoVo>());
-        }
-        model.put("rows", pageResultDTO.getData());
-        model.put("total", pageResultDTO.getTotalRecord());
-        model.put("page", page);
-        return model;
+        searchParam.setProjectType(1);
+        return getModelMap(searchParam, page, model);
     }
 
     @RequestMapping("/saveProject")
@@ -149,6 +170,21 @@ public class ChargeController {
         return resultMap;
     }
 
+    @RequestMapping("/deleteChargeInfo")
+    @ResponseBody
+    public Map<String, Object> deleteChargeInfo(Integer chargeId) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("success", true);
+        resultMap.put("msg", "删除成功");
+        try {
+            chargeProxy.deleteChargeInfo(chargeId);
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
+    }
+
     @RequestMapping("/savePayProject")
     @ResponseBody
     public Map<String, Object> savePayProject(PayProject payProject) {
@@ -156,6 +192,21 @@ public class ChargeController {
         resultMap.put("success", true);
         try {
             chargeProxy.saveOrUpdatePayProject(payProject);
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
+    }
+
+    @RequestMapping("/deletePayProjectInfo")
+    @ResponseBody
+    public Map<String, Object> deletePayProjectInfo(Integer payProjectId) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("success", true);
+        resultMap.put("msg", "删除成功");
+        try {
+            chargeProxy.deletePayProjectInfo(payProjectId);
         } catch (Exception e) {
             resultMap.put("success", false);
             resultMap.put("msg", e.getMessage());

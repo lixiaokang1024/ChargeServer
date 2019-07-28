@@ -47,6 +47,10 @@ public class ChargeServiceImpl implements ChargeService {
         return chargeProjectMapper.getChargeProjectById(id);
     }
 
+    public void deleteChargeProjectById(Integer id) {
+        chargeProjectMapper.getChargeProjectById(id);
+    }
+
     public int countChargeProject(ChargeSearchParam chargeSearchParam) {
         Map<String, Object> paramMap = RequestParamUtil.getRequestParamMap(chargeSearchParam.getCurrentPage(), chargeSearchParam.getPageSize(), chargeSearchParam);
         return chargeProjectMapper.countChargeProject(paramMap);
@@ -68,6 +72,10 @@ public class ChargeServiceImpl implements ChargeService {
 
     public PayProject getPayProjectById(Integer id) {
         return payProjectMapper.getPayProjectById(id);
+    }
+
+    public void deletePayProjectById(Integer id) {
+        payProjectMapper.deleteById(id);
     }
 
     public int countPayProject(PayProjectSearchParam searchParam) {

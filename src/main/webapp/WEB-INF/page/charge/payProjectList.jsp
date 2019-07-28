@@ -121,6 +121,7 @@
 		var payProjectId = row.id;
 		var html = '<div style="text-align: center;">';
 		html += '<img style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" title="编辑" a src="${contextPath}/images/m_edit.gif" href="javascript:;" onclick="modifyPayProjectInfo(\''+row.projectName+'\',\''+payProjectId+'\')" />';
+		html += '<img style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" title="删除" a src="${contextPath}/images/m_delete.gif" href="javascript:;" onclick="deletePayProjectInfo(\''+payProjectId+'\')" />';
 		html += '</div>';
 		return html;
 	}
@@ -131,6 +132,27 @@
 		$('#payProjectId').val(payProjectId);
 		$("#save").val("更新");
 		return false;
+	}
+
+	//删除
+	function deletePayProjectInfo(payProjectId){
+		$.messager.confirm('系统消息', "确认删除！", function (r) {
+			if (r) {
+				$.ajax({
+					url:  '${contextPath}/charge/deletePayProjectInfo',
+					cache: false,
+					dataType: 'json',
+					data: {payProjectId:payProjectId},
+					type: "post",
+					success: function (json) {
+						$.messager.alert('系统消息', json.msg,'error');
+						if (json.success) {
+							$("#datagrid").datagrid("reload");
+						}
+					},
+				});
+			}
+		});
 	}
 
 </script>

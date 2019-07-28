@@ -80,6 +80,10 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from class_info WHERE id=#{id}
+  </delete>
+
   <select id="getClassInfoById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     SELECT <include refid="Base_Column_List"/> FROM class_info WHERE id=#{id}
   </select>
@@ -114,6 +118,9 @@
     WHERE a.is_deleted=0
     <if test="param.className != null and param.className != ''">
       AND a.name=#{param.className}
+    </if>
+    <if test="param.gradeId != null and param.gradeId != ''">
+      AND b.id=#{param.gradeId}
     </if>
   </sql>
 </mapper>

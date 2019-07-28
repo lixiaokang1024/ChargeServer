@@ -3,12 +3,15 @@
 <html>
 <body>
 <table id="datagrid" class="easyui-datagrid"
-	   url="${ contextPath }/charge/incomeProjectlist" title="收入项目列表" toolbar="#tb"
+	   url="${ contextPath }/charge/incomeProjectIolist" title="收入项目列表" toolbar="#tb"
 	   rownumbers="true" pagination="true" pageSize="20" showFooter="true">
 	<thead>
 	<tr style="valign: middle">
-		<th field="projectName" sortable="true" width="150px">收入项目</th>
-		<th field="operator" width="50px" formatter="settings">操作</th>
+		<th field="payProjectName" sortable="true" width="150px">收入项目</th>
+		<th field="payAmount" sortable="true" width="150px">收入金额</th>
+		<th field="payTimeStr" sortable="true" width="150px">收入时间</th>
+		<th field="remark" sortable="true" width="350px">备注</th>
+		<th field="operator" width="50px">操作</th>
 	</tr>
 	</thead>
 </table>
@@ -18,9 +21,18 @@
 	<form id="advanced_search" method="post">
 		<table>
 			<tr>
-				<td style="text-align: right;">收入项目：</td>
+				<td style="text-align: right;">支出项目：</td>
 				<td style="width: 150px">
 					<input type="text" id="projectName" name="projectName" style="width: 110px;" value=""/>
+				</td>
+				<td style="text-align: right;">支出时间：</td>
+				<td colspan="3">
+					<input id="payTimeBegin" style="width: 125px" name="payTimeBegin" class="Wdate"
+						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,maxDate:'#F{$dp.$D(\'payTimeEnd\')}'})"
+						   value=""/>&nbsp;-&nbsp;
+					<input id="payTimeEnd" style="width: 125px" name="payTimeEnd" class="Wdate"
+						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,minDate:'#F{$dp.$D(\'payTimeBegin\')}'})"
+						   value=""/>
 				</td>
 			</tr>
 			<tr>&nbsp;</tr>
@@ -41,9 +53,15 @@
 	 style="width:350px; height:250px;overflow: auto;" iconCls="icon-edit">
 	<form name="addForm" action="" id="addForm" method="post">
 		<div style="margin:11px 11px 0px 25px">
-			<input id="payProjectId" type="hidden" value=""/>
 			收入项目：
-			<input name="name" id="name" type="text" style="width: 150px;"/>
+			<select id="payProjectId" style="width: 150px;">
+			</select>
+			<br/><br/>
+			收入金额：
+			<input name="payAmount" id="payAmount" type="text" style="width: 150px;"/>
+			<br/><br/>
+			特别备注：
+			<input name="addRemark" id="addRemark" type="text" style="width: 150px;"/>
 			<br/><br/>
 			<p align="center">
 				<input id="save" type="button" value="添加"/>
@@ -67,14 +85,32 @@
 
 	function getFormData() {
 		var data = {
-			projectName: $('#projectName').val()
+			projectName: $('#projectName').val(),
+			payTimeBegin: $('#payTimeBegin').val(),
+			payTimeEnd: $('#payTimeEnd').val()
 		};
 		return data;
 	}
 
 	$('#addLink').live('click',function(){
 		$("#addDialog").dialog("open");
-		$('#name').val("");
+		$('#payAmount').val("");
+		$('#addRemark').val("");
+		$("#payProjectId").empty();
+		var param={page:1,rows:2000}
+		$.ajax({
+			url:"${contextPath}/charge/incomeProjectlist",
+			dataType:'json',
+			data:param,
+			success:function(data){
+				var payProjectList = data.rows;
+				$("#payProjectId").append('<option value="-1">全部</option>');
+				for(i=0;i<payProjectList.length;i++){
+					var payProject = payProjectList[i];
+					$("#payProjectId").append('<option value="'+payProject.id+'">'+payProject.projectName+'</option>');
+				}
+			}
+		});
 		return false;
 	});
 	$('#cancel').live('click',function(){
@@ -83,11 +119,11 @@
 	});
 
 	$('#save').live('click',function(){
-		var url = "${contextPath}/charge/savePayProject";
+		var url = "${contextPath}/charge/savePayProjectIo";
 		var data = {
-			id: $("#payProjectId").val(),
-			projectName: $('#name').val(),
-            projectType: 0
+			payProjectId: $('#payProjectId').val(),
+			payAmount: $('#payAmount').val(),
+			remark: $('#addRemark').val()
 		}
 		$('#addForm').ajaxSubmit({
 			url: url,
@@ -116,44 +152,6 @@
 			}
 		});
 	});
-
-	function settings(value,row){
-		var payProjectId = row.id;
-		var html = '<div style="text-align: center;">';
-		html += '<img style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" title="编辑" a src="${contextPath}/images/m_edit.gif" href="javascript:;" onclick="modifyPayProjectInfo(\''+row.projectName+'\',\''+payProjectId+'\')" />';
-		html += '<img style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" title="删除" a src="${contextPath}/images/m_delete.gif" href="javascript:;" onclick="deletePayProjectInfo(\''+payProjectId+'\')" />';
-		html += '</div>';
-		return html;
-	}
-
-	function modifyPayProjectInfo(projectName, payProjectId){
-		$("#addDialog").dialog("open");
-		$('#name').val(projectName);
-		$('#payProjectId').val(payProjectId);
-		$("#save").val("更新");
-		return false;
-	}
-
-	//删除
-	function deletePayProjectInfo(payProjectId){
-		$.messager.confirm('系统消息', "确认删除！", function (r) {
-			if (r) {
-				$.ajax({
-					url:  '${contextPath}/charge/deletePayProjectInfo',
-					cache: false,
-					dataType: 'json',
-					data: {payProjectId:payProjectId},
-					type: "post",
-					success: function (json) {
-						$.messager.alert('系统消息', json.msg,'error');
-						if (json.success) {
-							$("#datagrid").datagrid("reload");
-						}
-					},
-				});
-			}
-		});
-	}
 
 </script>
 </body>
