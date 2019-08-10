@@ -195,8 +195,9 @@
 
 	function getFormData() {
 		var data = {
-			name: $('#studentName').val()
-
+			name: $('#studentName').val(),
+            gradeId:$("#gradeId option:selected").val(),
+            classId:$("#classId option:selected").val()
 		};
 		return data;
 	}

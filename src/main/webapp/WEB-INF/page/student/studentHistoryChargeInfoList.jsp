@@ -42,14 +42,12 @@
 				<td colspan="4">
 					<input type="button" class="button search" value="搜索" id="searchLink"/>
 					<input type="reset" class="button clear" value="清空" id="clearLink"/>
-					<input type="button" class="button export" value="批量导出" id="exportLink"/>
 				</td>
 			</tr>
 		</table>
 	</form>
 </div>
 <!--搜索条件结束-->
-
 
 <script type="text/javascript">
 	$(function() {
@@ -61,37 +59,6 @@
 			});
 		});
 
-	});
-	//导出
-	$('#exportLink').click(function () {
-		var datas = getFormData();
-		var url = '${contextPath}/studentChargeInfo/exportHistory';
-		$.messager.confirm('系统消息', "是否导出！", function (r) {
-			if (r) {
-				$.ajax({
-					url: url,
-					cache: false,
-					dataType: 'json',
-					data: datas,
-					type: "post",
-					beforeSend: function () {
-						showOrHideLoading(true, "导出中");
-					},
-					success: function (json) {
-						var data = json.data;
-						if (!json.success) {
-							alert(json.msg);
-							return;
-						}
-						window.location.href = '${contextPath}/download?fileName=' + data.fileName + '&filePath=' + data.filePath;
-					},
-					complete: function () {
-						showOrHideLoading(false, "");
-					}
-
-				});
-			}
-		});
 	});
 
 	function getFormData() {

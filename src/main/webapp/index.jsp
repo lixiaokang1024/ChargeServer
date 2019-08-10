@@ -155,14 +155,11 @@
         </li>
 
         <li class="leftMenu menu_5">
-            <a class="parent" href="javascript:void(0);">收支统计</a>
+            <a class="parent" href="javascript:void(0);">统计管理</a>
             <ul>
                 <li>
                     <span>
-                        <a href="studentChargeInfo/historyIndex" title="收入统计" class="newTab">收入统计</a>
-					</span>
-                    <span>
-                        <a href="studentChargeInfo/historyIndex" title="支出统计" class="newTab">支出统计</a>
+                        <a href="studentChargeInfo/countIndex" title="学生缴费统计" class="newTab">学生缴费统计</a>
 					</span>
                 </li>
             </ul>

@@ -176,7 +176,9 @@
   </update>
 
   <select id="countStudentChargeInfo" resultType="java.lang.Integer">
-    SELECT COUNT(DISTINCT(a.student_id)) FROM student_charge_info a JOIN student_info b on a.student_id=b.id JOIN student_ext_info c on a.student_id=c.student_id
+    SELECT COUNT(DISTINCT(a.student_id)) FROM student_charge_info a JOIN student_info b on a.student_id=b.id
+    join student_class_info e on b.id=e.student_id join class_info f on e.class_id = f.id
+    JOIN student_ext_info c on a.student_id=c.student_id
      JOIN charge_project d on a.charge_project_id=d.id <include refid="wheresql"/>
   </select>
   <select id="queryStudentChargeInfoPageList" resultType="com.charge.vo.student.StudentChargeInfoVo">
@@ -188,11 +190,65 @@
       SUM(a.actual_charge_amount+a.use_deposit_amount) as actualChargeAmount,
       c.prepayment_amount,
       c.deposit
-     FROM student_info b JOIN student_ext_info c on b.id=c.student_id
+     FROM student_info b JOIN student_ext_info c on b.id=c.student_id join
+    student_class_info e on b.id=e.student_id join class_info f on e.class_id = f.id
       LEFT JOIN student_charge_info a on a.student_id=b.id
      JOIN charge_project d on a.charge_project_id=d.id
     <include refid="wheresql"/>
     GROUP BY a.student_id
+  </select>
+  <select id="countStudentChargeDetail" resultType="java.lang.Integer">
+    SELECT count(1)
+    FROM student_charge_info a JOIN student_info b  on a.student_id=b.id
+    join student_class_info e on b.id=e.student_id join class_info f on e.class_id = f.id
+    JOIN charge_project d on a.charge_project_id=d.id
+    WHERE a.is_deleted = 0
+    <if test="param.gradeId != null and param.gradeId != -1">
+      AND f.grade_id=#{param.gradeId}
+    </if>
+    <if test="param.classId != null and param.classId != -1">
+      AND e.class_id=#{param.classId}
+    </if>
+    <if test="param.name != null and param.name != ''">
+      AND b.name=#{param.name}
+    </if>
+    <if test="param.status != null and param.status != -1 and param.status != 3">
+      AND a.status=#{param.status}
+    </if>
+    <if test="param.status != null and param.status == 3">
+      AND a.status in(0,1) and a.charge_time &lt; UNIX_TIMESTAMP(NOW())
+    </if>
+  </select>
+  <select id="queryStudentChargeDetailPageList" resultType="com.charge.vo.student.StudentChargeInfoDetailVo">
+    SELECT
+    a.id,
+    a.student_id,
+    f.name as className,
+    m.name as gradeName,
+    b.name as studentName,
+    a.charge_project_id,
+    d.project_name as chargeProjectName,
+    a.charge_amount,
+    a.actual_charge_amount,
+    a.use_deposit_amount,
+    a.charge_time,
+    a.actual_charge_time,
+    a.pay_type,
+    a.status
+    FROM student_charge_info a JOIN student_info b  on a.student_id=b.id
+    join student_class_info e on b.id=e.student_id join class_info f on e.class_id = f.id
+    join grade_info m on f.grade_id = m.id
+    JOIN charge_project d on a.charge_project_id=d.id
+    WHERE a.is_deleted = 0
+    <if test="param.gradeId != null and param.gradeId != -1">
+      AND f.grade_id=#{param.gradeId}
+    </if>
+    <if test="param.classId != null and param.classId != -1">
+      AND e.class_id=#{param.classId}
+    </if>
+    <if test="param.name != null and param.name != ''">
+      AND b.name=#{param.name}
+    </if>
   </select>
   <sql id="wheresql">
     WHERE a.is_deleted = 0
@@ -207,6 +263,12 @@
     </if>
     <if test="param.chargeProjectId != null">
       AND a.charge_project_id=#{param.chargeProjectId}
+    </if>
+    <if test="param.gradeId != null and param.gradeId != -1">
+      AND f.grade_id=#{param.gradeId}
+    </if>
+    <if test="param.classId != null and param.classId != -1">
+      AND e.class_id=#{param.classId}
     </if>
   </sql>
 

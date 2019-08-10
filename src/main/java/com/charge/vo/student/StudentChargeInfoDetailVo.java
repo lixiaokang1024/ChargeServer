@@ -11,6 +11,8 @@ public class StudentChargeInfoDetailVo implements Serializable {
     private Integer id;
     private Integer studentId;
     private String studentName;
+    private String className;
+    private String gradeName;
     private Integer chargeProjectId;
     private String chargeProjectName;
     private Double chargeAmount;
@@ -35,6 +37,22 @@ public class StudentChargeInfoDetailVo implements Serializable {
 
     public Integer getStudentId() {
         return studentId;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getGradeName() {
+        return gradeName;
+    }
+
+    public void setGradeName(String gradeName) {
+        this.gradeName = gradeName;
     }
 
     public void setStudentId(Integer studentId) {

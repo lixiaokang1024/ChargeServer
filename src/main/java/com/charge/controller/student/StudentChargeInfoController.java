@@ -44,6 +44,11 @@ public class StudentChargeInfoController {
         return "student/studentHistoryChargeInfoList";
     }
 
+    @RequestMapping("/countIndex")
+    public String toCountIndex(){
+        return "student/studentChargeDetailList";
+    }
+
     @RequestMapping("/list")
     @ResponseBody
     public ModelMap getStudentChargeInfoList(StudentChargeInfoSearchParam searchParam, Integer page, Integer rows) {
@@ -57,6 +62,22 @@ public class StudentChargeInfoController {
         PageResultDTO<List<StudentChargeInfoVo>> pageResultDTO = chargeInfoProxy.queryStudentChargeInfo(searchParam);
         if(pageResultDTO.getData() == null){
             pageResultDTO.setData(new ArrayList<StudentChargeInfoVo>());
+        }
+        model.put("rows", pageResultDTO.getData());
+        model.put("total", pageResultDTO.getTotalRecord());
+        model.put("page", page);
+        return model;
+    }
+
+    @RequestMapping("/count")
+    @ResponseBody
+    public ModelMap countStudentChargeInfo(StudentChargeInfoSearchParam searchParam, Integer page, Integer rows) {
+        ModelMap model = new ModelMap();
+        searchParam.setCurrentPage(page);
+        searchParam.setPageSize(rows);
+        PageResultDTO<List<StudentChargeInfoDetailVo>> pageResultDTO = chargeInfoProxy.queryStudentChargeInfoDetailPageList(searchParam);
+        if(pageResultDTO.getData() == null){
+            pageResultDTO.setData(new ArrayList<StudentChargeInfoDetailVo>());
         }
         model.put("rows", pageResultDTO.getData());
         model.put("total", pageResultDTO.getTotalRecord());
@@ -111,7 +132,7 @@ public class StudentChargeInfoController {
         return "student/studentHistoryChargeInfoDetail";
     }
 
-    @RequestMapping("/exportHistory")
+    @RequestMapping("/export")
     @ResponseBody
     public ModelMap exportStudentHistoryChargeInfo(StudentChargeInfoSearchParam searchParam,HttpServletRequest request) {
         ModelMap modelMap = new ModelMap();

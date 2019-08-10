@@ -108,6 +108,8 @@ public class StudentChargeInfoProxy {
                     String studentNameStr = ExcelUtil.getValue(studentName);
                     XSSFCell chargeProjectName = xssfRow.getCell(2);
                     String chargeProjectNameStr = ExcelUtil.getValue(chargeProjectName);
+                    XSSFCell chargeTime = xssfRow.getCell(3);
+                    String chargeTimeStr = ExcelUtil.getValue(chargeTime);
                     StudentClassInfo studentClassInfo = studentClassInfoService.getByStudentId(studentIdInt);
                     ClassInfo classInfo = schoolService.getClassInfoById(studentClassInfo.getClassId());
                     if(studentClassInfo == null){
@@ -120,6 +122,7 @@ public class StudentChargeInfoProxy {
                     }
                     studentChargeInfo.setChargeProjectId(chargeProject.getId());
                     studentChargeInfo.setChargeAmount(chargeProject.getAmount());
+                    studentChargeInfo.setChargeTime(DateUtil.getTimespan2(chargeTimeStr));
                     studentChargeInfoService.insertSelective(studentChargeInfo);
                 }
             }
@@ -136,5 +139,25 @@ public class StudentChargeInfoProxy {
 
     public List<StudentChargeInfoDetailVo> doProjectCharge(StudentChargeParam chargeParam) {
         return studentChargeInfoService.doProjectCharge(chargeParam);
+    }
+
+    public PageResultDTO<List<StudentChargeInfoDetailVo>> queryStudentChargeInfoDetailPageList(StudentChargeInfoSearchParam searchParam) {
+        logger.info("统计学生应缴费信息搜索参数：{}", JsonUtil.toJson(searchParam));
+        PageResultDTO<List<StudentChargeInfoDetailVo>> pageResultDTO = new PageResultDTO<List<StudentChargeInfoDetailVo>>();
+        try {
+
+            int count = studentChargeInfoService.countStudentChargeDetail(searchParam);
+            pageResultDTO.setTotalRecord(count);
+            if(count == 0){
+                return pageResultDTO;
+            }
+            pageResultDTO.setCurrentPage(searchParam.getCurrentPage());
+            pageResultDTO.setPageSize(searchParam.getPageSize());
+            List<StudentChargeInfoDetailVo> studentChargeInfoVoList = studentChargeInfoService.queryStudentChargeInfoDetailPageList(searchParam);
+            pageResultDTO.setData(studentChargeInfoVoList);
+        } catch (Exception e){
+            logger.error("统计学生应缴费信息出错,msg={}",e.getMessage(),e);
+        }
+        return pageResultDTO;
     }
 }

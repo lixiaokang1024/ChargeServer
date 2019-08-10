@@ -22,4 +22,7 @@ public interface StudentChargeInfoService {
     void doCharge(StudentChargeParam chargeParam);
 
     List<StudentChargeInfoDetailVo> doProjectCharge(StudentChargeParam chargeParam);
+
+    int countStudentChargeDetail(StudentChargeInfoSearchParam searchParam);
+    List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetailPageList(StudentChargeInfoSearchParam searchParam);
 }

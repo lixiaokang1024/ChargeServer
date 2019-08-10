@@ -9,11 +9,17 @@ public class StudentChargeInfoSearchParam extends BaseDataPaginationParam implem
 
     private String name;
 
+    private Integer gradeId;
+
+    private Integer classId;
+
     private String mobile;
 
     private Boolean graduate;
 
     private Integer chargeProjectId;
+
+    private Integer status;
 
     private List<Integer> chargeStatus;
 
@@ -25,12 +31,36 @@ public class StudentChargeInfoSearchParam extends BaseDataPaginationParam implem
         this.name = name;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public String getMobile() {
         return mobile;
     }
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public Integer getGradeId() {
+        return gradeId;
+    }
+
+    public void setGradeId(Integer gradeId) {
+        this.gradeId = gradeId;
+    }
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 
     public Boolean getGraduate() {

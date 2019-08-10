@@ -52,6 +52,15 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
         return studentChargeInfoMapper.queryStudentChargeInfoDetail(studentId, chargeStatus);
     }
 
+    public int countStudentChargeDetail(StudentChargeInfoSearchParam searchParam) {
+        Map<String, Object> paramMap = RequestParamUtil.getRequestParamMap(searchParam.getCurrentPage(), searchParam.getPageSize(), searchParam);
+        return studentChargeInfoMapper.countStudentChargeDetail(paramMap);
+    }
+    public List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetailPageList(StudentChargeInfoSearchParam searchParam) {
+        Map<String, Object> paramMap = RequestParamUtil.getRequestParamMap(searchParam.getCurrentPage(), searchParam.getPageSize(), searchParam);
+        return studentChargeInfoMapper.queryStudentChargeDetailPageList(paramMap);
+    }
+
     public void addPrepaymentAmount(StudentChargeParam chargeParam) {
         studentExtInfoMapper.updatePrepaymentAmount(chargeParam.getStudentId(), chargeParam.getChargeAmount());
     }

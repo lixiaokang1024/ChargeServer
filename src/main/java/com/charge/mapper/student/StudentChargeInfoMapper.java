@@ -24,4 +24,7 @@ public interface StudentChargeInfoMapper {
 
     void updateStudentChargeInfo(StudentChargeInfo record);
 
+    int countStudentChargeDetail(Map<String, Object> searchParam);
+    List<StudentChargeInfoDetailVo> queryStudentChargeDetailPageList(Map<String, Object> searchParam);
+
 }
