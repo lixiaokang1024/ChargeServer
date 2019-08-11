@@ -1,4 +1,12 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page  contentType="text/html;charset=utf-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+%>
+<c:set var="contextPath" value="<%=basePath %>" scope="request"></c:set>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -6,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="css/easyui.css" />
     <link rel="stylesheet" type="text/css" href="css/frame.css" />
     <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery-form.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
     <title>沙河小马幼儿园</title>
     <link type="text/css" href="css/easyui/themes/default/easyui.css" rel="stylesheet" />
@@ -28,17 +37,99 @@
                 cache:false
             });
         }
+        // $(function(){
+        //     $('#editPass').live('click',function(){
+        //         $.dialog({title:'修改密码',width:500,height:300,url:$(this).attr('href')});
+        //         return false;
+        //     });
+        // })
         $(function(){
-            $('#editPass').live('click',function(){
-                $.dialog({title:'修改密码',width:500,height:300,url:$(this).attr('href')});
-                return false;
+            $(".pw").blur(function () {
+                if($(this).val() == ''){
+                    var name = $(this).attr("name") + "Remin";
+                    $("#"+name).css("display","block");
+                }
+            });
+            $(".pw").focus(function () {
+                var name = $(this).attr("name") + "Remin";
+                $("#"+name).css("display","none");
             });
         })
+        $('#editPass').live('click',function(){
+            $("#mpwDialog").dialog("open");
+            $('#oldPassword').val('');
+            $('#newPassword').val('');
+            $('#confirmPW').val('');
+            return false;
+        });
+        $('#cancel').live('click',function(){
+            $("#mpwDialog").dialog("close");
+            return false;
+        });
+
+        $('#save').live('click',function(){
+            var url = "${contextPath}/user/modifyPW";
+            var oldPassword = $('#oldPassword').val();
+            var newPassword = $('#newPassword').val();
+            var confirmPW = $('#confirmPW').val();
+            if(newPassword != confirmPW){
+                $.messager.alert('系统消息', '确认密码不一致', "error");
+                return false;
+            }
+            $('#mpwForm').ajaxSubmit({
+                url: url,
+                cache:false,
+                dataType:'json',
+                beforeSend: function() {
+                    $("#save").attr("disabled",true);
+                    $("#cancel").attr("disabled", true);
+                } ,
+                success: function (data) {
+                    $("#mpwDialog").dialog("close");
+                    if (data.success) {
+                        $.messager.alert('系统消息', '已完成', "info");
+                    } else {
+                        layer.alert(data.msg);
+                    }
+                } ,
+                complete: function(){
+                    $("#save").attr("disabled",false);
+                    $("#cancel").attr("disabled", false);
+                },
+                error:function(data){
+                    $.messager.alert('系统消息', data.msg,'error');
+                }
+            });
+        });
 
     </script>
 
 </head>
 <body class="easyui-layout">
+<!-- 修改密码 -->
+<div id="mpwDialog" class="easyui-dialog" title="修改密码" closed="true"
+     style="width:350px; height:250px;overflow: auto;" iconCls="icon-edit">
+    <form name="mpwForm" action="" id="mpwForm" method="post">
+        <div style="margin:11px 11px 0px 25px">
+            原密码：
+            <input name="oldPassword" class="pw" id="oldPassword" type="password" style="width: 150px;"/>
+            <span id="oldPasswordRemin" style="color: red" hidden="hidden">原密码不能为空</span>
+            <br/><br/>
+            新密码：
+            <input name="newPassword" class="pw" id="newPassword" type="password" style="width: 150px;"/>
+            <span id="newPasswordRemin" style="color: red" hidden="hidden">新密码不能为空</span>
+            <br/><br/>
+            确认密码：
+            <input name="confirmPW" class="pw" id="confirmPW" type="password" style="width: 150px;"/>
+            <span id="confirmPWRemin" style="color: red" hidden="hidden">确认密码不能为空</span>
+            <br/><br/>
+            <p align="center">
+                <input id="save" type="button" value="确认"/>
+                <input id="cancel" type="button" value="取消"/>
+            </p>
+        </div>
+    </form>
+</div>
 <div region="north"  style="height:auto;padding:0px; overflow:hidden;">
     <div id="header" class="header" >
         <div class="wms_logo"></div>
@@ -71,7 +162,7 @@
         </div>
         <div class="top-link" style="width:300px;">
             <img src="images/wms/contact_blue.gif">欢迎:${user.userName}登陆
-            <img src="images/wms/lock_edit.gif"><a href="/default/editPass" id="editPass">修改密码</a>
+            <img src="images/wms/lock_edit.gif"><a href="#" id="editPass">修改密码</a>
             <img src="images/wms/page_go.gif"><a href="<%=request.getContextPath()%>/user/logout">退出</a>
         </div>
     </div>
