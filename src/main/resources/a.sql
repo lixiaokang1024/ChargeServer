@@ -1,9 +1,8 @@
 /*
 SQLyog Professional v12.08 (64 bit)
-MySQL - 5.5.62 : Database - test
+MySQL - 5.6.40 : Database - charge
 *********************************************************************
 */
-
 
 /*!40101 SET NAMES utf8 */;
 
@@ -31,7 +30,7 @@ CREATE TABLE `charge_project` (
   `is_deleted` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `project_unique` (`project_name`,`grade_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='收费项目';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='收费项目';
 
 /*Table structure for table `class_info` */
 
@@ -45,7 +44,7 @@ CREATE TABLE `class_info` (
   `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_deleted` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='班级信息';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='班级信息';
 
 /*Table structure for table `grade_info` */
 
@@ -60,7 +59,7 @@ CREATE TABLE `grade_info` (
   `is_deleted` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='年级信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='年级信息表';
 
 /*Table structure for table `pay_project` */
 
@@ -75,7 +74,7 @@ CREATE TABLE `pay_project` (
   `is_deleted` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `project_name` (`project_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='支出费用项目';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='支出费用项目';
 
 /*Table structure for table `pay_project_io` */
 
@@ -112,7 +111,7 @@ CREATE TABLE `student_charge_info` (
   `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_deleted` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='学生缴费信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='学生缴费信息表';
 
 /*Table structure for table `student_class_info` */
 
@@ -128,7 +127,7 @@ CREATE TABLE `student_class_info` (
   `is_deleted` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `student_class_index` (`student_id`,`class_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Table structure for table `student_ext_info` */
 
@@ -142,11 +141,13 @@ CREATE TABLE `student_ext_info` (
   `graduate_time` int(11) NOT NULL DEFAULT '0' COMMENT '毕业时间',
   `prepayment_amount` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '预缴费剩余金额',
   `deposit` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '押金',
+  `study_type` varchar(10) NOT NULL DEFAULT '' COMMENT '就读方式',
+  `is_only_child` varchar(4) NOT NULL DEFAULT '' COMMENT '是否独生子女',
   `create_time` int(11) NOT NULL DEFAULT '0',
   `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_deleted` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='学生扩展表信息';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='学生扩展表信息';
 
 /*Table structure for table `student_info` */
 
@@ -161,15 +162,27 @@ CREATE TABLE `student_info` (
   `day` int(11) NOT NULL DEFAULT '0',
   `age` int(11) NOT NULL DEFAULT '0',
   `parent_name` varchar(32) NOT NULL DEFAULT '',
+  `parent_id_card_type` varchar(32) NOT NULL DEFAULT '' COMMENT '监护人身份证件类型',
+  `parent_id_card_number` varchar(32) NOT NULL DEFAULT '' COMMENT '监护人身份证件号码',
   `relation` varchar(32) NOT NULL DEFAULT '',
   `mobile` varchar(32) NOT NULL DEFAULT '',
   `address` varchar(256) NOT NULL DEFAULT '',
   `is_graduate` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否毕业(0:否 1:是)',
+  `id_card_type` varchar(32) NOT NULL DEFAULT '' COMMENT '身份证类型',
+  `id_card_number` varchar(32) NOT NULL DEFAULT '' COMMENT '身份证件号码',
+  `country` varchar(10) NOT NULL DEFAULT '' COMMENT '国籍',
+  `nation` varchar(10) NOT NULL DEFAULT '' COMMENT '民族',
+  `oversea` varchar(32) NOT NULL DEFAULT '' COMMENT '港澳台侨外',
+  `born_place` varchar(256) NOT NULL DEFAULT '' COMMENT '出生地',
+  `native_place` varchar(256) NOT NULL DEFAULT '' COMMENT '籍贯',
+  `account_character` varchar(10) NOT NULL DEFAULT '' COMMENT '户口性质',
+  `non_agricultural_account_type` varchar(10) NOT NULL DEFAULT '' COMMENT '非农业户口类型',
+  `registered_residence` varchar(256) NOT NULL DEFAULT '' COMMENT '户口所在地',
   `creat_time` int(11) NOT NULL DEFAULT '0',
   `modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
 
 /*Table structure for table `test_table` */
 
@@ -194,9 +207,8 @@ CREATE TABLE `user` (
   `password` varchar(32) NOT NULL,
   `age` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
-INSERT INTO USER(user_name,PASSWORD,age) VALUES('admin','admin','100');
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+INSERT INTO USER (user_name,PASSWORD,age) VALUE('admin','admin',100);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
