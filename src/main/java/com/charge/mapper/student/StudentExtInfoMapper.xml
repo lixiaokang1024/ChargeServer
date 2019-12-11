@@ -9,22 +9,24 @@
     <result column="graduate_time" property="graduateTime" jdbcType="INTEGER" />
     <result column="prepayment_amount" property="prepaymentAmount" jdbcType="DECIMAL" />
     <result column="deposit" property="deposit" jdbcType="DECIMAL" />
+    <result column="study_type" jdbcType="VARCHAR" property="studyType" />
+    <result column="is_only_child" jdbcType="VARCHAR" property="isOnlyChild" />
     <result column="create_time" property="createTime" jdbcType="INTEGER" />
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="deleted" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, student_id, is_graduate, admission_time, graduate_time, prepayment_amount, deposit, 
-    create_time, modify_time, is_deleted
+    id, student_id, is_graduate, admission_time, graduate_time, prepayment_amount, deposit,study_type,
+    is_only_child, create_time, modify_time, is_deleted
   </sql>
   <insert id="insert" parameterType="com.charge.pojo.student.StudentExtInfo" >
     insert into student_ext_info (id, student_id, is_graduate, 
       admission_time, graduate_time, prepayment_amount, 
-      deposit, create_time, modify_time, 
+      deposit,study_type,is_only_child, create_time, modify_time,
       is_deleted)
     values (#{id,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{graduate,jdbcType=INTEGER}, 
       #{admissionTime,jdbcType=INTEGER}, #{graduateTime,jdbcType=INTEGER}, #{prepaymentAmount,jdbcType=DECIMAL}, 
-      #{deposit,jdbcType=DECIMAL}, #{createTime,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, 
+      #{deposit,jdbcType=DECIMAL},#{studyType},#{isOnlyChild}, #{createTime,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP},
       #{deleted,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.charge.pojo.student.StudentExtInfo" >
@@ -50,6 +52,12 @@
       </if>
       <if test="deposit != null" >
         deposit,
+      </if>
+      <if test="studyType != null" >
+        study_type,
+      </if>
+      <if test="isOnlyChild != null" >
+        is_only_child,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -83,6 +91,12 @@
       <if test="deposit != null" >
         #{deposit,jdbcType=DECIMAL},
       </if>
+      <if test="studyType != null" >
+        #{studyType},
+      </if>
+      <if test="isOnlyChild != null" >
+        #{isOnlyChild},
+      </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=INTEGER},
       </if>
@@ -115,6 +129,12 @@
       <if test="deposit != null" >
         deposit = #{deposit,jdbcType=DECIMAL},
       </if>
+      <if test="studyType != null" >
+        study_type=#{studyType},
+      </if>
+      <if test="isOnlyChild != null" >
+        is_only_child=#{isOnlyChild},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=INTEGER},
       </if>
@@ -146,6 +166,12 @@
       <if test="deposit != null" >
         deposit = #{deposit,jdbcType=DECIMAL},
       </if>
+      <if test="studyType != null" >
+        study_type=#{studyType},
+      </if>
+      <if test="isOnlyChild != null" >
+        is_only_child=#{isOnlyChild},
+      </if>
     </set>
     where student_id = #{studentId}
   </update>
@@ -158,6 +184,8 @@
       graduate_time = #{graduateTime,jdbcType=INTEGER},
       prepayment_amount = #{prepaymentAmount,jdbcType=DECIMAL},
       deposit = #{deposit,jdbcType=DECIMAL},
+      study_type=#{studyType},
+      is_only_child=#{isOnlyChild},
       create_time = #{createTime,jdbcType=INTEGER},
       modify_time = #{modifyTime,jdbcType=TIMESTAMP},
       is_deleted = #{deleted,jdbcType=INTEGER}

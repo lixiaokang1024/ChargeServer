@@ -57,7 +57,7 @@
 	<form name="ExcelForm" action="" id="ExcelForm" method="post" enctype="multipart/form-data">
 		<div style="margin:11px 11px 0px 25px">
         <span id="moban">
-          <a href="javascript:;" onclick="location.href='${contextPath}/files/STUDENT_CLASS_INFO_TEMPLATE.xlsx'">导入模板下载</a>
+          <a href="javascript:;" onclick="location.href='${contextPath}/files/学生班级信息导入模板.xlsx'">导入模板下载</a>
         </span><br/><br/>
           <label>选择文件：</label>
           <input name="studentClassFileBuildInfo" id="studentClassFileBuildInfo" type="file" class="required"

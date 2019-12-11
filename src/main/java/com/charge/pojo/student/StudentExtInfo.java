@@ -40,6 +40,16 @@ public class StudentExtInfo implements Serializable {
     private Double deposit;
 
     /**
+     * 就读方式
+     */
+    private String studyType;
+
+    /**
+     * 是否独生子女
+     */
+    private String isOnlyChild;
+
+    /**
      * student_ext_info.create_time 
      */
     private Integer createTime;
@@ -192,5 +202,21 @@ public class StudentExtInfo implements Serializable {
      */
     public void setDeleted(Integer deleted) {
         this.deleted = deleted;
+    }
+
+    public String getStudyType() {
+        return studyType;
+    }
+
+    public void setStudyType(String studyType) {
+        this.studyType = studyType;
+    }
+
+    public String getIsOnlyChild() {
+        return isOnlyChild;
+    }
+
+    public void setIsOnlyChild(String isOnlyChild) {
+        this.isOnlyChild = isOnlyChild;
     }
 }

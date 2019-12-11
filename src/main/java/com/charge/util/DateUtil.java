@@ -381,7 +381,7 @@ public class DateUtil {
 
 	public static void main(String[] args){
 		
-		System.out.println(getCurrentDate());
+		System.out.println(getTimespan2("2019-12-15"));
 		
 	}
 	

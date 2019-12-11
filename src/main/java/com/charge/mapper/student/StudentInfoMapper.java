@@ -4,6 +4,7 @@ import com.charge.pojo.student.StudentInfo;
 
 import java.util.List;
 import java.util.Map;
+import org.apache.ibatis.annotations.Param;
 
 public interface StudentInfoMapper {
     int insert(StudentInfo record);
@@ -19,4 +20,5 @@ public interface StudentInfoMapper {
 
     List<StudentInfo> getStudentInfoByName(String studentName);
     StudentInfo getStudentInfoById(Integer studentId);
+    StudentInfo getStudentInfoByIdCardNumber(@Param("cardNumber") String cardNumber);
 }

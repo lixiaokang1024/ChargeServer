@@ -88,7 +88,7 @@ public class StudentChargeInfoProxy {
         return studentChargeInfoDetailVoList;
     }
 
-    public void importStudentChargeInfo(InputStream is) throws IOException, ParseException {
+    public void importStudentChargeInfo(InputStream is) throws IOException {
 
         XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
         for (int numSheet = 0; numSheet < xssfWorkbook.getNumberOfSheets(); numSheet++) {//到所有工作簿
@@ -119,6 +119,9 @@ public class StudentChargeInfoProxy {
                     ChargeProject chargeProject = chargeService.getChargeProjectByName(chargeProjectNameStr, classInfo.getGradeId());
                     if(chargeProject == null){
                         throw new BusinessException("无【"+chargeProjectNameStr+"】收费项目");
+                    }
+                    if(studentChargeInfoService.queryByUniqueKey(studentIdInt, chargeProject.getId(), DateUtil.getTimespan2(chargeTimeStr)) != null){
+                        throw new BusinessException("学生【"+studentNameStr+"】已导入收费项目【"+chargeProjectNameStr+"】,不能重复导入");
                     }
                     studentChargeInfo.setChargeProjectId(chargeProject.getId());
                     studentChargeInfo.setChargeAmount(chargeProject.getAmount());

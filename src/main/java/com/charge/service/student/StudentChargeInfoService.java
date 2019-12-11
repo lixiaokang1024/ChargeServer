@@ -17,6 +17,8 @@ public interface StudentChargeInfoService {
 
     List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetail(Integer studentId, List<Integer> chargeStatus);
 
+    StudentChargeInfo queryByUniqueKey(Integer studentId, Integer chargeProjectId, Integer chargeTime);
+
     void addPrepaymentAmount(StudentChargeParam chargeParam);
 
     void doCharge(StudentChargeParam chargeParam);

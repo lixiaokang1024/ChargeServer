@@ -10,8 +10,20 @@
 		<th field="id" sortable="true" align="center" width="50px">学号</th>
 		<th field="name" sortable="true" align="center" width="80px">姓名</th>
 		<th field="sexStr" sortable="true" align="center" width="50px">性别</th>
+		<th field="idCardType" sortable="true" align="center" width="50px">身份证类型</th>
+		<th field="idCardNumber" sortable="true" align="center" width="150px">身份证号码</th>
 		<th field="bornDate" sortable="true" align="center" width="80px">出生日期</th>
+		<th field="country" sortable="true" align="center" width="80px">国籍</th>
+		<th field="nation" sortable="true" align="center" width="80px">民族</th>
+		<th field="oversea" sortable="true" align="center" width="80px">港澳台侨外</th>
+		<th field="bornPlace" sortable="true" align="center" width="80px">出生所在地</th>
+		<th field="nativePlace" sortable="true" align="center" width="80px">籍贯</th>
+		<th field="accountCharacter" sortable="true" align="center" width="80px">户口性质</th>
+		<th field="nonAgriculturalAccountType" sortable="true" align="center" width="80px">非农业户口类型</th>
+		<th field="registeredResidence" sortable="true" align="center" width="80px">户口所在地</th>
 		<th field="parentName" sortable="true" align="center" width="80px">监护人姓名</th>
+		<th field="parentIdCardType" sortable="true" align="center" width="50px">监护人身份证件类型</th>
+		<th field="parentIdCardNumber" sortable="true" align="center" width="150px">监护人身份证号码</th>
 		<th field="relation" sortable="true" align="center" width="80px">监护人关系</th>
 		<th field="mobile" align="center" width="100px" >联系方式</th>
 		<th field="address" align="center" width="250px" >地址</th>
@@ -54,7 +66,7 @@
 	<form name="ExcelForm" action="" id="ExcelForm" method="post" enctype="multipart/form-data">
 		<div style="margin:11px 11px 0px 25px">
         <span id="moban">
-          <a href="javascript:;" onclick="location.href='${contextPath}/files/STUDENT_INFO_TEMPLATE.xlsx'">导入模板下载</a>
+          <a href="javascript:;" onclick="location.href='${contextPath}/files/学生基础信息导入模板.xlsx'">导入模板下载</a>
         </span><br/><br/>
           <label>选择文件：</label>
           <input name="studentFileBuildInfo" id="studentFileBuildInfo" type="file" class="required"
@@ -112,6 +124,9 @@
 			<br/><br/>
 			家庭地址：
 			<input id="updateAddress" type="text" style="width: 250px;"/>
+			<br/><br/>
+			身份证号码：
+			<input id="idCardNumber" type="text" style="width: 250px;"/>
 			<br/><br/>
 			<p align="center">
 				<input id="save" type="button" value="更新"/>
@@ -284,6 +299,7 @@
 		$('#updateStudentName').val(row.name);
 		$('#updateMobile').val(row.mobile);
 		$('#updateAddress').val(row.address);
+		$('#idCardNumber').val(row.idCardNumber);
 		$('#updateSex').find("option[value=\'"+row.sex+"\']").attr("selected",true);
 		a(row.year, row.month, row.day);
 		return false;
@@ -304,7 +320,8 @@
 			month: $('#month').val(),
 			day: $('#day').val(),
 			mobile: $('#updateMobile').val(),
-			address: $('#updateAddress').val()
+			address: $('#updateAddress').val(),
+			idCardNumber:$('#idCardNumber').val()
 		}
 		$('#updateStudentInfoForm').ajaxSubmit({
 			url: url,
@@ -321,7 +338,7 @@
 					$.messager.alert('系统消息', '已完成', "info");
 					$("#datagrid").datagrid("reload");
 				} else {
-					layer.alert(data.msg);
+					$.messager.alert('系统消息', data.msg,'error');
 				}
 			} ,
 			complete: function(){

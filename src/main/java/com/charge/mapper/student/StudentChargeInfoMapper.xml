@@ -175,6 +175,11 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <select id="queryByUniqueKey" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from student_charge_info where student_id=#{studentId} and charge_project_id=#{chargeProjectId} and charge_time=#{chargeTime}
+  </select>
+
   <select id="countStudentChargeInfo" resultType="java.lang.Integer">
     SELECT COUNT(DISTINCT(a.student_id)) FROM student_charge_info a JOIN student_info b on a.student_id=b.id
     join student_class_info e on b.id=e.student_id join class_info f on e.class_id = f.id

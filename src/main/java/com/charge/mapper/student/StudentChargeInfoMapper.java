@@ -17,6 +17,8 @@ public interface StudentChargeInfoMapper {
 
     int updateByPrimaryKey(StudentChargeInfo record);
 
+    StudentChargeInfo queryByUniqueKey(@Param("studentId") Integer studentId, @Param("chargeProjectId")Integer chargeProjectId, @Param("chargeTime")Integer chargeTime);
+
     int countStudentChargeInfo(Map<String, Object> searchParam);
     List<StudentChargeInfoVo> queryStudentChargeInfoPageList(Map<String, Object> searchParam);
 

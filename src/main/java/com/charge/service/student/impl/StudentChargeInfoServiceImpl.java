@@ -1,6 +1,5 @@
 package com.charge.service.student.impl;
 
-import com.charge.Exception.BusinessException;
 import com.charge.enums.charge.ChargeStatus;
 import com.charge.enums.charge.ChargeType;
 import com.charge.mapper.student.StudentChargeInfoMapper;
@@ -50,6 +49,11 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
 
     public List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetail(Integer studentId, List<Integer> chargeStatus) {
         return studentChargeInfoMapper.queryStudentChargeInfoDetail(studentId, chargeStatus);
+    }
+
+    @Override
+    public StudentChargeInfo queryByUniqueKey(Integer studentId, Integer chargeProjectId, Integer chargeTime) {
+        return studentChargeInfoMapper.queryByUniqueKey(studentId, chargeProjectId, chargeTime);
     }
 
     public int countStudentChargeDetail(StudentChargeInfoSearchParam searchParam) {

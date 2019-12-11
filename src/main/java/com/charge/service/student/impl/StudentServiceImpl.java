@@ -1,5 +1,6 @@
 package com.charge.service.student.impl;
 
+import com.charge.Exception.BusinessException;
 import com.charge.mapper.student.StudentExtInfoMapper;
 import com.charge.mapper.student.StudentInfoMapper;
 import com.charge.param.student.StudentSearchParam;
@@ -24,6 +25,12 @@ public class StudentServiceImpl implements StudentService {
     private StudentExtInfoMapper studentExtInfoMapper;
 
     public void insertSelective(StudentInfo studentInfo, StudentExtInfo studentExtInfo) {
+        if(studentInfo.getIdCardNumber() == null){
+            throw new BusinessException("身份证号不能为空，学生："+studentInfo.getName());
+        }
+        if(studentInfoMapper.getStudentInfoByIdCardNumber(studentInfo.getIdCardNumber()) != null){
+            throw new BusinessException("已存在此学生，不可重复导入，身份证号为"+studentInfo.getIdCardNumber());
+        }
         studentInfo.setCreatTime(DateUtil.getCurrentTimespan());
         studentInfoMapper.insertSelective(studentInfo);
         studentExtInfo.setStudentId(studentInfo.getId());
@@ -32,6 +39,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public void updateSelective(StudentInfo studentInfo) {
+        if(studentInfoMapper.getStudentInfoByIdCardNumber(studentInfo.getIdCardNumber()) != null){
+            throw new BusinessException("身份证号不可重复，身份证号为"+studentInfo.getIdCardNumber());
+        }
         studentInfoMapper.updateByPrimaryKeySelective(studentInfo);
     }
 

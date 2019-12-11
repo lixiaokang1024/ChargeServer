@@ -47,7 +47,7 @@ public class StudentController {
         studentSearchParam.setPageSize(rows);
         PageResultDTO<List<StudentInfoVo>> pageResultDTO = studentProxy.queryStudentInfo(studentSearchParam);
         if(pageResultDTO.getData() == null){
-            pageResultDTO.setData(new ArrayList<StudentInfoVo>());
+            pageResultDTO.setData(new ArrayList<>());
         }
         model.put("rows", pageResultDTO.getData());
         model.put("total", pageResultDTO.getTotalRecord());
@@ -79,7 +79,7 @@ public class StudentController {
     @ResponseBody
     public Map<String, Object> importStudentInfo(@RequestParam(value = "studentFileBuildInfo", required = false) MultipartFile buildInfo,
                                                 HttpServletRequest request) {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("success", true);
         try {
             InputStream io = buildInfo.getInputStream();

@@ -44,6 +44,10 @@ public class StudentInfo implements Serializable {
      */
     private String parentName;
 
+    private String parentIdCardType;
+
+    private String parentIdCardNumber;
+
     /**
      * student_info.relation 
      */
@@ -63,6 +67,44 @@ public class StudentInfo implements Serializable {
      * student_info.is_graduate 
      */
     private Boolean graduate = false;
+
+    private String idCardType;
+
+    private String idCardNumber;
+
+    private String country;
+
+    /**
+     * 民族
+     */
+    private String nation;
+
+    /**
+     * 港澳台侨外
+     */
+    private String oversea;
+
+    private String bornPlace;
+
+    /**
+     * 籍贯
+     */
+    private String nativePlace;
+
+    /**
+     * 户口性质
+     */
+    private String accountCharacter;
+
+    /**
+     * 非农业户口类型
+     */
+    private String nonAgriculturalAccountType;
+
+    /**
+     * 户口所在地
+     */
+    private String registeredResidence;
 
     /**
      * student_info.creat_time 
@@ -275,6 +317,22 @@ public class StudentInfo implements Serializable {
         this.modifyTime = modifyTime;
     }
 
+    public String getParentIdCardType() {
+        return parentIdCardType;
+    }
+
+    public void setParentIdCardType(String parentIdCardType) {
+        this.parentIdCardType = parentIdCardType;
+    }
+
+    public String getParentIdCardNumber() {
+        return parentIdCardNumber;
+    }
+
+    public void setParentIdCardNumber(String parentIdCardNumber) {
+        this.parentIdCardNumber = parentIdCardNumber;
+    }
+
     /**
      * @return student_info.is_deleted 
      */
@@ -287,5 +345,85 @@ public class StudentInfo implements Serializable {
      */
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public String getIdCardType() {
+        return idCardType;
+    }
+
+    public void setIdCardType(String idCardType) {
+        this.idCardType = idCardType;
+    }
+
+    public String getIdCardNumber() {
+        return idCardNumber;
+    }
+
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getNation() {
+        return nation;
+    }
+
+    public void setNation(String nation) {
+        this.nation = nation;
+    }
+
+    public String getOversea() {
+        return oversea;
+    }
+
+    public void setOversea(String oversea) {
+        this.oversea = oversea;
+    }
+
+    public String getBornPlace() {
+        return bornPlace;
+    }
+
+    public void setBornPlace(String bornPlace) {
+        this.bornPlace = bornPlace;
+    }
+
+    public String getNativePlace() {
+        return nativePlace;
+    }
+
+    public void setNativePlace(String nativePlace) {
+        this.nativePlace = nativePlace;
+    }
+
+    public String getAccountCharacter() {
+        return accountCharacter;
+    }
+
+    public void setAccountCharacter(String accountCharacter) {
+        this.accountCharacter = accountCharacter;
+    }
+
+    public String getNonAgriculturalAccountType() {
+        return nonAgriculturalAccountType;
+    }
+
+    public void setNonAgriculturalAccountType(String nonAgriculturalAccountType) {
+        this.nonAgriculturalAccountType = nonAgriculturalAccountType;
+    }
+
+    public String getRegisteredResidence() {
+        return registeredResidence;
+    }
+
+    public void setRegisteredResidence(String registeredResidence) {
+        this.registeredResidence = registeredResidence;
     }
 }
