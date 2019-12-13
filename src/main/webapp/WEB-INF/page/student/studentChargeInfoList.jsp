@@ -272,7 +272,7 @@
                 $("#chargeProject").append('');
                 for(i=0;i<row.length;i++){
                     var rowData = row[i];
-                    $("#chargeProject").append(rowData.chargeProjectName + '：<input style="width: 150px;" id='+rowData.chargeProjectId+' type="text" value='+rowData.chargeAmount+'></input><br/><br/>');
+                    $("#chargeProject").append(rowData.chargeProjectName + '：<input style="width: 150px;" id='+rowData.chargeProjectId+' type="text" value='+(rowData.chargeAmount-rowData.actualChargeAmount-rowData.useDepositAmount)+'></input><br/><br/>');
                 }
             },
 			error:function () {

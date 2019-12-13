@@ -254,6 +254,12 @@
     <if test="param.name != null and param.name != ''">
       AND b.name=#{param.name}
     </if>
+    <if test="param.status != null and param.status != -1 and param.status != 3">
+      AND a.status=#{param.status}
+    </if>
+    <if test="param.status != null and param.status == 3">
+      AND a.status in(0,1) and a.charge_time &lt; UNIX_TIMESTAMP(NOW())
+    </if>
   </select>
   <sql id="wheresql">
     WHERE a.is_deleted = 0

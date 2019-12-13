@@ -1,5 +1,6 @@
 package com.charge.service.student.impl;
 
+import com.charge.Exception.BusinessException;
 import com.charge.enums.charge.ChargeStatus;
 import com.charge.enums.charge.ChargeType;
 import com.charge.mapper.student.StudentChargeInfoMapper;
@@ -152,7 +153,7 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             prepaymentAmount = studentExtInfoMapper.getByStudentId(chargeParam.getStudentId()).getPrepaymentAmount();
         }
         for(StudentChargeInfoDetailVo vo:studentChargeInfoDetailVoList){
-            Double chargeAmount = vo.getChargeAmount();
+            Double chargeAmount = vo.getChargeAmount() - vo.getActualChargeAmount() - vo.getUseDepositAmount();
             Double actureChargeAmount = projectAmountMap.get(vo.getChargeProjectId());
             Double useDepositAmount = 0.00;
             if(actureChargeAmount < chargeAmount){
@@ -162,6 +163,9 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
                 }
                 prepaymentAmount -= useDepositAmount;
                 changePrepaymentAmount += useDepositAmount;
+            }
+            if((actureChargeAmount + useDepositAmount) > chargeAmount){
+              throw new BusinessException("实际支付金额大于应支付金额,请核对后再支付");
             }
             StudentChargeInfo studentChargeInfo = new StudentChargeInfo();
             studentChargeInfo.setId(vo.getId());
