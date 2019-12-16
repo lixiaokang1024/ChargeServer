@@ -223,7 +223,10 @@
             <ul>
                 <li>
                     <span>
-                        <a href="studentChargeInfo/index" title="学生应缴费" class="newTab">学生应缴费</a>
+                        <a href="studentChargeInfo/index" title="应缴费学生" class="newTab">应缴费学生</a>
+					</span>
+                    <span>
+                        <a href="studentChargeInfo/expireIndex" title="已欠费学生" class="newTab">已欠费学生</a>
 					</span>
                     <span>
                         <a href="studentChargeInfo/historyIndex" title="学生历史缴费" class="newTab">学生历史缴费</a>

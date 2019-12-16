@@ -305,7 +305,7 @@
      </foreach>
   </select>
 
-  <select id="updateStudentChargeInfo" parameterType="com.charge.pojo.student.StudentChargeInfo">
+  <update id="updateStudentChargeInfo" parameterType="com.charge.pojo.student.StudentChargeInfo">
     UPDATE student_charge_info SET
     actual_charge_amount = actual_charge_amount + #{actualChargeAmount},
     use_deposit_amount = use_deposit_amount + #{useDepositAmount},
@@ -315,5 +315,9 @@
     </if>
     status = #{status}
     WHERE id=#{id}
-  </select>
+  </update>
+
+  <update id="checkChargeExpireStudent">
+    update student_charge_info set status = 3 where status in(0, 1) and charge_time &lt;= UNIX_TIMESTAMP(NOW())
+  </update>
 </mapper>

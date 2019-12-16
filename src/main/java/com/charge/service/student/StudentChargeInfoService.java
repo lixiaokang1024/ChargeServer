@@ -27,4 +27,6 @@ public interface StudentChargeInfoService {
 
     int countStudentChargeDetail(StudentChargeInfoSearchParam searchParam);
     List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetailPageList(StudentChargeInfoSearchParam searchParam);
+
+  void checkChargeExpireStudent();
 }

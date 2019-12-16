@@ -66,6 +66,11 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
         return studentChargeInfoMapper.queryStudentChargeDetailPageList(paramMap);
     }
 
+    @Override
+    public void checkChargeExpireStudent() {
+        studentChargeInfoMapper.checkChargeExpireStudent();
+    }
+
     public void addPrepaymentAmount(StudentChargeParam chargeParam) {
         studentExtInfoMapper.updatePrepaymentAmount(chargeParam.getStudentId(), chargeParam.getChargeAmount());
     }
@@ -136,6 +141,7 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
         List<Integer> chargeStatus = new ArrayList<Integer>();
         chargeStatus.add(0);
         chargeStatus.add(1);
+        chargeStatus.add(3);
         List<StudentChargeInfoDetailVo> result = new ArrayList<StudentChargeInfoDetailVo>();
         List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = studentChargeInfoMapper.queryStudentChargeInfoDetail(chargeParam.getStudentId(), chargeStatus);
         if(CollectionUtils.isEmpty(studentChargeInfoDetailVoList)){
@@ -174,7 +180,9 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             studentChargeInfo.setActualChargeTime(DateUtil.getCurrentTimespan());
             if((actureChargeAmount + useDepositAmount) < chargeAmount){
                 if((actureChargeAmount + useDepositAmount) > 0.00){
-                    studentChargeInfo.setStatus(ChargeStatus.PART_CHARGED.getCode());
+                    if(studentChargeInfo.getStatus() != ChargeStatus.EXPIRED.getCode()){
+                        studentChargeInfo.setStatus(ChargeStatus.PART_CHARGED.getCode());
+                    }
                 }
             }else{
                 studentChargeInfo.setStatus(ChargeStatus.CHARGED.getCode());
