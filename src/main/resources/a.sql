@@ -118,6 +118,7 @@ CREATE TABLE `student_charge_info` (
   `charge_project_id` int(11) NOT NULL DEFAULT '0',
   `charge_amount` decimal(8,2) NOT NULL DEFAULT '0.00',
   `actual_charge_amount` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '实际缴费金额',
+  `discount` decimal(3,2) NOT NULL DEFAULT '1.00' COMMENT '折扣',
   `use_deposit_amount` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '使用预缴费金额',
   `charge_time` int(11) NOT NULL DEFAULT '0' COMMENT '缴费日期',
   `actual_charge_time` int(11) NOT NULL DEFAULT '0',
@@ -131,7 +132,7 @@ CREATE TABLE `student_charge_info` (
 
 /*Data for the table `student_charge_info` */
 
-insert  into `student_charge_info`(`id`,`student_id`,`charge_project_id`,`charge_amount`,`actual_charge_amount`,`use_deposit_amount`,`charge_time`,`actual_charge_time`,`pay_type`,`status`,`create_time`,`modify_time`,`is_deleted`) values (1,6,1,'180.00','180.00','0.00',1576339200,1576121142,0,2,1576053566,'2019-12-16 20:56:24',0),(2,6,1,'180.00','180.00','0.00',1576598400,1576121260,0,2,1576121228,'2019-12-16 19:54:34',0),(3,6,1,'180.00','130.00','0.00',1576497508,1576552164,0,3,1576208383,'2019-12-17 11:09:24',0);
+insert  into `student_charge_info`(`id`,`student_id`,`charge_project_id`,`charge_amount`,`actual_charge_amount`,`discount`,`use_deposit_amount`,`charge_time`,`actual_charge_time`,`pay_type`,`status`,`create_time`,`modify_time`,`is_deleted`) values (1,6,1,'180.00','180.00','1.00','0.00',1576339200,1576121142,0,2,1576053566,'2019-12-16 20:56:24',0),(2,6,1,'180.00','180.00','1.00','0.00',1576598400,1576121260,0,2,1576121228,'2019-12-16 19:54:34',0),(3,6,1,'180.00','162.00','0.90','0.00',1576497508,1576582678,0,2,1576208383,'2019-12-17 19:37:58',0);
 
 /*Table structure for table `student_class_info` */
 
