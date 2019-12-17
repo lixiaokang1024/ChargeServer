@@ -11,6 +11,7 @@
 			<th width="150px">缴费项目</th>
 			<th width="150px">应缴费金额</th>
 			<th width="150px">实际缴费金额</th>
+			<th width="50px">优惠</th>
 			<th width="150px">使用预缴费金额</th>
 			<th width="130px">应缴费时间</th>
 			<th width="130px">实际缴费时间</th>
@@ -24,6 +25,7 @@
 				<td>${ basic.chargeProjectName }</td>
 				<td>${ basic.chargeAmount }</td>
 				<td>${ basic.actualChargeAmount }</td>
+				<td>${ basic.discount*10 }折</td>
 				<td>${ basic.useDepositAmount }</td>
 				<td>${ basic.chargeTimeStr }</td>
 				<td>${ basic.actualChargeTimeStr }</td>

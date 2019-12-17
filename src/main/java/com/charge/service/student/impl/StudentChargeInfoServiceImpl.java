@@ -148,9 +148,9 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             return result;
         }
         List<ProjectChargeParam> projectChargeParamList = chargeParam.getProjectChargeParamList();
-        Map<Integer, Double> projectAmountMap = new HashMap<Integer, Double>();
+        Map<Integer, ProjectChargeParam> projectAmountMap = new HashMap<>();
         for(ProjectChargeParam projectChargeParam:projectChargeParamList){
-            projectAmountMap.put(projectChargeParam.getProjectId(), projectChargeParam.getProjectAmount());
+            projectAmountMap.put(projectChargeParam.getProjectId(), projectChargeParam);
         }
         Boolean useDeposit = chargeParam.getIsUseDeposit() == 1;
         Double prepaymentAmount = 0.00; //学生预缴费金额
@@ -159,8 +159,9 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             prepaymentAmount = studentExtInfoMapper.getByStudentId(chargeParam.getStudentId()).getPrepaymentAmount();
         }
         for(StudentChargeInfoDetailVo vo:studentChargeInfoDetailVoList){
-            Double chargeAmount = vo.getChargeAmount() - vo.getActualChargeAmount() - vo.getUseDepositAmount();
-            Double actureChargeAmount = projectAmountMap.get(vo.getChargeProjectId());
+            Double discount = projectAmountMap.get(vo.getChargeProjectId()).getDiscount();
+            Double chargeAmount = vo.getChargeAmount() * discount - vo.getActualChargeAmount() - vo.getUseDepositAmount();
+            Double actureChargeAmount = projectAmountMap.get(vo.getChargeProjectId()).getProjectAmount();
             Double useDepositAmount = 0.00;
             if(actureChargeAmount < chargeAmount){
                 useDepositAmount = chargeAmount - actureChargeAmount;
@@ -179,6 +180,7 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             studentChargeInfo.setUseDepositAmount(useDepositAmount);
             studentChargeInfo.setActualChargeTime(DateUtil.getCurrentTimespan());
             studentChargeInfo.setStatus(vo.getStatus());
+            studentChargeInfo.setDiscount(discount);
             if((actureChargeAmount + useDepositAmount) < chargeAmount){
                 if((actureChargeAmount + useDepositAmount) > 0.00){
                     if(vo.getStatus() != ChargeStatus.EXPIRED.getCode()){

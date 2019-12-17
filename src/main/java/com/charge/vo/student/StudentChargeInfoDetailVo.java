@@ -17,6 +17,7 @@ public class StudentChargeInfoDetailVo implements Serializable {
     private String chargeProjectName;
     private Double chargeAmount;
     private Double actualChargeAmount;//实际缴费金额
+    private Double discount;//折扣
     private Double useDepositAmount;//使用预缴费金额
     private Integer chargeTime;//应缴费时间
     private String chargeTimeStr;
@@ -145,6 +146,14 @@ public class StudentChargeInfoDetailVo implements Serializable {
 
     public void setActualChargeAmount(Double actualChargeAmount) {
         this.actualChargeAmount = actualChargeAmount;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
     }
 
     public Double getUseDepositAmount() {

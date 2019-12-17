@@ -7,6 +7,7 @@
     <result column="charge_project_id" property="chargeProjectId" jdbcType="INTEGER" />
     <result column="charge_amount" property="chargeAmount" jdbcType="DECIMAL" />
     <result column="actual_charge_amount" property="actualChargeAmount" jdbcType="DECIMAL" />
+    <result column="discount" property="discount" jdbcType="DECIMAL" />
     <result column="use_deposit_amount" property="useDepositAmount" jdbcType="DECIMAL" />
     <result column="charge_time" property="chargeTime" jdbcType="INTEGER" />
     <result column="actual_charge_time" property="actualChargeTime" jdbcType="INTEGER" />
@@ -17,16 +18,16 @@
     <result column="is_deleted" property="deleted" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, student_id, charge_project_id, charge_amount, actual_charge_amount,use_deposit_amount,charge_time,
+    id, student_id, charge_project_id, charge_amount, actual_charge_amount,discount,use_deposit_amount,charge_time,
     actual_charge_time,pay_type, status,create_time, modify_time, is_deleted
   </sql>
   <insert id="insert" parameterType="com.charge.pojo.student.StudentChargeInfo" >
     insert into student_charge_info (id, student_id, charge_project_id, 
-      charge_amount, actual_charge_amount,use_deposit_amount,charge_time, actual_charge_time,pay_type,
+      charge_amount, actual_charge_amount,discount,use_deposit_amount,charge_time, actual_charge_time,pay_type,
       status, create_time, modify_time, 
       is_deleted)
     values (#{id,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{chargeProjectId,jdbcType=INTEGER}, 
-      #{chargeAmount,jdbcType=DECIMAL}, #{actualChargeAmount},#{useDepositAmount},#{chargeTime,jdbcType=INTEGER},
+      #{chargeAmount,jdbcType=DECIMAL}, #{actualChargeAmount},#{discount},#{useDepositAmount},#{chargeTime,jdbcType=INTEGER},
        #{actualChargeTime},#{payType,jdbcType=INTEGER},
       #{status,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, 
       #{deleted,jdbcType=INTEGER})
@@ -48,6 +49,9 @@
       </if>
       <if test="actualChargeAmount != null" >
         actual_charge_amount,
+      </if>
+      <if test="discount != null" >
+        discount,
       </if>
       <if test="useDepositAmount != null" >
         use_deposit_amount,
@@ -90,6 +94,9 @@
       <if test="actualChargeAmount != null" >
         #{actualChargeAmount},
       </if>
+      <if test="discount != null" >
+        #{discount},
+      </if>
       <if test="useDepositAmount != null" >
         #{useDepositAmount},
       </if>
@@ -131,6 +138,9 @@
       <if test="actualChargeAmount != null" >
         actual_charge_amount = #{actualChargeAmount},
       </if>
+      <if test="discount != null" >
+        discount = #{discount},
+      </if>
       <if test="useDepositAmount != null" >
         use_deposit_amount = #{useDepositAmount},
       </if>
@@ -164,6 +174,7 @@
       charge_project_id = #{chargeProjectId,jdbcType=INTEGER},
       charge_amount = #{chargeAmount,jdbcType=DECIMAL},
       actual_charge_amount = #{actualChargeAmount},
+      discount = #{discount},
       use_deposit_amount = #{useDepositAmount},
       charge_time = #{chargeTime,jdbcType=INTEGER},
       actual_charge_time = #{actualChargeTime},
@@ -235,6 +246,7 @@
     d.project_name as chargeProjectName,
     a.charge_amount,
     a.actual_charge_amount,
+    a.discount,
     a.use_deposit_amount,
     a.charge_time,
     a.actual_charge_time,
@@ -292,6 +304,7 @@
     d.project_name as chargeProjectName,
     a.charge_amount,
     a.actual_charge_amount,
+    a.discount,
     a.use_deposit_amount,
     a.charge_time,
     a.actual_charge_time,
@@ -315,6 +328,7 @@
     <if test="status != null">
       status = #{status},
     </if>
+    discount = #{discount},
     actual_charge_time = #{actualChargeTime}
     WHERE id=#{id}
   </update>

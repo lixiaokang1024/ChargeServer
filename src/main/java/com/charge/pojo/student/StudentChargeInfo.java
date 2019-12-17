@@ -26,6 +26,8 @@ public class StudentChargeInfo implements Serializable {
 
     private Double actualChargeAmount;//实际缴费金额
 
+    private Double discount;//折扣
+
     private Double useDepositAmount;//使用预缴费金额
 
     /**
@@ -122,6 +124,14 @@ public class StudentChargeInfo implements Serializable {
 
     public void setActualChargeAmount(Double actualChargeAmount) {
         this.actualChargeAmount = actualChargeAmount;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
     }
 
     public Double getUseDepositAmount() {

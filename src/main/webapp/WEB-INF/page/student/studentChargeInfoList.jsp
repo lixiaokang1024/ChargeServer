@@ -273,7 +273,19 @@
                 $("#chargeProject").append('');
                 for(i=0;i<row.length;i++){
                     var rowData = row[i];
-                    $("#chargeProject").append(rowData.chargeProjectName + '：<input style="width: 150px;" id='+rowData.chargeProjectId+' type="text" value='+(rowData.chargeAmount-rowData.actualChargeAmount-rowData.useDepositAmount)+'></input><br/><br/>');
+					$("#chargeProject").append('<input id="chargeAmount'+rowData.chargeProjectId+'" type="hidden" value="'+rowData.chargeAmount+'" />');
+					$("#chargeProject").append('<input id="actualChargeAmount'+rowData.chargeProjectId+'" type="hidden" value="'+rowData.actualChargeAmount+'" />');
+					$("#chargeProject").append('<input id="useDepositAmount'+rowData.chargeProjectId+'" type="hidden" value="'+rowData.useDepositAmount+'" />');
+                    $("#chargeProject").append(rowData.chargeProjectName + '：<input style="width: 150px;" id='+rowData.chargeProjectId+' type="text" value='+(rowData.chargeAmount-rowData.actualChargeAmount-rowData.useDepositAmount)+'></input>')
+					.append('<select id="discount'+rowData.chargeProjectId+'"><option value="1">不优惠</option><option value="0.9">9折优惠</option><option value="0.8">8折优惠</option></select>').append('<br/>');
+					$("#discount"+rowData.chargeProjectId).bind('change',function () {
+						var id = $(this).attr("id").substring(8);
+						var discount = $(this).val();
+						var chargeAmount = $("#chargeAmount"+id).val();
+						var actualChargeAmount = $("#actualChargeAmount"+id).val();
+						var useDepositAmount = $("#useDepositAmount"+id).val();
+						$("#"+id).val(chargeAmount*discount - actualChargeAmount - useDepositAmount);
+					});
                 }
             },
 			error:function () {
@@ -286,8 +298,9 @@
 	$('#save').live('click',function(){
 		var url = "${contextPath}/studentChargeInfo/doProjectCharge";
 		var projectChargeParamList = new Array();
-		$('#chargeProject').find('input').each(function (index, element) {
-            projectChargeParamList.push({projectId:element.id,projectAmount:element.value});
+		$('#chargeProject').find('input:text').each(function (index, element) {
+			var discount = $('#discount'+element.id).val();
+            projectChargeParamList.push({projectId:element.id,projectAmount:element.value,discount:discount});
         });
         var data = {
 			studentId: $('#studentId').val(),
