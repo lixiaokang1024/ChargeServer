@@ -178,9 +178,10 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             studentChargeInfo.setActualChargeAmount(actureChargeAmount);
             studentChargeInfo.setUseDepositAmount(useDepositAmount);
             studentChargeInfo.setActualChargeTime(DateUtil.getCurrentTimespan());
+            studentChargeInfo.setStatus(vo.getStatus());
             if((actureChargeAmount + useDepositAmount) < chargeAmount){
                 if((actureChargeAmount + useDepositAmount) > 0.00){
-                    if(studentChargeInfo.getStatus() != ChargeStatus.EXPIRED.getCode()){
+                    if(vo.getStatus() != ChargeStatus.EXPIRED.getCode()){
                         studentChargeInfo.setStatus(ChargeStatus.PART_CHARGED.getCode());
                     }
                 }

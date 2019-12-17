@@ -309,11 +309,13 @@
     UPDATE student_charge_info SET
     actual_charge_amount = actual_charge_amount + #{actualChargeAmount},
     use_deposit_amount = use_deposit_amount + #{useDepositAmount},
-    actual_charge_time = #{actualChargeTime},
     <if test="payType != null">
       pay_type = #{payType},
     </if>
-    status = #{status}
+    <if test="status != null">
+      status = #{status},
+    </if>
+    actual_charge_time = #{actualChargeTime}
     WHERE id=#{id}
   </update>
 
