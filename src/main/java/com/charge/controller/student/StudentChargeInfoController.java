@@ -114,7 +114,7 @@ public class StudentChargeInfoController {
         List<Integer> chargeStatus = new ArrayList<Integer>();
         chargeStatus.add(0);
         chargeStatus.add(1);
-        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = chargeInfoProxy.queryStudentChargeInfoDetail(studentId, chargeStatus);
+        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = chargeInfoProxy.queryStudentChargeInfoDetail(studentId, chargeStatus, null, null);
         model.addAttribute("data", studentChargeInfoDetailVoList);
         return "student/studentChargeInfoDetail";
     }
@@ -123,7 +123,7 @@ public class StudentChargeInfoController {
     public String getOverDueStudentChargeInfoDetail(Model model, @PathVariable Integer studentId) {
         List<Integer> chargeStatus = new ArrayList<>();
         chargeStatus.add(3);
-        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = chargeInfoProxy.queryStudentChargeInfoDetail(studentId, chargeStatus);
+        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = chargeInfoProxy.queryStudentChargeInfoDetail(studentId, chargeStatus, null, null);
         model.addAttribute("data", studentChargeInfoDetailVoList);
         return "student/studentChargeInfoDetail";
     }
@@ -132,7 +132,7 @@ public class StudentChargeInfoController {
     @ResponseBody
     public ModelMap getByStudentId(@RequestParam("studentId") Integer studentId, @RequestParam("chargeStatus[]") List<Integer> chargeStatus) {
         ModelMap model = new ModelMap();
-        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = chargeInfoProxy.queryStudentChargeInfoDetail(studentId, chargeStatus);
+        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = chargeInfoProxy.queryStudentChargeInfoDetail(studentId, chargeStatus, null, null);
         model.put("rows", studentChargeInfoDetailVoList);
         return model;
     }
@@ -147,18 +147,19 @@ public class StudentChargeInfoController {
         chargeStatus.add(2);
         searchParam.setChargeStatus(chargeStatus);
         PageResultDTO<List<StudentChargeInfoVo>> pageResultDTO = chargeInfoProxy.queryStudentChargeInfo(searchParam);
-        model.put("rows", pageResultDTO.getData());
+        List<StudentChargeInfoVo> data = pageResultDTO.getData();
+        model.put("rows", data == null ? new ArrayList<>():data);
         model.put("total", pageResultDTO.getTotalRecord());
         model.put("page", page);
         return model;
     }
 
     @RequestMapping("/historyDetail/{studentId}")
-    public String getStudentHistoryChargeInfoDetail(Model model, @PathVariable Integer studentId) {
-        List<Integer> chargeStatus = new ArrayList<Integer>();
+    public String getStudentHistoryChargeInfoDetail(Model model, @PathVariable Integer studentId, String payTimeBegin, String payTimeEnd) {
+        List<Integer> chargeStatus = new ArrayList<>();
         chargeStatus.add(2);
-        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = chargeInfoProxy.queryStudentChargeInfoDetail(studentId, chargeStatus);
-        model.addAttribute("data", studentChargeInfoDetailVoList);
+        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = chargeInfoProxy.queryStudentChargeInfoDetail(studentId, chargeStatus, payTimeBegin, payTimeEnd);
+        model.addAttribute("data", studentChargeInfoDetailVoList == null ? new ArrayList<>():studentChargeInfoDetailVoList);
         return "student/studentHistoryChargeInfoDetail";
     }
 

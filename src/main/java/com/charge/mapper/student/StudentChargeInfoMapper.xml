@@ -334,6 +334,12 @@
      <foreach collection="chargeStatusList" open="(" close=")" separator="," item="item">
        #{item}
      </foreach>
+    <if test="payTimeBegin != null and payTimeBegin != ''">
+      AND a.actual_charge_time &gt;= UNIX_TIMESTAMP(#{payTimeBegin})
+    </if>
+    <if test="payTimeEnd != null and payTimeEnd != ''">
+      AND a.actual_charge_time &lt;= UNIX_TIMESTAMP(#{payTimeEnd})
+    </if>
   </select>
 
   <update id="updateStudentChargeInfo" parameterType="com.charge.pojo.student.StudentChargeInfo">

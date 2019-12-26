@@ -48,8 +48,8 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
         return studentChargeInfoMapper.queryStudentChargeInfoPageList(paramMap);
     }
 
-    public List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetail(Integer studentId, List<Integer> chargeStatus) {
-        return studentChargeInfoMapper.queryStudentChargeInfoDetail(studentId, chargeStatus);
+    public List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetail(Integer studentId, List<Integer> chargeStatus, String payTimeBegin, String payTimeEnd) {
+        return studentChargeInfoMapper.queryStudentChargeInfoDetail(studentId, chargeStatus, payTimeBegin, payTimeEnd);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
         List<Integer> chargeStatus = new ArrayList<Integer>();
         chargeStatus.add(0);
         chargeStatus.add(1);
-        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = studentChargeInfoMapper.queryStudentChargeInfoDetail(chargeParam.getStudentId(), chargeStatus);
+        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = studentChargeInfoMapper.queryStudentChargeInfoDetail(chargeParam.getStudentId(), chargeStatus, null, null);
         if(CollectionUtils.isEmpty(studentChargeInfoDetailVoList)){
             return;
         }
@@ -143,7 +143,7 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
         chargeStatus.add(1);
         chargeStatus.add(3);
         List<StudentChargeInfoDetailVo> result = new ArrayList<StudentChargeInfoDetailVo>();
-        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = studentChargeInfoMapper.queryStudentChargeInfoDetail(chargeParam.getStudentId(), chargeStatus);
+        List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = studentChargeInfoMapper.queryStudentChargeInfoDetail(chargeParam.getStudentId(), chargeStatus, null, null);
         if(CollectionUtils.isEmpty(studentChargeInfoDetailVoList)){
             return result;
         }

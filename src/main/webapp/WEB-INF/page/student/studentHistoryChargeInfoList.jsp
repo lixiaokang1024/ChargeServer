@@ -80,6 +80,16 @@
 
 	function settings(value, row) {
 		var url = '${contextPath}/studentChargeInfo/historyDetail/'+row.studentId;
+		var payTimeBegin = $('#payTimeBegin').val();
+		if(payTimeBegin != ''){
+			payTimeBegin = payTimeBegin + " 00:00:00";
+			url = url + "?payTimeBegin=" + payTimeBegin;
+		}
+		var payTimeEnd = $('#payTimeEnd').val();
+		if(payTimeEnd != ''){
+			payTimeEnd = payTimeEnd + " 23:59:59";
+			url = url + "&payTimeEnd=" + payTimeEnd;
+		}
 		var html = '<div style="text-align: center;">';
 		html += '<span style="margin-right: 10px;"><a href="javascript:;" ';
 		html += 'onclick="addTab(\'学生历史缴费详情\',\''+url+'\',true)">';

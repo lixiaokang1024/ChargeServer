@@ -77,11 +77,11 @@ public class StudentChargeInfoProxy {
         return pageResultDTO;
     }
 
-    public List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetail(Integer studentId, List<Integer> chargeStatus){
+    public List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetail(Integer studentId, List<Integer> chargeStatus, String payTimeBegin, String payTimeEnd){
         logger.info("查询学生应缴费信息详情搜索参数：{}", studentId);
         List<StudentChargeInfoDetailVo> studentChargeInfoDetailVoList = new ArrayList<StudentChargeInfoDetailVo>();
         try {
-            studentChargeInfoDetailVoList = studentChargeInfoService.queryStudentChargeInfoDetail(studentId, chargeStatus);
+            studentChargeInfoDetailVoList = studentChargeInfoService.queryStudentChargeInfoDetail(studentId, chargeStatus, payTimeBegin, payTimeEnd);
         } catch (Exception e){
             logger.error("查询学生应缴费信息详情出错,msg={}",e.getMessage(),e);
         }
