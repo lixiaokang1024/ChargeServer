@@ -21,6 +21,9 @@ public class StudentChargeInfoSearchParam extends BaseDataPaginationParam implem
 
     private Integer status;
 
+    private String payTimeBegin;
+    private String payTimeEnd;
+
     private List<Integer> chargeStatus;
 
     public String getName() {
@@ -77,6 +80,22 @@ public class StudentChargeInfoSearchParam extends BaseDataPaginationParam implem
 
     public void setChargeProjectId(Integer chargeProjectId) {
         this.chargeProjectId = chargeProjectId;
+    }
+
+    public String getPayTimeBegin() {
+        return payTimeBegin;
+    }
+
+    public void setPayTimeBegin(String payTimeBegin) {
+        this.payTimeBegin = payTimeBegin;
+    }
+
+    public String getPayTimeEnd() {
+        return payTimeEnd;
+    }
+
+    public void setPayTimeEnd(String payTimeEnd) {
+        this.payTimeEnd = payTimeEnd;
     }
 
     public List<Integer> getChargeStatus() {

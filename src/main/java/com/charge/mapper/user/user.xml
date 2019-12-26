@@ -13,4 +13,8 @@
         select * from user where user_name=#{username}
     </select>
 
+    <select id="getAllUser" resultType="com.charge.pojo.User">
+        select * from user
+    </select>
+
 </mapper>

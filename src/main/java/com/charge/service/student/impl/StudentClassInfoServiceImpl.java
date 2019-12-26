@@ -64,6 +64,9 @@ public class StudentClassInfoServiceImpl implements StudentClassInfoService {
     public void upStudentClass(List<StudentClassInfoVo> studentClassInfoVoList) {
         int maxGradeLevel = gradeInfoMapper.getMaxGradeLevel();
         for(StudentClassInfoVo studentClassInfoVo:studentClassInfoVoList){
+            if(studentClassInfoVo.getClassId() == null){
+                continue;
+            }
             if(studentClassInfoVo.getGradeLevel() == maxGradeLevel){
                 upGraduateStudent(studentClassInfoVo);
             }else{
@@ -80,6 +83,21 @@ public class StudentClassInfoServiceImpl implements StudentClassInfoService {
                 studentClassInfo.setClassId(classInfo.getId());
                 studentClassInfoMapper.updateByPrimaryKeySelective(studentClassInfo);
             }
+        }
+    }
+
+    @Override
+    public void updateStudentClassInfo(Integer studentId, Integer classId) {
+        StudentClassInfo studentClassInfo = studentClassInfoMapper.getByStudentId(studentId);
+        if(studentClassInfo == null){
+            studentClassInfo = new StudentClassInfo();
+            studentClassInfo.setStudentId(studentId);
+            studentClassInfo.setClassId(classId);
+            studentClassInfo.setCreateTime(DateUtil.getCurrentTimespan());
+            studentClassInfoMapper.insertSelective(studentClassInfo);
+        }else{
+            studentClassInfo.setClassId(classId);
+            studentClassInfoMapper.updateByPrimaryKeySelective(studentClassInfo);
         }
     }
 

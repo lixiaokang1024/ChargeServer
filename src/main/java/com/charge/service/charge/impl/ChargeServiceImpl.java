@@ -48,7 +48,7 @@ public class ChargeServiceImpl implements ChargeService {
     }
 
     public void deleteChargeProjectById(Integer id) {
-        chargeProjectMapper.getChargeProjectById(id);
+        chargeProjectMapper.deleteChargeProjectById(id);
     }
 
     public int countChargeProject(ChargeSearchParam chargeSearchParam) {

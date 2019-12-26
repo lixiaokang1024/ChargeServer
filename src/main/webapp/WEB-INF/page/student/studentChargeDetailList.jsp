@@ -44,7 +44,8 @@
 					<select id="classId" style="width: 150px;">
 					</select>
 				</td>
-
+			</tr>
+			<tr>
 				<td style="text-align: right;">缴费状态：</td>
 				<td>
 					<select id="status" style="width: 150px;">
@@ -55,9 +56,16 @@
 						<option value="3">已欠费</option>
 					</select>
 				</td>
-
+				<td style="text-align: right;">缴费日期：</td>
+				<td colspan="3">
+					<input id="payTimeBegin" style="width: 125px" name="payTimeBegin" class="Wdate"
+						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,maxDate:'#F{$dp.$D(\'payTimeEnd\')}'})"
+						   value=""/>&nbsp;-&nbsp;
+					<input id="payTimeEnd" style="width: 125px" name="payTimeEnd" class="Wdate"
+						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,minDate:'#F{$dp.$D(\'payTimeBegin\')}'})"
+						   value=""/>
+				</td>
 			</tr>
-			<tr>&nbsp;</tr>
 			<tr>
 				<td colspan="4">
 					<input type="button" class="button search" value="搜索" id="searchLink"/>
@@ -156,11 +164,21 @@
 	});
 
 	function getFormData() {
+		var payTimeBegin = $('#payTimeBegin').val();
+		if(payTimeBegin != ''){
+			payTimeBegin = payTimeBegin + " 00:00:00";
+		}
+		var payTimeEnd = $('#payTimeEnd').val();
+		if(payTimeEnd != ''){
+			payTimeEnd = payTimeEnd + " 23:59:59";
+		}
 		var data = {
 			name: $('#studentName').val(),
             gradeId:$("#gradeId option:selected").val(),
             classId:$("#classId option:selected").val(),
-			status:$('#status').val()
+			status:$('#status').val(),
+			payTimeBegin: payTimeBegin,
+			payTimeEnd: payTimeEnd
 		};
 		return data;
 	}

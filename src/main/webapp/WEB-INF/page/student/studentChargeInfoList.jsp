@@ -262,6 +262,21 @@
 		$("#chargeDialog").dialog("open");
 		$("#chargeAmount").val("");
 		$("#studentId").val(studentId);
+		var discountList = {};
+		$.ajax({
+			url:"${contextPath}/discount/discountList",
+			dataType:'json',
+			data:{},
+			async:false,
+			success:function(data){
+				discountList = data.rows;
+			}
+		});
+		var select = '';
+		for(k=0;k<discountList.length;k++){
+			var row = discountList[k];
+			select = select + '<option value="'+(row.discount/10).toFixed(2)+'">'+row.discount+'优惠</option>';
+		}
 		var chargeStatus = [0,1];
         $.ajax({
             url:"${contextPath}/studentChargeInfo/getByStudentId",
@@ -276,15 +291,17 @@
 					$("#chargeProject").append('<input id="chargeAmount'+rowData.chargeProjectId+'" type="hidden" value="'+rowData.chargeAmount+'" />');
 					$("#chargeProject").append('<input id="actualChargeAmount'+rowData.chargeProjectId+'" type="hidden" value="'+rowData.actualChargeAmount+'" />');
 					$("#chargeProject").append('<input id="useDepositAmount'+rowData.chargeProjectId+'" type="hidden" value="'+rowData.useDepositAmount+'" />');
-                    $("#chargeProject").append(rowData.chargeProjectName + '：<input style="width: 150px;" id='+rowData.chargeProjectId+' type="text" value='+(rowData.chargeAmount-rowData.actualChargeAmount-rowData.useDepositAmount)+'></input>')
-					.append('<select id="discount'+rowData.chargeProjectId+'"><option value="1">不优惠</option><option value="0.9">9折优惠</option><option value="0.8">8折优惠</option></select>').append('<br/>');
+                    $("#chargeProject").append(rowData.chargeProjectName + '：<input style="width: 150px;" id='+rowData.chargeProjectId+' type="text" value='+(rowData.chargeAmount-rowData.actualChargeAmount-rowData.useDepositAmount)+' />');
+
+					$("#chargeProject").append('<select id="discount'+rowData.chargeProjectId+'"><option value="1">不优惠</option>'+select+'</select><br/>');
 					$("#discount"+rowData.chargeProjectId).bind('change',function () {
 						var id = $(this).attr("id").substring(8);
 						var discount = $(this).val();
 						var chargeAmount = $("#chargeAmount"+id).val();
 						var actualChargeAmount = $("#actualChargeAmount"+id).val();
 						var useDepositAmount = $("#useDepositAmount"+id).val();
-						$("#"+id).val(chargeAmount*discount - actualChargeAmount - useDepositAmount);
+						var discountAmount = chargeAmount*discount - actualChargeAmount - useDepositAmount;
+						$("#"+id).val(discountAmount.toFixed(2));
 					});
                 }
             },

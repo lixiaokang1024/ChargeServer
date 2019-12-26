@@ -29,12 +29,12 @@ public class DownloadController {
 		
 		String templateFilePath = request.getSession().getServletContext().getRealPath("/");
 		StringBuilder builder = new StringBuilder();
-		builder.append(templateFilePath).append(File.separator).append("temp").append(File.separator);
+		builder.append(templateFilePath).append(File.separator).append(File.separator);
 		File outPutFile = new File(builder.append(filePath).toString());
 		
 		ServletOutputStream outputStream = null;
 		try {
-			String _fileName = URLDecoder.decode(fileName, "ISO-8859-1");
+			// String _fileName = URLDecoder.decode(fileName, "ISO8859-1");
 			//设置文件名称
 			byte[] datas = FileUtils.readFileToByteArray(outPutFile);
 			if(logger.isDebugEnabled()) {
@@ -43,7 +43,8 @@ public class DownloadController {
 			FileUtils.deleteQuietly(outPutFile);
 			
 			response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-			response.setHeader("Content-disposition", "attachment; filename="+_fileName);
+			response.setHeader("Content-disposition", "attachment; filename="+ new String(fileName.getBytes(), "ISO8859-1"));
+			response.setCharacterEncoding("UTF-8");
 			outputStream = response.getOutputStream();
 			outputStream.write(datas);
 		} catch (Exception e) {

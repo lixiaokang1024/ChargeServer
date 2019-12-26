@@ -5,22 +5,28 @@
   Time: 10:09
   To change this template use File | Settings | File Templates.
 --%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+%>
+<c:set var="contextPath" value="<%=basePath %>" scope="request"></c:set>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="renderer" content="webkit">
     <meta name="description" content="幼儿园缴费系统！">
     <title>缴费系统 - 用户登录</title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <link rel="stylesheet" href="${contextPath}/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${contextPath}/css/font-awesome.min.css">
     <style type="text/css">
         html, body {
             height: 100%;
         }
 
         .box {
-            background: url("../images/loginBg.jpg") no-repeat center center;
+            background: url("${contextPath}/images/loginBg.jpg") no-repeat center center;
             background-size: cover;
 
             margin: 0 auto;
@@ -117,9 +123,9 @@
             font: 14px/normal "microsoft yahei", "Times New Roman", "宋体", Times, serif;
         }
         .glyphicon-user:before{content:none;}
-        .glyphicon-user{width:18px;height:18px;background:url("../images/login/login-n.png") no-repeat center center;}
+        .glyphicon-user{width:18px;height:18px;background:url("${contextPath}/images/login/login-n.png") no-repeat center center;}
         .glyphicon-lock:before{content:none;}
-        .glyphicon-lock{width:18px;height:18px;background:url("../images/login/login-pwd.png") no-repeat center center;}
+        .glyphicon-lock{width:18px;height:18px;background:url("${contextPath}/images/login/login-pwd.png") no-repeat center center;}
     </style>
 </head>
 <body>
@@ -167,8 +173,8 @@
 </div>
 
 <!-- 引入jQuery -->
-<script src="../js/hm.js"></script><script src="../js/jquery.min.js"></script>
-<script src="../js/jquery.cookie.js"></script>
+<script src="${contextPath}/js/hm.js"></script><script src="${contextPath}/js/jquery.min.js"></script>
+<script src="${contextPath}/js/jquery.cookie.js"></script>
 <script type="text/javascript">
     $(function () {
         $('#password').keyup(function (event) {
@@ -195,7 +201,7 @@
                     if (!data.status) {
                         $('#referer').html(data.msg).css("color","red");
                     } else {
-                        top.location.href="<%=request.getContextPath()%>";
+                        top.location.href="<%=request.getContextPath()%>/index.jsp";
                     }
                 },
                 error: function () {

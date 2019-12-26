@@ -110,4 +110,8 @@ public class StudentClassInfoProxy {
             searchParam.setCurrentPage(searchParam.getCurrentPage() + 1);
         }
     }
+
+    public void updateStudentClassInfo(StudentClassInfo studentClassInfo){
+        studentClassInfoService.updateStudentClassInfo(studentClassInfo.getStudentId(), studentClassInfo.getClassId());
+    }
 }

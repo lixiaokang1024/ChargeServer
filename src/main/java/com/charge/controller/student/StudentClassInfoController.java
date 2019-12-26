@@ -2,6 +2,7 @@ package com.charge.controller.student;
 
 import com.charge.param.student.StudentClassInfoSearchParam;
 import com.charge.pojo.common.PageResultDTO;
+import com.charge.pojo.student.StudentClassInfo;
 import com.charge.proxy.student.StudentClassInfoProxy;
 import com.charge.vo.student.StudentClassInfoVo;
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -79,6 +81,20 @@ public class StudentClassInfoController {
             model.put("msg", e.getMessage());
         }
         return model;
+    }
+
+    @RequestMapping("/updateStudentClassInfo")
+    @ResponseBody
+    public Map<String, Object> updateStudentClassInfo(@RequestBody StudentClassInfo studentClassInfo) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("success", true);
+        try {
+            studentClassInfoProxy.updateStudentClassInfo(studentClassInfo);
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
     }
 
 }

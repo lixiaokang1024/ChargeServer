@@ -18,7 +18,7 @@ public class CheckChargeExpireStudentTask {
   @Autowired
   private StudentChargeInfoService studentChargeInfoService;
 
-  @Scheduled(cron = "0 0 0 * * ? ")
+  @Scheduled(cron = "0 0/3 * * * ? ")
   public void checkChargeExpireStudent(){
     logger.info("checkChargeExpireStudent time = {}", DateUtil.getCurrTime());
     studentChargeInfoService.checkChargeExpireStudent();

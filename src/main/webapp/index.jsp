@@ -188,6 +188,9 @@
                     <span>
 						<a href="charge/incomeProjectIndex" title="日常收入项目配置" class="newTab">日常收入项目配置</a>
 					</span>
+                    <span>
+                        <a href="discount/discountIndex" title="折扣配置" class="newTab">折扣配置</a>
+                    </span>
                 </li>
             </ul>
         </li>
@@ -264,13 +267,13 @@
             <ul>
                 <li>
                     <span>
-                        <a href="/greetingCards/index" title="用户管理" class="newTab">用户管理</a>
+                        <a href="user/roleIndex" title="用户管理" class="newTab">用户管理</a>
 					</span>
                     <span>
-                        <a href="/greetingCards/index" title="角色管理" class="newTab">角色管理</a>
+                        <a href="user/roleIndex" title="角色管理" class="newTab">角色管理</a>
 					</span>
                     <span>
-                        <a href="/greetingCards/index" title="权限管理" class="newTab">权限管理</a>
+                        <a href="user/userIndex" title="权限管理" class="newTab">权限管理</a>
 					</span>
                 </li>
             </ul>

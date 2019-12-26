@@ -234,6 +234,12 @@
     <if test="param.status != null and param.status == 3">
       AND a.status in(0,1) and a.charge_time &lt; UNIX_TIMESTAMP(NOW())
     </if>
+    <if test="param.payTimeBegin != null">
+      AND a.actual_charge_time &gt;= UNIX_TIMESTAMP(#{param.payTimeBegin})
+    </if>
+    <if test="param.payTimeEnd != null">
+      AND a.actual_charge_time &lt;= UNIX_TIMESTAMP(#{param.payTimeEnd})
+    </if>
   </select>
   <select id="queryStudentChargeDetailPageList" resultType="com.charge.vo.student.StudentChargeInfoDetailVo">
     SELECT
@@ -272,6 +278,12 @@
     <if test="param.status != null and param.status == 3">
       AND a.status in(0,1) and a.charge_time &lt; UNIX_TIMESTAMP(NOW())
     </if>
+    <if test="param.payTimeBegin != null and param.payTimeBegin != ''">
+      AND a.actual_charge_time &gt;= UNIX_TIMESTAMP(#{param.payTimeBegin})
+    </if>
+    <if test="param.payTimeEnd != null and param.payTimeEnd != ''">
+      AND a.actual_charge_time &lt;= UNIX_TIMESTAMP(#{param.payTimeEnd})
+    </if>
   </select>
   <sql id="wheresql">
     WHERE a.is_deleted = 0
@@ -292,6 +304,12 @@
     </if>
     <if test="param.classId != null and param.classId != -1">
       AND e.class_id=#{param.classId}
+    </if>
+    <if test="param.payTimeBegin != null and param.payTimeBegin != ''">
+      AND a.actual_charge_time &gt;= UNIX_TIMESTAMP(#{param.payTimeBegin})
+    </if>
+    <if test="param.payTimeEnd != null and param.payTimeEnd != ''">
+      AND a.actual_charge_time &lt;= UNIX_TIMESTAMP(#{param.payTimeEnd})
     </if>
   </sql>
 

@@ -1,5 +1,10 @@
 package com.charge.util;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -8,6 +13,9 @@ import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelUtil {
 
@@ -37,5 +45,41 @@ public class ExcelUtil {
         } else {
             return String.valueOf(xssfRow.getStringCellValue()).trim();
         }
+    }
+
+    public static File createXLSXExcel(Map<String, List<String>> map, String[] strArray, String filePath, String fileName) {
+        File file = new File(filePath + fileName + ".xlsx");
+        if(!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        XSSFWorkbook workbook = null;
+        try {
+            workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("sheet1");
+            XSSFRow rowHeader = sheet.createRow(0);
+            for(int i=0;i<strArray.length;i++){
+                rowHeader.createCell(i).setCellValue(strArray[i]);
+            }
+            int k = 1;
+            for(String str : map.keySet()){
+                List<String> rowData = map.get(str);
+                XSSFRow sheetRow = sheet.createRow(k);
+                for(int i=0;i<rowData.size();i++){
+                    sheetRow.createCell(i).setCellValue(rowData.get(i));
+                }
+                k++;
+            }
+            FileOutputStream fos = new FileOutputStream(file);
+            workbook.write(fos);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 }

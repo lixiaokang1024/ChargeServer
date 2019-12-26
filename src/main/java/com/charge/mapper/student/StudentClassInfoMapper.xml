@@ -101,14 +101,14 @@
   </update>
 
   <select id="countStudentClassInfo" resultType="java.lang.Integer">
-    SELECT count(1) FROM student_class_info a JOIN student_info b  on a.student_id=b.id JOIN class_info c on a.class_id=c.id
-    JOIN grade_info d on c.grade_id=d.id
+    SELECT count(1) FROM student_class_info a right JOIN student_info b  on a.student_id=b.id left JOIN class_info c on a.class_id=c.id
+    left JOIN grade_info d on c.grade_id=d.id
     <include refid="wheresql"/>
   </select>
   <select id="queryStudentClassInfoPageList" resultType="com.charge.vo.student.StudentClassInfoVo">
     SELECT
     a.id,
-    a.student_id,
+    b.id as studentId,
     b.name as studentName,
     a.class_id,
     c.name as className,
@@ -116,12 +116,12 @@
     d.name as gradeName,
     d.level as gradeLevel,
     b.is_graduate
-    FROM student_class_info a JOIN student_info b  on a.student_id=b.id JOIN class_info c on a.class_id=c.id
-    JOIN grade_info d on c.grade_id=d.id
+    FROM student_class_info a right JOIN student_info b  on a.student_id=b.id left JOIN class_info c on a.class_id=c.id
+    left JOIN grade_info d on c.grade_id=d.id
     <include refid="wheresql"/>
   </select>
   <sql id="wheresql">
-    WHERE a.is_deleted = 0
+    WHERE 1 = 1
     <if test="param.studentName != null and param.studentName != ''">
       and b.name = #{param.studentName}
     </if>

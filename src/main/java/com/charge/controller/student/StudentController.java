@@ -6,6 +6,7 @@ import com.charge.param.student.StudentSearchParam;
 import com.charge.pojo.common.PageResultDTO;
 import com.charge.pojo.student.StudentInfo;
 import com.charge.proxy.student.StudentProxy;
+import com.charge.util.ExcelUtil;
 import com.charge.vo.student.StudentInfoVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,17 +63,42 @@ public class StudentController {
         modelMap.put("success", false);
         final String templateFilePath = request.getSession().getServletContext().getRealPath("/");
         try {
-            ExportCSVService exportCSVService = new ExportStudentInfoCSVHandler(studentProxy, searchParam);
-            File targetFile = exportCSVService.exportCSVFile(templateFilePath);
-            Map<String, Object> data = new HashMap<String, Object>();
+            searchParam.setPageSize(Integer.MAX_VALUE);
+            PageResultDTO<List<StudentInfoVo>> listPageResultDTO = studentProxy.queryStudentInfo(searchParam);
+            File targetFile = ExcelUtil.createXLSXExcel(initExcelColumn(listPageResultDTO.getData()), initExcelHeader(),templateFilePath, "学生信息");
+            Map<String, Object> data = new HashMap<>();
             data.put("filePath", targetFile.getName());
-            data.put("fileName", "student_info_" + targetFile.getName());
+            data.put("fileName", targetFile.getName());
             modelMap.put("success", true);
             modelMap.put("data", data);
         } catch (Exception e) {
             modelMap.put("msg", e.getMessage());
         }
         return modelMap;
+    }
+
+    private String[] initExcelHeader() {
+        String[] strArray = { "姓名", "性别", "出生日期", "身份证号", "监护人","监护人身份证号","联系方式","地址","毕业状态" , "民族", "户口所在地"};
+        return strArray;
+    }
+    private Map<String, List<String>> initExcelColumn(List<StudentInfoVo> data) {
+        Map<String, List<String>> result = new HashMap<>();
+        for(int i=0;i<data.size();i++){
+            List<String> column = new ArrayList<>();
+            StudentInfoVo dto = data.get(i);
+            column.add(dto.getName());
+            column.add(dto.getSexStr());
+            column.add("" + dto.getYear() + "-" + dto.getMonth() + "-" + dto.getDay());
+            column.add(dto.getParentName());
+            column.add(dto.getParentIdCardNumber());
+            column.add(dto.getMobile());
+            column.add(dto.getAddress());
+            column.add(dto.getGraduateStr());
+            column.add(dto.getNation());
+            column.add(dto.getRegisteredResidence());
+            result.put(String.valueOf(i), column);
+        }
+        return result;
     }
 
     @RequestMapping("/importStudentInfo")

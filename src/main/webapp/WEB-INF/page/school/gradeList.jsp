@@ -51,6 +51,9 @@
 				<option value="1">一年级</option>
 				<option value="2">二年级</option>
 				<option value="3">三年级</option>
+				<option value="4">四年级</option>
+				<option value="5">五年级</option>
+				<option value="6">六年级</option>
 			</select>
 			<br/><br/>
 			<p align="center">

@@ -12,7 +12,7 @@
 		<th field="className" sortable="true" width="150px">班级</th>
 		<th field="gradeName" sortable="true" width="150px">年级</th>
 		<th field="isGraduateStr" sortable="true" width="130px">毕业状态</th>
-		<th field="operator"  width="50px">操作</th>
+		<th field="operator"  width="50px" formatter="settings">操作</th>
 	</tr>
 	</thead>
 </table>
@@ -72,6 +72,29 @@
 	</form>
 </div>
 
+<!-- 添加年级 -->
+<div id="editClassInfoDialog" class="easyui-dialog" title="配置学生班级信息" closed="true"
+	 style="width:350px; height:200px;overflow: auto;" iconCls="icon-edit">
+	<form name="addForm" action="" id="addForm" method="post">
+		<div style="margin:11px 11px 0px 25px">
+			<input id="studentId" type="hidden" value=""/>
+			学生姓名：<input id="studentNameDialog" type="text" disabled="disabled" value=""/>
+			<br/><br/>
+			所属年级：
+			<select id="gradeId" style="width: 150px;">
+			</select>
+			<br/><br/>
+			所属班级：
+			<select id="classId" style="width: 150px;">
+			</select>
+			<br/><br/>
+			<p align="center">
+				<input id="save" type="button" value="更新"/>
+				<input id="cancel" type="button" value="取消"/>
+			</p><br>
+		</div>
+	</form>
+</div>
 
 <script type="text/javascript">
 	$(function() {
@@ -91,6 +114,10 @@
 	});
 	$('#cancelExcel').live('click',function(){
 		$("#dialogExcel").dialog("close");
+		return false;
+	});
+	$('#cancel').live('click',function(){
+		$("#editClassInfoDialog").dialog("close");
 		return false;
 	});
 	//导出
@@ -203,6 +230,105 @@
 			}
 		});
     });
+
+	function settings(value,row){
+		var html = '<div style="text-align: center;">';
+		if(row.isGraduate == 0){
+			html += '<img style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" title="编辑" a src="${contextPath}/images/m_edit.gif" href="javascript:;" onclick="editClassInfo('+row.studentId+',\''+row.studentName+'\','+row.gradeId+','+row.classId+')" />';
+		}
+		html += '</div>';
+		return html;
+	}
+
+	function editClassInfo(studentId, studentName, gradeId, classId){
+		$("#editClassInfoDialog").dialog("open");
+		$("#studentId").val(studentId);
+		$("#studentNameDialog").val(studentName);
+		$("#classId").empty();
+		$("#gradeId").empty();
+		var param={page:1,rows:2000}
+		$.ajax({
+			url:"${contextPath}/school/gradeList",
+			dataType:'json',
+			data:param,
+			success:function(data){
+				var gradeList = data.rows;
+				for(i=0;i<gradeList.length;i++){
+					var grade = gradeList[i];
+					if(gradeId == grade.id){
+						$("#gradeId").append('<option selected=\'selected\' value="'+grade.id+'">'+grade.name+'</option>');
+					}else{
+						$("#gradeId").append('<option value="'+grade.id+'">'+grade.name+'</option>');
+					}
+				}
+			}
+		});
+		var param={page:1,rows:2000,gradeId:gradeId}
+		$.ajax({
+			url:"${contextPath}/school/calssList",
+			dataType:'json',
+			data:param,
+			success:function(data){
+				var classList = data.rows;
+				for(i=0;i<classList.length;i++){
+					var classInfo = classList[i];
+					if(classId == classInfo.id){
+						$("#classId").append('<option selected=\'selected\' value="'+classInfo.id+'">'+classInfo.name+'</option>');
+					}else{
+						$("#classId").append('<option value="'+classInfo.id+'">'+classInfo.name+'</option>');
+					}
+				}
+			}
+		});
+		return false;
+	}
+	$('#gradeId').live('click',function(){
+		$("#classId").empty();
+		var gradeId = $("#gradeId").val();
+		var param={page:1,rows:2000,gradeId:gradeId}
+		$.ajax({
+			url:"${contextPath}/school/calssList",
+			dataType:'json',
+			data:param,
+			success:function(data){
+				var classList = data.rows;
+				for(i=0;i<classList.length;i++){
+					var classInfo = classList[i];
+					$("#classId").append('<option value="'+classInfo.id+'">'+classInfo.name+'</option>');
+				}
+			}
+		});
+		return false;
+	});
+	$('#save').live('click',function(){
+		var url = "${contextPath}/studentClassInfo/updateStudentClassInfo";
+		var data = {
+			studentId: $('#studentId').val(),
+			classId: $('#classId').val()
+		}
+		$.ajax({
+			url: url,
+			cache: false,
+			dataType: 'json',
+			data: JSON.stringify(data),
+			contentType : 'application/json;charset=utf-8',
+			type: "post",
+			success: function (data) {
+				if (data.success) {
+					$.messager.alert('系统消息', '已完成', "info");
+					$("#datagrid").datagrid("reload");
+				} else {
+					$.messager.alert('系统消息', data.msg,'error');
+				}
+				$("#editClassInfoDialog").dialog("close");
+			},
+			error: function (data) {
+				$("#editClassInfoDialog").dialog("close");
+				$.messager.alert('系统消息', data.msg,'error');
+			}
+
+		});
+	});
 </script>
 </body>
 </html>

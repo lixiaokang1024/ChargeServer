@@ -27,13 +27,13 @@
 				<td style="width: 150px">
 					<input type="text" id="studentName" name="studentName" style="width: 110px;" value=""/>
 				</td>
-				<td style="text-align: right;">入学时间：</td>
+				<td style="text-align: right;">缴费日期：</td>
 				<td colspan="3">
-					<input id="admissionTimeBegin" style="width: 125px" name="admissionBegin" class="Wdate"
-						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,maxDate:'#F{$dp.$D(\'admissionTimeEnd\')}'})"
+					<input id="payTimeBegin" style="width: 125px" name="payTimeBegin" class="Wdate"
+						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,maxDate:'#F{$dp.$D(\'payTimeEnd\')}'})"
 						   value=""/>&nbsp;-&nbsp;
-					<input id="admissionTimeEnd" style="width: 125px" name="admissionTimeEnd" class="Wdate"
-						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,minDate:'#F{$dp.$D(\'admissionTimeBegin\')}'})"
+					<input id="payTimeEnd" style="width: 125px" name="payTimeEnd" class="Wdate"
+						   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,minDate:'#F{$dp.$D(\'payTimeBegin\')}'})"
 						   value=""/>
 				</td>
 			</tr>
@@ -62,10 +62,18 @@
 	});
 
 	function getFormData() {
+		var payTimeBegin = $('#payTimeBegin').val();
+		if(payTimeBegin != ''){
+			payTimeBegin = payTimeBegin + " 00:00:00";
+		}
+		var payTimeEnd = $('#payTimeEnd').val();
+		if(payTimeEnd != ''){
+			payTimeEnd = payTimeEnd + " 23:59:59";
+		}
 		var data = {
 			studentName: $('#studentName').val(),
-			admissionTimeBegin: $('#createTimeBegin').val(),
-			admissionTimeEnd: $('#createTimeEnd').val(),
+			payTimeBegin: payTimeBegin,
+			payTimeEnd: payTimeEnd
 		};
 		return data;
 	}
