@@ -1,7 +1,5 @@
 package com.charge.controller.student;
 
-import com.charge.export.common.ExportCSVService;
-import com.charge.export.student.ExportStudentInfoCSVHandler;
 import com.charge.param.student.StudentSearchParam;
 import com.charge.pojo.common.PageResultDTO;
 import com.charge.pojo.student.StudentInfo;
@@ -120,7 +118,7 @@ public class StudentController {
     @RequestMapping("/saveStudentInfo")
     @ResponseBody
     public Map<String, Object> saveStudentInfo(StudentInfo studentInfo) {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("success", true);
         try {
             studentProxy.saveOrUpdateStudentInfo(studentInfo);

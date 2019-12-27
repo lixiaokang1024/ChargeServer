@@ -83,4 +83,9 @@
   <select id="selectAll" resultType="com.charge.vo.user.RoleVo">
     select <include refid="Base_Column_List"/> from role
   </select>
+
+  <select id="getResourceByUser" resultType="com.charge.pojo.user.Resource">
+    SELECT d.* FROM USER a JOIN user_role b ON a.id=b.user_id JOIN role_resource c ON b.role_id = c.role_id JOIN resource d ON c.resource_id = d.id
+    where a.id=#{userId}
+  </select>
 </mapper>

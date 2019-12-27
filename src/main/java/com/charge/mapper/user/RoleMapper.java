@@ -1,6 +1,7 @@
 package com.charge.mapper.user;
 
 
+import com.charge.pojo.user.Resource;
 import com.charge.pojo.user.Role;
 import com.charge.vo.user.RoleVo;
 import java.util.List;
@@ -19,4 +20,5 @@ public interface RoleMapper {
     int updateByPrimaryKey(Role record);
 
     List<RoleVo> selectAll();
+    List<Resource> getResourceByUser(Integer userId);
 }

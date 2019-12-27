@@ -1,15 +1,18 @@
 package com.charge.controller;
 
 import com.charge.pojo.User;
+import com.charge.pojo.user.Resource;
 import com.charge.pojo.user.Role;
 import com.charge.service.user.UserService;
 import com.charge.vo.user.RoleVo;
+import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +47,14 @@ public class UserController {
             result.put("msg", "密码不正确！");
         }
         session.setAttribute("user", userIndb);
+        List<Resource> resourceList = userService.getResourceByUser(userIndb.getId());
+        List<String> menuList = new ArrayList<>();
+        if(!CollectionUtils.isEmpty(resourceList)){
+            for(Resource resource:resourceList){
+                menuList.add(resource.getMenuKey());
+            }
+        }
+        session.setAttribute("resource", menuList);
         return result;
     }
 
@@ -82,7 +93,7 @@ public class UserController {
 
     @RequestMapping("/saveRole")
     @ResponseBody
-    public Map<String, Object> saveRole(String name) {
+    public Map<String, Object> saveRole(Integer roleId, String name) {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("success", true);
         try {

@@ -3,6 +3,7 @@ package com.charge.service.user.impl;
 import com.charge.mapper.user.RoleMapper;
 import com.charge.mapper.user.UserDao;
 import com.charge.pojo.User;
+import com.charge.pojo.user.Resource;
 import com.charge.pojo.user.Role;
 import com.charge.service.user.UserService;
 import com.charge.util.DateUtil;
@@ -53,5 +54,10 @@ public class UserServiceImpl implements UserService {
         role.setCreateTime(DateUtil.getCurrentTimespan());
         role.setName(name);
         roleMapper.insertSelective(role);
+    }
+
+    @Override
+    public List<Resource> getResourceByUser(Integer userId) {
+        return roleMapper.getResourceByUser(userId);
     }
 }

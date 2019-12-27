@@ -33,7 +33,20 @@
             <mvc:exclude-mapping path="/files/**" />
             <mvc:exclude-mapping path="/user/**" />
             <mvc:exclude-mapping path="/hello/helloworld" />
+            <mvc:exclude-mapping path="/user/login" />
             <bean class="com.charge.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/css/**" />
+            <mvc:exclude-mapping path="/images/**" />
+            <mvc:exclude-mapping path="/js/**" />
+            <mvc:exclude-mapping path="/files/**" />
+            <mvc:exclude-mapping path="/user/logout" />
+            <mvc:exclude-mapping path="/hello/helloworld" />
+            <mvc:exclude-mapping path="/user/login" />
+            <mvc:exclude-mapping path="/user/modifyPW" />
+            <bean class="com.charge.interceptor.PermissionInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>
 

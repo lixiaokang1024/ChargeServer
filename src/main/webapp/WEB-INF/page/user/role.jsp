@@ -55,6 +55,7 @@
 	 style="width:550px; height:350px;overflow: auto;" iconCls="icon-edit">
 	<form name="addRoleForm" action="" id="addRoleForm" method="post">
 		<div style="margin:11px 11px 0px 25px">
+			<input id="roleId" type="hidden" value="" />
 			角色名称：
 			<input id="roleName" type="text" style="width: 150px;"/>
 			<br/><br/>
@@ -96,11 +97,24 @@
 
 	function settings(value,row){
 		var html = '<div style="text-align: center;">';
-		html += "<img style='margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;' title='编辑' a src='${contextPath}/images/m_edit.gif' href='javascript:;' onclick='openMenuDialog("+JSON.stringify(row)+")' />";
+		html += "<img style='margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;' title='编辑' a src='${contextPath}/images/m_edit.gif' href='javascript:;' onclick='editAddDialog("+JSON.stringify(row)+")' />";
         // html += '<a style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" onclick="openMenuDialog(\''+row.id+'\')">资源配置</a>';
 		html += '</div>';
 		return html;
 	}
+
+	function editAddDialog(row) {
+		$("#roleId").val(row.id);
+		$("#roleName").val(row.name);
+		$("#addDialog").dialog("open");
+	}
+
+	$('#addLink').live('click',function(){
+		$("#roleId").val("");
+		$("#roleName").val("");
+		$("#addDialog").dialog("open");
+		return false;
+	});
 
     function openMenuDialog(roleId) {
         $("#menuDialog").dialog("open");

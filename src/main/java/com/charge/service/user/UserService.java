@@ -1,6 +1,7 @@
 package com.charge.service.user;
 
 import com.charge.pojo.User;
+import com.charge.pojo.user.Resource;
 import com.charge.vo.user.RoleVo;
 import java.util.List;
 
@@ -14,4 +15,7 @@ public interface UserService {
 
     List<RoleVo> getRoleList();
     void saveRole(String name);
+
+    List<Resource> getResourceByUser(Integer userId);
+
 }
