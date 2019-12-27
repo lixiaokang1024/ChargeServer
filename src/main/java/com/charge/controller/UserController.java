@@ -94,6 +94,20 @@ public class UserController {
         return resultMap;
     }
 
+    @RequestMapping("/saveUser")
+    @ResponseBody
+    public Map<String, Object> saveUser(String userName, String password) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("success", true);
+        try {
+            userService.saveUser(userName, password);
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
+    }
+
     @RequestMapping("/menuList")
     @ResponseBody
     public Map<String, Object> menuList(Integer roleId) {

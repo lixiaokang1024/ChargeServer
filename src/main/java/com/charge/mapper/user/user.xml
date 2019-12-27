@@ -8,6 +8,32 @@
         select * from user where id=#{id}
     </select>
 
+    <insert id="insertSelective" parameterType="com.charge.pojo.User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                #{userName},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+        </trim>
+    </insert>
+
     <select id="getByUserName" parameterType="java.lang.String"
             resultType="com.charge.pojo.User">
         select * from user where user_name=#{username}

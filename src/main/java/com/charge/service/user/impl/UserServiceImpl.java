@@ -25,6 +25,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void saveUser(String username, String password) {
+        User user = new User();
+        user.setUserName(username);
+        user.setPassword(password);
+        user.setAge(10);
+        userDao.insertSelective(user);
+    }
+
+    @Override
     public List<User> getUserList() {
         return userDao.getAllUser();
     }

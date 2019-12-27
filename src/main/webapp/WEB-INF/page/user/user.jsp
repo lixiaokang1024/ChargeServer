@@ -7,7 +7,7 @@
 	   rownumbers="true" pagination="true" pageSize="20" showFooter="true">
 	<thead>
 	<tr style="valign: middle">
-		<th field="name" sortable="true" align="center" width="150px">用户名</th>
+		<th field="userName" sortable="true" align="center" width="150px">用户名</th>
 		<th field="operator" align="center" width="150px" formatter="settings">操作</th>
 	</tr>
 	</thead>
@@ -52,11 +52,14 @@
 
 <!-- 新增用户 -->
 <div id="addDialog" class="easyui-dialog" title="新增用户" closed="true"
-	 style="width:550px; height:350px;overflow: auto;" iconCls="icon-edit">
+	 style="width:350px; height:200px;overflow: auto;" iconCls="icon-edit">
 	<form name="addUserForm" action="" id="addUserForm" method="post">
 		<div style="margin:11px 11px 0px 25px">
-			角色名称：
-			<input id="roleName" type="text" style="width: 150px;"/>
+			用户名：
+			<input id="userName" type="text" style="width: 150px;"/>
+			<br/><br/>
+			密码：
+			<input id="password" type="password" style="width: 150px;"/>
 			<br/><br/>
 			<p align="center">
 				<input id="save" type="button" value="保存"/>
@@ -68,6 +71,13 @@
 
 
 <script type="text/javascript">
+
+	$('#addLink').live('click',function(){
+		$("#userName").val("");
+		$("#password").val("");
+		$("#addDialog").dialog("open");
+		return false;
+	});
 	$(function() {
 		/*搜索*/
 		$(function(){
@@ -125,7 +135,8 @@
 	$('#save').live('click',function(){
 		var url = "${contextPath}/user/saveUser";
 		var data = {
-			name: $('#roleName').val()
+			userName: $('#userName').val(),
+			password: $('#password').val()
 		}
 		$('#addUserForm').ajaxSubmit({
 			url: url,

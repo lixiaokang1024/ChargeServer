@@ -6,6 +6,7 @@ import com.charge.param.student.StudentChargeInfoSearchParam;
 import com.charge.param.student.StudentChargeParam;
 import com.charge.pojo.common.PageResultDTO;
 import com.charge.proxy.student.StudentChargeInfoProxy;
+import com.charge.util.ExcelUtil;
 import com.charge.vo.student.StudentChargeInfoDetailVo;
 import com.charge.vo.student.StudentChargeInfoVo;
 import org.slf4j.Logger;
@@ -109,6 +110,53 @@ public class StudentChargeInfoController {
         return model;
     }
 
+    @RequestMapping("/exportStudentChargeInfo")
+    @ResponseBody
+    public ModelMap exportStudentChargeInfo(StudentChargeInfoSearchParam searchParam,HttpServletRequest request) {
+        ModelMap modelMap = new ModelMap();
+        modelMap.put("success", false);
+        final String templateFilePath = request.getSession().getServletContext().getRealPath("/");
+        try {
+            searchParam.setPageSize(Integer.MAX_VALUE);
+            PageResultDTO<List<StudentChargeInfoDetailVo>> listPageResultDTO = chargeInfoProxy.queryStudentChargeInfoDetailPageList(searchParam);
+            File targetFile = ExcelUtil.createXLSXExcel(initExcelColumn(listPageResultDTO.getData()), initExcelHeader(),templateFilePath, "学生缴费统计");
+            Map<String, Object> data = new HashMap<>();
+            data.put("filePath", targetFile.getName());
+            data.put("fileName", targetFile.getName());
+            modelMap.put("success", true);
+            modelMap.put("data", data);
+        } catch (Exception e) {
+            modelMap.put("msg", e.getMessage());
+        }
+        return modelMap;
+    }
+
+    private Map<String, List<String>> initExcelColumn(List<StudentChargeInfoDetailVo> data) {
+        Map<String, List<String>> result = new HashMap<>();
+        for(int i=0;i<data.size();i++){
+            List<String> column = new ArrayList<>();
+            StudentChargeInfoDetailVo dto = data.get(i);
+            column.add(dto.getStudentName());
+            column.add(dto.getGradeName());
+            column.add(dto.getClassName());
+            column.add(dto.getChargeProjectName());
+            column.add(dto.getChargeAmount() + "");
+            column.add(dto.getActualChargeAmount() + "");
+            column.add(dto.getUseDepositAmount() + "");
+            column.add(dto.getChargeTimeStr());
+            column.add(dto.getActualChargeTimeStr());
+            column.add(dto.getPayTypeStr());
+            column.add(dto.getStatusStr());
+            result.put(String.valueOf(i), column);
+        }
+        return result;
+    }
+
+    private String[] initExcelHeader() {
+        String[] strArray = { "姓名", "年级", "班级", "缴费项目", "应缴费金额", "实际缴费金额", "使用预缴费金额", "应缴费时间", "实际缴费时间", "缴费方式", "缴费状态"};
+        return strArray;
+    }
+
     @RequestMapping("/detail/{studentId}")
     public String getStudentChargeInfoDetail(Model model, @PathVariable Integer studentId) {
         List<Integer> chargeStatus = new ArrayList<Integer>();
@@ -170,17 +218,41 @@ public class StudentChargeInfoController {
         modelMap.put("success", false);
         final String templateFilePath = request.getSession().getServletContext().getRealPath("/");
         try {
-            ExportCSVService exportCSVService = new ExportStudentHistoryChargeInfoCSVHandler(chargeInfoProxy, searchParam);
-            File targetFile = exportCSVService.exportCSVFile(templateFilePath);
-            Map<String, Object> data = new HashMap<String, Object>();
+            List<Integer> chargeStatus = new ArrayList<>();
+            chargeStatus.add(2);
+            searchParam.setChargeStatus(chargeStatus);
+            searchParam.setPageSize(Integer.MAX_VALUE);
+            PageResultDTO<List<StudentChargeInfoVo>> listPageResultDTO = chargeInfoProxy.queryStudentChargeInfo(searchParam);
+            File targetFile = ExcelUtil.createXLSXExcel(initExcelColumn1(listPageResultDTO.getData()), initExcelHeader1(),templateFilePath, "学生历史缴费");
+            Map<String, Object> data = new HashMap<>();
             data.put("filePath", targetFile.getName());
-            data.put("fileName", "charge_info_" + targetFile.getName());
+            data.put("fileName", targetFile.getName());
             modelMap.put("success", true);
             modelMap.put("data", data);
         } catch (Exception e) {
             modelMap.put("msg", e.getMessage());
         }
         return modelMap;
+    }
+
+    private Map<String, List<String>> initExcelColumn1(List<StudentChargeInfoVo> data) {
+        Map<String, List<String>> result = new HashMap<>();
+        for(int i=0;i<data.size();i++){
+            List<String> column = new ArrayList<>();
+            StudentChargeInfoVo dto = data.get(i);
+            column.add(dto.getStudentName());
+            column.add(dto.getChargeAmount() + "");
+            column.add(dto.getActualChargeAmount() + "");
+            column.add(dto.getDeposit() + "");
+            column.add(dto.getPrepaymentAmount() + "");
+            result.put(String.valueOf(i), column);
+        }
+        return result;
+    }
+
+    private String[] initExcelHeader1() {
+        String[] strArray = { "姓名", "应缴费金额", "实际缴费金额", "预缴费剩余金额", "押金"};
+        return strArray;
     }
 
     @RequestMapping("/importStudentChargeInfo")

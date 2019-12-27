@@ -267,7 +267,7 @@
             <ul>
                 <li>
                     <span>
-                        <a href="user/roleIndex" title="用户管理" class="newTab">用户管理</a>
+                        <a href="user/userIndex" title="用户管理" class="newTab">用户管理</a>
 					</span>
                     <span>
                         <a href="user/roleIndex" title="角色管理" class="newTab">角色管理</a>

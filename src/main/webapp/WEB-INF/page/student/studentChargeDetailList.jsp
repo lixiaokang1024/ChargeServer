@@ -134,7 +134,7 @@
 	//导出
 	$('#exportLink').click(function () {
 		var datas = getFormData();
-		var url = '${contextPath}/studentChargeInfo/export';
+		var url = '${contextPath}/studentChargeInfo/exportStudentChargeInfo';
 		$.messager.confirm('系统消息', "是否导出！", function (r) {
 			if (r) {
 				$.ajax({

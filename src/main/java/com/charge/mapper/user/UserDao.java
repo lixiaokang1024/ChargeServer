@@ -10,4 +10,6 @@ public interface UserDao {
     User getByUserName(String username);
 
     List<User> getAllUser();
+    void insertSelective(User user);
+
 }
