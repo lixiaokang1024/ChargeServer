@@ -31,8 +31,6 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         }
         List<String> menuList = (List<String>) session.getAttribute("resource");
         if(!menuList.contains(uri)){
-            Map<String, String> obj = new HashMap<>();
-            obj.put("msg", "权限不足");
             String html = "<html xmlns=\"http://www.w3.org/1999/xhtml\"><head><meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\" /></head><body><img src='"+request.getContextPath()+"/images/403.jpg' width=100% height=100% /></body></html>";
             response.setHeader("Content-type", "text/html;charset=UTF-8");
             response.getWriter().write(html);
