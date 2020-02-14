@@ -73,6 +73,9 @@ public class StudentInfoVo implements Serializable {
     private Boolean graduate;
     private String graduateStr;
 
+    private Double deposit;
+    private Double prepaymentAmount;
+
     private String idCardType;
 
     private String idCardNumber;
@@ -134,6 +137,22 @@ public class StudentInfoVo implements Serializable {
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public Double getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(Double deposit) {
+        this.deposit = deposit;
+    }
+
+    public Double getPrepaymentAmount() {
+        return prepaymentAmount;
+    }
+
+    public void setPrepaymentAmount(Double prepaymentAmount) {
+        this.prepaymentAmount = prepaymentAmount;
     }
 
     /**

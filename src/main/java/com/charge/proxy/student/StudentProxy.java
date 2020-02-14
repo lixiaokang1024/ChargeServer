@@ -1,6 +1,7 @@
 package com.charge.proxy.student;
 
 import com.charge.Exception.BusinessException;
+import com.charge.mapper.student.StudentExtInfoMapper;
 import com.charge.param.student.StudentSearchParam;
 import com.charge.pojo.common.PageResultDTO;
 import com.charge.pojo.student.StudentExtInfo;
@@ -35,6 +36,9 @@ public class StudentProxy {
     @Autowired
     private StudentService studentService;
 
+    @Autowired
+    private StudentExtInfoMapper studentExtInfoMapper;
+
     public PageResultDTO<List<StudentInfoVo>> queryStudentInfo(StudentSearchParam searchParam){
         logger.info("查询学生信息搜索参数：{}", JsonUtil.toJson(searchParam));
         PageResultDTO<List<StudentInfoVo>> pageResultDTO = new PageResultDTO<List<StudentInfoVo>>();
@@ -66,6 +70,9 @@ public class StudentProxy {
         for(StudentInfo studentInfo:studentInfoList){
             StudentInfoVo studentInfoVo = new StudentInfoVo();
             BeanUtils.copyProperties(studentInfo, studentInfoVo);
+            StudentExtInfo studentExtInfo = studentExtInfoMapper.getByStudentId(studentInfo.getId());
+            studentInfoVo.setDeposit(studentExtInfo.getDeposit());
+            studentInfoVo.setPrepaymentAmount(studentExtInfo.getPrepaymentAmount());
             studentInfoVoList.add(studentInfoVo);
         }
         return studentInfoVoList;

@@ -86,13 +86,24 @@
 	<form name="chargeForm" action="" id="chargeForm" method="post">
 		<div style="margin:11px 11px 0px 25px">
 			<input id="chargeStudentId" type="hidden" value=""/>
+			<input id="deposit" type="hidden" value=""/>
+			<input id="prepaymentAmount" type="hidden" value=""/>
+			当前金额：
+			<input name="" id="currAmount" type="text" disabled="disabled" style="width: 150px;"/>
+			<br/>
 			缴费金额：
 			<input name="chargeAmount" id="chargeAmount" type="text" style="width: 150px;"/>
-			<br/><br/>
+			<br/>
+			预缴类型：
+			<select style="width: 150px" id="chargeType">
+				<option value="1">预交费</option>
+				<option value="2">押金</option>
+			</select>
+			<br/>
 			<p align="center">
 				<input id="chargeSave" type="button" value="预缴费"/>
 				<input id="chargeCancel" type="button" value="取消"/>
-			</p><br>
+			</p>
 		</div>
 	</form>
 </div>
@@ -248,23 +259,39 @@
 	function settings(value,row){
 		var html = '<div style="text-align: center;">';
 		html += "<img style='margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;' title='编辑' a src='${contextPath}/images/m_edit.gif' href='javascript:;' onclick='modifyStudentInfo("+JSON.stringify(row)+")' />";
-        html += '<a style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" onclick="openChargeDialog(\''+row.id+'\')">预缴费</a>';
+        html += "<a style='margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;' onclick='openChargeDialog("+JSON.stringify(row)+")'>预缴费</a>";
 		html += '</div>';
 		return html;
 	}
 
-    function openChargeDialog(studentId) {
+    function openChargeDialog(row) {
+		$("#chargeAmount").val(0);
         $("#chargeDialog").dialog("open");
-        $("#chargeAmount").val("");
-        $("#chargeStudentId").val(studentId);
+        if($("#chargeType").val()==1){
+			$("#currAmount").val(row.prepaymentAmount);
+		}else{
+			$("#currAmount").val(row.deposit);
+		}
+        $("#prepaymentAmount").val(row.prepaymentAmount);
+		$("#deposit").val(row.deposit);
+        $("#chargeStudentId").val(row.id);
         return false;
     }
+
+	$('#chargeType').change(function(){
+		if($("#chargeType").val()==1){
+			$("#currAmount").val($("#prepaymentAmount").val());
+		}else{
+			$("#currAmount").val($("#deposit").val());
+		}
+	});
 
     $('#chargeSave').live('click',function(){
 		url = "${contextPath}/studentChargeInfo/doDepositCharge";
         var data = {
             studentId: $('#chargeStudentId').val(),
-            chargeAmount: $('#chargeAmount').val()
+            chargeAmount: $('#chargeAmount').val(),
+			chargeType: $('#chargeType').val()
         }
         $.messager.confirm('系统消息', "确认缴费！", function (r) {
             if (r) {

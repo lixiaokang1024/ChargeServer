@@ -13,7 +13,7 @@ public interface StudentExtInfoMapper {
 
     int updateByPrimaryKey(StudentExtInfo record);
 
-    void updatePrepaymentAmount(@Param("studentId") Integer studentId, @Param("prepaymentAmount") Double prepaymentAmount);
+    void updatePrepaymentAmount(@Param("studentId") Integer studentId, @Param("prepaymentAmount") Double prepaymentAmount, @Param("chargeType")Integer chargeType);
 
     StudentExtInfo getByStudentId(Integer studentId);
 }

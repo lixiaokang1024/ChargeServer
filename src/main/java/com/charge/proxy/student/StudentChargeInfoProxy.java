@@ -110,6 +110,8 @@ public class StudentChargeInfoProxy {
                     String chargeProjectNameStr = ExcelUtil.getValue(chargeProjectName);
                     XSSFCell chargeTime = xssfRow.getCell(3);
                     String chargeTimeStr = ExcelUtil.getValue(chargeTime);
+                    XSSFCell chargeCoefficient = xssfRow.getCell(4);
+                    Integer chargeCoefficientInt = Integer.parseInt(ExcelUtil.getValue(chargeCoefficient));
                     StudentClassInfo studentClassInfo = studentClassInfoService.getByStudentId(studentIdInt);
                     ClassInfo classInfo = schoolService.getClassInfoById(studentClassInfo.getClassId());
                     if(studentClassInfo == null){
@@ -124,7 +126,17 @@ public class StudentChargeInfoProxy {
                         throw new BusinessException("学生【"+studentNameStr+"】已导入收费项目【"+chargeProjectNameStr+"】,不能重复导入");
                     }
                     studentChargeInfo.setChargeProjectId(chargeProject.getId());
-                    studentChargeInfo.setChargeAmount(chargeProject.getAmount());
+                    if(chargeProject.getProjectName().equals("保育费")){
+                        if(chargeCoefficientInt <= 0){
+                            studentChargeInfo.setChargeAmount(0.00);
+                        }else if(chargeCoefficientInt <= 7){
+                            studentChargeInfo.setChargeAmount(chargeProject.getAmount() * 0.5);
+                        }else{
+                            studentChargeInfo.setChargeAmount(chargeProject.getAmount());
+                        }
+                    }else{
+                        studentChargeInfo.setChargeAmount(chargeProject.getAmount() * chargeCoefficientInt);
+                    }
                     studentChargeInfo.setChargeTime(DateUtil.getTimespan2(chargeTimeStr));
                     studentChargeInfoService.insertSelective(studentChargeInfo);
                 }

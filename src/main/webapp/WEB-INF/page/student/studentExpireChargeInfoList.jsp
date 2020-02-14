@@ -47,34 +47,12 @@
 				<td colspan="4">
 					<input type="button" class="button search" value="搜索" id="searchLink"/>
 					<input type="reset" class="button clear" value="清空" id="clearLink"/>
-					<input type="button" class="button add" value="批量导入" id="addExcel" />
 				</td>
 			</tr>
 		</table>
 	</form>
 </div>
 <!--搜索条件结束-->
-
-<!-- 学生收费信息批量导入 -->
-<div id="dialogExcel" class="easyui-dialog" title="学生收费信息批量导入" closed="true"
-	 style="width:500px; height:300px;overflow: auto;" iconCls="icon-edit">
-	<form name="ExcelForm" action="" id="ExcelForm" method="post" enctype="multipart/form-data">
-		<div style="margin:11px 11px 0px 25px">
-        <span id="moban">
-          <a href="javascript:;" onclick="location.href='${contextPath}/files/学生收费信息导入模板.xlsx'">导入模板下载</a>
-        </span><br/><br/>
-			<label>选择文件：</label>
-			<input name="studentChargeFileBuildInfo" id="studentChargeFileBuildInfo" type="file" class="required"
-				   style="width: 200px;"/>
-			</span><br/><br/>
-			<p align="center">
-				<input id="saveExcel" type="button" value="导入Excel"/>
-				<input id="cancelExcel" type="button" value="取消"/>
-			</p><br>
-			<span style="display: none;" id="spanHidden">文件正在上传中.......</span>
-		</div>
-	</form>
-</div>
 
 <!-- 缴费弹框 -->
 <div id="chargeDialog" class="easyui-dialog" title="缴费" closed="true"

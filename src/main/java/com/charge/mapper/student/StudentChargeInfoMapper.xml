@@ -6,6 +6,7 @@
     <result column="student_id" property="studentId" jdbcType="INTEGER" />
     <result column="charge_project_id" property="chargeProjectId" jdbcType="INTEGER" />
     <result column="charge_amount" property="chargeAmount" jdbcType="DECIMAL" />
+    <result column="charge_coefficient" property="chargeCoefficient" jdbcType="INTEGER" />
     <result column="actual_charge_amount" property="actualChargeAmount" jdbcType="DECIMAL" />
     <result column="discount" property="discount" jdbcType="DECIMAL" />
     <result column="use_deposit_amount" property="useDepositAmount" jdbcType="DECIMAL" />
@@ -18,16 +19,16 @@
     <result column="is_deleted" property="deleted" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, student_id, charge_project_id, charge_amount, actual_charge_amount,discount,use_deposit_amount,charge_time,
+    id, student_id, charge_project_id, charge_amount, charge_coefficient, actual_charge_amount,discount,use_deposit_amount,charge_time,
     actual_charge_time,pay_type, status,create_time, modify_time, is_deleted
   </sql>
   <insert id="insert" parameterType="com.charge.pojo.student.StudentChargeInfo" >
     insert into student_charge_info (id, student_id, charge_project_id, 
-      charge_amount, actual_charge_amount,discount,use_deposit_amount,charge_time, actual_charge_time,pay_type,
+      charge_amount, charge_coefficient, actual_charge_amount,discount,use_deposit_amount,charge_time, actual_charge_time,pay_type,
       status, create_time, modify_time, 
       is_deleted)
     values (#{id,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{chargeProjectId,jdbcType=INTEGER}, 
-      #{chargeAmount,jdbcType=DECIMAL}, #{actualChargeAmount},#{discount},#{useDepositAmount},#{chargeTime,jdbcType=INTEGER},
+      #{chargeAmount,jdbcType=DECIMAL},#{chargeCoefficient}, #{actualChargeAmount},#{discount},#{useDepositAmount},#{chargeTime,jdbcType=INTEGER},
        #{actualChargeTime},#{payType,jdbcType=INTEGER},
       #{status,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, 
       #{deleted,jdbcType=INTEGER})
@@ -46,6 +47,9 @@
       </if>
       <if test="chargeAmount != null" >
         charge_amount,
+      </if>
+      <if test="chargeCoefficient != null" >
+        charge_coefficient,
       </if>
       <if test="actualChargeAmount != null" >
         actual_charge_amount,
@@ -90,6 +94,9 @@
       </if>
       <if test="chargeAmount != null" >
         #{chargeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="chargeCoefficient != null" >
+        #{chargeCoefficient},
       </if>
       <if test="actualChargeAmount != null" >
         #{actualChargeAmount},
@@ -228,16 +235,13 @@
     <if test="param.name != null and param.name != ''">
       AND b.name=#{param.name}
     </if>
-    <if test="param.status != null and param.status != -1 and param.status != 3">
+    <if test="param.status != null and param.status != -1">
       AND a.status=#{param.status}
     </if>
-    <if test="param.status != null and param.status == 3">
-      AND a.status in(0,1) and a.charge_time &lt; UNIX_TIMESTAMP(NOW())
-    </if>
-    <if test="param.payTimeBegin != null">
+    <if test="param.payTimeBegin != null and param.payTimeBegin != ''">
       AND a.actual_charge_time &gt;= UNIX_TIMESTAMP(#{param.payTimeBegin})
     </if>
-    <if test="param.payTimeEnd != null">
+    <if test="param.payTimeEnd != null and param.payTimeEnd != ''">
       AND a.actual_charge_time &lt;= UNIX_TIMESTAMP(#{param.payTimeEnd})
     </if>
   </select>
@@ -251,6 +255,7 @@
     a.charge_project_id,
     d.project_name as chargeProjectName,
     a.charge_amount,
+    a.charge_coefficient,
     a.actual_charge_amount,
     a.discount,
     a.use_deposit_amount,
@@ -272,11 +277,8 @@
     <if test="param.name != null and param.name != ''">
       AND b.name=#{param.name}
     </if>
-    <if test="param.status != null and param.status != -1 and param.status != 3">
+    <if test="param.status != null and param.status != -1">
       AND a.status=#{param.status}
-    </if>
-    <if test="param.status != null and param.status == 3">
-      AND a.status in(0,1) and a.charge_time &lt; UNIX_TIMESTAMP(NOW())
     </if>
     <if test="param.payTimeBegin != null and param.payTimeBegin != ''">
       AND a.actual_charge_time &gt;= UNIX_TIMESTAMP(#{param.payTimeBegin})
@@ -321,6 +323,7 @@
     a.charge_project_id,
     d.project_name as chargeProjectName,
     a.charge_amount,
+    a.charge_coefficient,
     a.actual_charge_amount,
     a.discount,
     a.use_deposit_amount,

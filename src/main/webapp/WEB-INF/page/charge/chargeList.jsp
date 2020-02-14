@@ -8,7 +8,7 @@
 	<thead>
 	<tr style="valign: middle">
 		<th field="projectName" sortable="true" width="150px">收费项目</th>
-		<th field="amount" sortable="true" width="150px">收费金额</th>
+		<th field="amount" sortable="true" width="150px">收费基数</th>
 		<th field="gradeName" sortable="true" width="150px">所属年级</th>
 		<th field="operator" width="50px" formatter="settings">操作</th>
 	</tr>
@@ -47,7 +47,7 @@
 			收费项目：
 			<input name="name" id="name" type="text" style="width: 150px;"/>
 			<br/><br/>
-			收费金额：
+			收费基数：
 			<input name="amount" id="amount" type="text" style="width: 150px;"/>
 			<br/><br/>
 			所属年级：

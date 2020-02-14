@@ -195,7 +195,13 @@
   <update id="updatePrepaymentAmount">
     update student_ext_info
     set
-    prepayment_amount = prepayment_amount + #{prepaymentAmount}
+    <if test="chargeType == 1">
+      prepayment_amount = prepayment_amount + #{prepaymentAmount}
+    </if>
+    <if test="chargeType == 2">
+      deposit = deposit + #{prepaymentAmount}
+    </if>
+
     where student_id = #{studentId}
   </update>
 

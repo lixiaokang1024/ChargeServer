@@ -24,6 +24,8 @@ public class StudentChargeInfo implements Serializable {
      */
     private Double chargeAmount;
 
+    private Integer chargeCoefficient;
+
     private Double actualChargeAmount;//实际缴费金额
 
     private Double discount;//折扣
@@ -116,6 +118,14 @@ public class StudentChargeInfo implements Serializable {
      */
     public void setChargeAmount(Double chargeAmount) {
         this.chargeAmount = chargeAmount;
+    }
+
+    public Integer getChargeCoefficient() {
+        return chargeCoefficient;
+    }
+
+    public void setChargeCoefficient(Integer chargeCoefficient) {
+        this.chargeCoefficient = chargeCoefficient;
     }
 
     public Double getActualChargeAmount() {

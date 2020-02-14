@@ -72,7 +72,7 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
     }
 
     public void addPrepaymentAmount(StudentChargeParam chargeParam) {
-        studentExtInfoMapper.updatePrepaymentAmount(chargeParam.getStudentId(), chargeParam.getChargeAmount());
+        studentExtInfoMapper.updatePrepaymentAmount(chargeParam.getStudentId(), chargeParam.getChargeAmount(), chargeParam.getChargeType());
     }
 
     public void doCharge(StudentChargeParam chargeParam) {
@@ -134,7 +134,7 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
 
             studentChargeInfoMapper.updateStudentChargeInfo(studentChargeInfo);
         }
-        studentExtInfoMapper.updatePrepaymentAmount(chargeParam.getStudentId(), -changePrepaymentAmount);
+        studentExtInfoMapper.updatePrepaymentAmount(chargeParam.getStudentId(), -changePrepaymentAmount, 1);
     }
 
     public List<StudentChargeInfoDetailVo> doProjectCharge(StudentChargeParam chargeParam) {
@@ -204,7 +204,7 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
                 result.add(vo);
             }
         }
-        studentExtInfoMapper.updatePrepaymentAmount(chargeParam.getStudentId(), -changePrepaymentAmount);
+        studentExtInfoMapper.updatePrepaymentAmount(chargeParam.getStudentId(), -changePrepaymentAmount, 1);
         return result;
     }
 }

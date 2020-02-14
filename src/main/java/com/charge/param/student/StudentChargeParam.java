@@ -13,6 +13,8 @@ public class StudentChargeParam implements Serializable {
 
     private Double chargeAmount;//缴费金额
 
+    private Integer chargeType;//1:预交费 2:押金
+
     private Integer isUseDeposit;//是否使用预缴费金额
 
     private List<ProjectChargeParam> projectChargeParamList;
@@ -31,6 +33,14 @@ public class StudentChargeParam implements Serializable {
 
     public void setChargeAmount(Double chargeAmount) {
         this.chargeAmount = chargeAmount;
+    }
+
+    public Integer getChargeType() {
+        return chargeType;
+    }
+
+    public void setChargeType(Integer chargeType) {
+        this.chargeType = chargeType;
     }
 
     public Integer getIsUseDeposit() {
