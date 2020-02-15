@@ -136,6 +136,7 @@ public class StudentChargeInfoController {
         for(int i=0;i<data.size();i++){
             List<String> column = new ArrayList<>();
             StudentChargeInfoDetailVo dto = data.get(i);
+            column.add(String.valueOf(i+1));
             column.add(dto.getStudentName());
             column.add(dto.getGradeName());
             column.add(dto.getClassName());
@@ -153,7 +154,7 @@ public class StudentChargeInfoController {
     }
 
     private String[] initExcelHeader() {
-        String[] strArray = { "姓名", "年级", "班级", "缴费项目", "应缴费金额", "实际缴费金额", "使用预缴费金额", "应缴费时间", "实际缴费时间", "缴费方式", "缴费状态"};
+        String[] strArray = {"序号", "姓名", "年级", "班级", "缴费项目", "应缴费金额", "实际缴费金额", "使用预缴费金额", "应缴费时间", "实际缴费时间", "缴费方式", "缴费状态"};
         return strArray;
     }
 

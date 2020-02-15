@@ -5,9 +5,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 
 import java.text.DecimalFormat;
@@ -47,6 +51,15 @@ public class ExcelUtil {
         }
     }
 
+
+    private static boolean isDouble(String str) {
+        if (null == str || "".equals(str)) {
+            return false;
+        }
+        Pattern pattern = Pattern.compile("^[-\\+]?\\d*[.]\\d+$");
+        return pattern.matcher(str).matches();
+    }
+
     public static File createXLSXExcel(Map<String, List<String>> map, String[] strArray, String filePath, String fileName) {
         File file = new File(filePath + fileName + ".xlsx");
         if(!file.exists()) {
@@ -65,11 +78,19 @@ public class ExcelUtil {
                 rowHeader.createCell(i).setCellValue(strArray[i]);
             }
             int k = 1;
+            XSSFCellStyle cellStyle = workbook.createCellStyle();
+            cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("#,##0.00"));
             for(String str : map.keySet()){
                 List<String> rowData = map.get(str);
                 XSSFRow sheetRow = sheet.createRow(k);
                 for(int i=0;i<rowData.size();i++){
-                    sheetRow.createCell(i).setCellValue(rowData.get(i));
+                    XSSFCell cell = sheetRow.createCell(i);
+                    if(isDouble(rowData.get(i))){
+                        cell.setCellValue(Double.parseDouble(rowData.get(i)));
+                        cell.setCellStyle(cellStyle);
+                    }else{
+                        cell.setCellValue(rowData.get(i));
+                    }
                 }
                 k++;
             }
