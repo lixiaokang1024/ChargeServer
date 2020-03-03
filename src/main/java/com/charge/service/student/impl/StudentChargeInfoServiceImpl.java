@@ -150,7 +150,7 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
         List<ProjectChargeParam> projectChargeParamList = chargeParam.getProjectChargeParamList();
         Map<Integer, ProjectChargeParam> projectAmountMap = new HashMap<>();
         for(ProjectChargeParam projectChargeParam:projectChargeParamList){
-            projectAmountMap.put(projectChargeParam.getProjectId(), projectChargeParam);
+            projectAmountMap.put(projectChargeParam.getStudentProjectId(), projectChargeParam);
         }
         Boolean useDeposit = chargeParam.getIsUseDeposit() == 1;
         Double prepaymentAmount = 0.00; //学生预缴费金额
@@ -159,9 +159,12 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             prepaymentAmount = studentExtInfoMapper.getByStudentId(chargeParam.getStudentId()).getPrepaymentAmount();
         }
         for(StudentChargeInfoDetailVo vo:studentChargeInfoDetailVoList){
-            Double discount = projectAmountMap.get(vo.getChargeProjectId()).getDiscount();
+            Double discount = projectAmountMap.get(vo.getId()).getDiscount();
+            if(discount == null){
+                discount = 1.0;
+            }
             Double chargeAmount = vo.getChargeAmount() * discount - vo.getActualChargeAmount() - vo.getUseDepositAmount();
-            Double actureChargeAmount = projectAmountMap.get(vo.getChargeProjectId()).getProjectAmount();
+            Double actureChargeAmount = projectAmountMap.get(vo.getId()).getProjectAmount();
             Double useDepositAmount = 0.00;
             if(actureChargeAmount < chargeAmount){
                 useDepositAmount = chargeAmount - actureChargeAmount;

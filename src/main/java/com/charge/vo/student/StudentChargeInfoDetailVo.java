@@ -110,7 +110,7 @@ public class StudentChargeInfoDetailVo implements Serializable {
     }
 
     public String getChargeTimeStr() {
-        return DateUtil.getDatetime(chargeTime);
+        return DateUtil.getDatetime1(chargeTime);
     }
 
     public void setChargeTimeStr(String chargeTimeStr) {

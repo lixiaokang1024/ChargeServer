@@ -76,7 +76,7 @@ public class StudentController {
     }
 
     private String[] initExcelHeader() {
-        String[] strArray = { "姓名", "性别", "出生日期", "身份证号", "监护人","监护人身份证号","联系方式","地址","毕业状态" , "民族", "户口所在地"};
+        String[] strArray = { "姓名", "学号", "性别", "出生日期", "身份证号", "监护人","监护人身份证号","联系方式","地址","毕业状态" , "民族", "户口所在地"};
         return strArray;
     }
     private Map<String, List<String>> initExcelColumn(List<StudentInfoVo> data) {
@@ -85,6 +85,7 @@ public class StudentController {
             List<String> column = new ArrayList<>();
             StudentInfoVo dto = data.get(i);
             column.add(dto.getName());
+            column.add(String.valueOf(dto.getId()));
             column.add(dto.getSexStr());
             column.add("" + dto.getYear() + "-" + dto.getMonth() + "-" + dto.getDay());
             column.add(dto.getParentName());

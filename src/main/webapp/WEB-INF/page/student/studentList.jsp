@@ -53,6 +53,7 @@
 					<input type="reset" class="button clear" value="清空" id="clearLink"/>
 					<input type="button" class="button add" value="批量导入" id="addExcel" />
 					<input type="button" class="button export" value="批量导出" id="exportLink"/>
+					<input type="button" class="button add" value="添加" onclick="addLink()" />
 				</td>
 			</tr>
 		</table>
@@ -86,6 +87,7 @@
 	<form name="chargeForm" action="" id="chargeForm" method="post">
 		<div style="margin:11px 11px 0px 25px">
 			<input id="chargeStudentId" type="hidden" value=""/>
+			<input id="chargeStudentName" type="hidden" value=""/>
 			<input id="deposit" type="hidden" value=""/>
 			<input id="prepaymentAmount" type="hidden" value=""/>
 			当前金额：
@@ -109,35 +111,114 @@
 </div>
 
 <!-- 修改学生信息 -->
-<div id="addDialog" class="easyui-dialog" title="修改学生信息" closed="true"
+<div id="addDialog" class="easyui-dialog" title="更新学生信息" closed="true"
 	 style="width:550px; height:350px;overflow: auto;" iconCls="icon-edit">
 	<form name="updateStudentInfoForm" action="" id="updateStudentInfoForm" method="post">
 		<div style="margin:11px 11px 0px 25px">
 			<input id="studentId" type="hidden" value=""/>
-			学生姓名：
+			<div style="width: 130px;float: left">
+				学生姓名：
+			</div>
 			<input id="updateStudentName" type="text" style="width: 150px;"/>
 			<br/><br/>
-			学生性别：
-			<select id="updateSex" style="width: 150px;">
+			<div style="width: 130px;float: left">
+				学生性别：
+			</div>
+			<select id="updateSex" style="width: 150px;float: left">
 				<option value="0">男</option>
 				<option value="1">女</option>
 			</select>
 			<br/><br/>
-			出生日期：
-			<form name="form1" id="dateForm">
+			<div style="width: 130px;float: left">
+				身份证类型：
+			</div>
+			<select id="idCardType" style="width: 150px;float: left">
+				<option value="身份证">身份证</option>
+			</select>
+			<br/><br/>
+			<div style="width: 130px;float: left">
+				身份证号码：
+			</div>
+			<input id="idCardNumber" type="text" style="width: 250px;float: left"/>
+			<br/><br/>
+			<div style="width: 130px;float: left">
+				国籍：
+			</div>
+			<input id="country" type="text" style="width: 250px;float: left"/>
+			<br/><br/>
+			<div style="width: 130px;float: left">
+				民族：
+			</div>
+			<input id="nation" type="text" style="width: 250px;float: left"/>
+			<br/><br/>
+			<div style="width: 130px;float: left">
+				港澳台侨外：
+			</div>
+			<input id="oversea" type="text" style="width: 250px;float: left"/>
+			<br/><br/>
+			<div style="width: 130px;float: left">
+				出生地：
+			</div>
+			<input id="bornPlace" type="text" style="width: 250px;float: left"/>
+			<br/><br/>
+			<div style="width: 130px;float: left">
+				籍贯：
+			</div>
+			<input id="nativePlace" type="text" style="width: 250px;float: left"/>
+			<br/><br/>
+			<div style="width: 130px;float: left">
+				户口性质：
+			</div>
+			<input id="accountCharacter" type="text" style="width: 250px;float: left"/>
+			<br/><br/>
+			<div style="width: 130px;float: left">
+				非农业户口类型：
+			</div>
+			<input id="nonAgriculturalAccountType" type="text" style="width: 250px;float: left"/>
+			<br/><br/>
+			<div style="width: 130px;float: left">
+				户口所在地：
+			</div>
+			<input id="registeredResidence" type="text" style="width: 250px;float: left"/>
+			<br/><br/>
+			<div style="width: 130px;float: left">
+				监护人姓名：
+			</div>
+			<input id="parentName" type="text" style="width: 250px;float: left"/>
+			<br/><br/>
+			<div style="width: 130px;float: left">
+				监护人身份证类型：
+			</div>
+			<input id="parentIdCardType" type="text" style="width: 250px;float: left"/>
+			<br/><br/>
+			<div style="width: 130px;float: left">
+				监护人身份证号：
+			</div>
+			<input id="parentIdCardNumber" type="text" style="width: 250px;float: left"/>
+			<br/><br/>
+			<div style="width: 130px;float: left">
+				监护人关系：
+			</div>
+			<input id="relation" type="text" style="width: 250px;float: left"/>
+			<br/><br/>
+			<div style="width: 130px;float: left">
+				出生日期：
+			</div>
+			<form name="form1" id="dateForm" style="float: left">
 				<select id="year"></select>年
 				<select id="month"></select>月
 				<select id="day"></select>日
 			</form>
 			<br/><br/>
-			联系方式：
-			<input id="updateMobile" type="text" style="width: 150px;"/>
+			<div style="width: 130px;float: left">
+				联系方式：
+			</div>
+			<input id="updateMobile" type="text" style="width: 150px;float: left"/>
 			<br/><br/>
-			家庭地址：
-			<input id="updateAddress" type="text" style="width: 250px;"/>
-			<br/><br/>
-			身份证号码：
-			<input id="idCardNumber" type="text" style="width: 250px;"/>
+			<div style="width: 130px;float: left">
+				家庭地址：
+			</div>
+			<input id="updateAddress" type="text" style="width: 250px;float: left"/>
 			<br/><br/>
 			<p align="center">
 				<input id="save" type="button" value="更新"/>
@@ -275,6 +356,7 @@
         $("#prepaymentAmount").val(row.prepaymentAmount);
 		$("#deposit").val(row.deposit);
         $("#chargeStudentId").val(row.id);
+		$("#chargeStudentName").val(row.name);
         return false;
     }
 
@@ -303,6 +385,11 @@
                     type: "post",
                     success: function (data) {
                         if (data.success) {
+							$.messager.confirm('系统消息', "是否打印！", function (r) {
+								if(r){
+									doPrint();
+								}
+							});
                             $.messager.alert('系统消息', '已完成', "info");
                             $("#datagrid").datagrid("reload");
                         } else {
@@ -329,7 +416,41 @@
 		$('#idCardNumber').val(row.idCardNumber);
 		$('#updateSex').find("option[value=\'"+row.sex+"\']").attr("selected",true);
 		a(row.year, row.month, row.day);
+		$('#parentName').val(row.parentName);
+		$('#parentIdCardType').val(row.parentIdCardType);
+		$('#parentIdCardNumber').val(row.parentIdCardNumber);
+		$('#relation').val(row.relation);
+		$('#idCardType').val(row.idCardType);
+		$('#country').val(row.country);
+		$('#nation').val(row.nation);
+		$('#oversea').val(row.oversea);
+		$('#bornPlace').val(row.bornPlace);
+		$('#nativePlace').val(row.nativePlace);
+		$('#accountCharacter').val(row.accountCharacter);
+		$('#nonAgriculturalAccountType').val(row.nonAgriculturalAccountType);
+		$('#registeredResidence').val(row.registeredResidence);
 		return false;
+	}
+	function addLink() {
+		$("#addDialog").dialog("open");
+		$('#updateStudentName').val("");
+		$('#updateMobile').val("");
+		$('#updateAddress').val("");
+		$('#idCardNumber').val("");
+		a(0, 0, 0);
+		$('#parentName').val("");
+		$('#parentIdCardType').val("");
+		$('#parentIdCardNumber').val("");
+		$('#relation').val("");
+		$('#idCardType').val("");
+		$('#country').val("");
+		$('#nation').val("");
+		$('#oversea').val("");
+		$('#bornPlace').val("");
+		$('#nativePlace').val("");
+		$('#accountCharacter').val("");
+		$('#nonAgriculturalAccountType').val("");
+		$('#registeredResidence').val("");
 	}
 
 	$('#cancel').live('click',function(){
@@ -348,7 +469,20 @@
 			day: $('#day').val(),
 			mobile: $('#updateMobile').val(),
 			address: $('#updateAddress').val(),
-			idCardNumber:$('#idCardNumber').val()
+			idCardNumber:$('#idCardNumber').val(),
+			parentName:$('#parentName').val(),
+			parentIdCardType:$('#parentIdCardType').val(),
+			parentIdCardNumber:$('#parentIdCardNumber').val(),
+			relation:$('#relation').val(),
+			idCardType:$('#idCardType').val(),
+			country:$('#country').val(),
+			nation:$('#nation').val(),
+			oversea:$('#oversea').val(),
+			bornPlace:$('#bornPlace').val(),
+			nativePlace:$('#nativePlace').val(),
+			accountCharacter:$('#accountCharacter').val(),
+			nonAgriculturalAccountType:$('#nonAgriculturalAccountType').val(),
+			registeredResidence:$('#registeredResidence').val(),
 		}
 		$('#updateStudentInfoForm').ajaxSubmit({
 			url: url,
@@ -360,8 +494,8 @@
 				$("#cancel").attr("disabled", true);
 			} ,
 			success: function (data) {
-				$("#addDialog").dialog("close");
 				if (data.success) {
+					$("#addDialog").dialog("close");
 					$.messager.alert('系统消息', '已完成', "info");
 					$("#datagrid").datagrid("reload");
 				} else {
@@ -446,6 +580,20 @@
 		});
 	};
 
+	function doPrint() {
+		var amount = $("#chargeAmount").val();
+		var chargeType = "押金";
+		if($("#chargeType").val()==1){
+			chargeType = "预缴费";
+		}
+		var printHtml = '<div style="margin:11px 11px 0px 25px">';
+		printHtml += '<span>预缴类型：'+chargeType+'</span><br/><br/>';
+		printHtml += '<span>预缴金额：'+amount+'</span><br/><br/>';
+		printHtml += '<span>学生姓名：'+$("#chargeStudentName").val()+'</span><br/><br/>';
+		printHtml += '</div>';
+		window.document.body.innerHTML=printHtml;
+		window.print();
+	}
 
 </script>
 </body>

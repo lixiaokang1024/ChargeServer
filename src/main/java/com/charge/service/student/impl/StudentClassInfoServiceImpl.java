@@ -71,12 +71,13 @@ public class StudentClassInfoServiceImpl implements StudentClassInfoService {
                 upGraduateStudent(studentClassInfoVo);
             }else{
                 GradeInfo gradeInfo = gradeInfoMapper.getGradeInfoByLevel(studentClassInfoVo.getGradeLevel() + 1);
+                GradeInfo oldGradeInfo = gradeInfoMapper.getGradeInfoByLevel(studentClassInfoVo.getGradeLevel());
                 if(gradeInfo == null){
-                    throw new BusinessException("未找到【"+gradeInfoMapper.getGradeInfoByLevel(studentClassInfoVo.getGradeLevel()).getName()+"】对应的年级升级");
+                    throw new BusinessException("未找到【"+oldGradeInfo.getName()+"】对应的年级升级");
                 }
                 ClassInfo classInfo = classInfoMapper.getByClassNameGradeId(studentClassInfoVo.getClassName(), gradeInfo.getId());
                 if(classInfo == null){
-                    throw new BusinessException("未找到【"+gradeInfo.getName()+studentClassInfoVo.getClassName()+"】对应的班级升级");
+                    throw new BusinessException("未找到【"+oldGradeInfo.getName()+studentClassInfoVo.getClassName()+"】对应的班级升级");
                 }
                 StudentClassInfo studentClassInfo = new StudentClassInfo();
                 studentClassInfo.setId(studentClassInfoVo.getId());

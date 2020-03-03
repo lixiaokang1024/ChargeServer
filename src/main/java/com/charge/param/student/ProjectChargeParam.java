@@ -4,16 +4,17 @@ import java.io.Serializable;
 
 public class ProjectChargeParam implements Serializable {
 
-    private Integer projectId;
+    private Integer studentProjectId;
     private Double projectAmount;
     private Double discount;
 
-    public Integer getProjectId() {
-        return projectId;
+
+    public Integer getStudentProjectId() {
+        return studentProjectId;
     }
 
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
+    public void setStudentProjectId(Integer studentProjectId) {
+        this.studentProjectId = studentProjectId;
     }
 
     public Double getProjectAmount() {

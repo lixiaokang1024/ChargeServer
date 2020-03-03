@@ -61,7 +61,6 @@
 		<div style="margin:11px 11px 0px 25px">
 			<input id="studentId" type="hidden" value=""/>
 			<span id="chargeProject"></span>
-			<br/><br/>
 			<span id="useDeposit">
 				使用预缴费金额：
 				<input type="radio" name="useDeposit" checked="checked" value="0"/>不使用
@@ -163,7 +162,8 @@
 				$("#chargeProject").append('');
 				for(i=0;i<row.length;i++){
 					var rowData = row[i];
-					$("#chargeProject").append(rowData.chargeProjectName + '：<input style="width: 150px;" id='+rowData.chargeProjectId+' type="text" value='+(rowData.chargeAmount-rowData.actualChargeAmount-rowData.useDepositAmount)+'></input><br/><br/>');
+					$("#chargeProject").append(rowData.chargeProjectName + '：<input style="width: 100px;" id='+rowData.id+' type="text" value='+(rowData.chargeAmount-rowData.actualChargeAmount-rowData.useDepositAmount)+'></input>');
+					$("#chargeProject").append('应缴日期：'+rowData.chargeTimeStr+'<br/><br/>');
 				}
 			},
 			error:function () {
@@ -177,7 +177,7 @@
 		var url = "${contextPath}/studentChargeInfo/doProjectCharge";
 		var projectChargeParamList = new Array();
 		$('#chargeProject').find('input').each(function (index, element) {
-			projectChargeParamList.push({projectId:element.id,projectAmount:element.value});
+			projectChargeParamList.push({studentProjectId:element.id,projectAmount:element.value});
 		});
 		var data = {
 			studentId: $('#studentId').val(),
