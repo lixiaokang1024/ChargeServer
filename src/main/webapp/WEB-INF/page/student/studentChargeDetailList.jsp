@@ -15,6 +15,7 @@
 		<th field="chargeAmount" sortable="true" align="center" width="130px">应缴费金额</th>
 		<th field="actualChargeAmount" sortable="true" align="center" width="130px">实际缴费金额</th>
 		<th field="useDepositAmount" align="center" width="130px" >使用预缴费金额</th>
+		<th field="customOfferAmount" align="center" width="130px" >自定义优惠金额</th>
 		<th field="chargeTimeStr" align="center" width="130px" >应缴费时间</th>
 		<th field="actualChargeTimeStr" align="center" width="130px" >实际缴费时间</th>
 		<th field="payTypeStr" align="center" width="130px" >缴费方式</th>

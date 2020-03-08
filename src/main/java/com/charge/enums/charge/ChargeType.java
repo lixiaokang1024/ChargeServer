@@ -2,7 +2,7 @@ package com.charge.enums.charge;
 
 public enum ChargeType {
 
-    CASH(0, "现金"), ADVANCE_CHARGE(1,"预缴费"), OTHER(2, "其他");
+    CASH(0, "现金"), NOT_CASH(1, "非现金"), OTHER(2, "其他");
 
     private Integer code;
     private String value;

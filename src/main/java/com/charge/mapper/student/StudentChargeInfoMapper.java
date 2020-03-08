@@ -29,5 +29,7 @@ public interface StudentChargeInfoMapper {
     int countStudentChargeDetail(Map<String, Object> searchParam);
     List<StudentChargeInfoDetailVo> queryStudentChargeDetailPageList(Map<String, Object> searchParam);
 
-  void checkChargeExpireStudent();
+    void checkChargeExpireStudent();
+
+    int countUnCharged(@Param("studentId") Integer studentId);
 }

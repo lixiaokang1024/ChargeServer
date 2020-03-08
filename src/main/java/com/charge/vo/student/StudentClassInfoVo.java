@@ -16,6 +16,9 @@ public class StudentClassInfoVo implements Serializable {
     private Integer gradeLevel;
     private Integer isGraduate;
     private String isGraduateStr;
+    private String remark;
+    private String graduateTime;
+    private String admissionTime;
 
     public Integer getId() {
         return id;
@@ -95,5 +98,29 @@ public class StudentClassInfoVo implements Serializable {
 
     public void setIsGraduateStr(String isGraduateStr) {
         this.isGraduateStr = isGraduateStr;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getGraduateTime() {
+        return graduateTime;
+    }
+
+    public void setGraduateTime(String graduateTime) {
+        this.graduateTime = graduateTime;
+    }
+
+    public String getAdmissionTime() {
+        return admissionTime;
+    }
+
+    public void setAdmissionTime(String admissionTime) {
+        this.admissionTime = admissionTime;
     }
 }

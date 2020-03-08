@@ -1,5 +1,6 @@
 package com.charge.vo.student;
 
+import com.charge.enums.student.GraduateStatus;
 import com.charge.enums.student.Sex;
 
 import java.io.Serializable;
@@ -70,7 +71,7 @@ public class StudentInfoVo implements Serializable {
     /**
      * student_info.is_graduate 
      */
-    private Boolean graduate;
+    private Integer graduate;
     private String graduateStr;
 
     private Double deposit;
@@ -297,17 +298,11 @@ public class StudentInfoVo implements Serializable {
         this.address = address == null ? null : address.trim();
     }
 
-    /**
-     * @return student_info.is_graduate 
-     */
-    public Boolean getGraduate() {
+    public Integer getGraduate() {
         return graduate;
     }
 
-    /**
-     * @param graduate the value for student_info.is_graduate 
-     */
-    public void setGraduate(Boolean graduate) {
+    public void setGraduate(Integer graduate) {
         this.graduate = graduate;
     }
 
@@ -370,7 +365,7 @@ public class StudentInfoVo implements Serializable {
     }
 
     public String getGraduateStr() {
-        return graduateStr;
+        return GraduateStatus.getEnum(graduate).getValue();
     }
 
     public void setGraduateStr(String graduateStr) {

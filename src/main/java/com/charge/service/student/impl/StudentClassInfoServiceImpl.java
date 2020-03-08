@@ -4,6 +4,7 @@ import com.charge.Exception.BusinessException;
 import com.charge.enums.student.GraduateStatus;
 import com.charge.mapper.school.ClassInfoMapper;
 import com.charge.mapper.school.GradeInfoMapper;
+import com.charge.mapper.student.StudentChargeInfoMapper;
 import com.charge.mapper.student.StudentClassInfoMapper;
 import com.charge.mapper.student.StudentExtInfoMapper;
 import com.charge.mapper.student.StudentInfoMapper;
@@ -42,6 +43,9 @@ public class StudentClassInfoServiceImpl implements StudentClassInfoService {
     @Autowired
     private StudentExtInfoMapper studentExtInfoMapper;
 
+    @Autowired
+    private StudentChargeInfoMapper studentChargeInfoMapper;
+
     public void insertSelective(StudentClassInfo studentClassInfo) {
         studentClassInfo.setCreateTime(DateUtil.getCurrentTimespan());
         studentClassInfoMapper.insertSelective(studentClassInfo);
@@ -64,7 +68,7 @@ public class StudentClassInfoServiceImpl implements StudentClassInfoService {
     public void upStudentClass(List<StudentClassInfoVo> studentClassInfoVoList) {
         int maxGradeLevel = gradeInfoMapper.getMaxGradeLevel();
         for(StudentClassInfoVo studentClassInfoVo:studentClassInfoVoList){
-            if(studentClassInfoVo.getClassId() == null){
+            if(studentClassInfoVo.getClassId() == null || studentClassInfoVo.getClassId() == 0){
                 continue;
             }
             if(studentClassInfoVo.getGradeLevel() == maxGradeLevel){
@@ -102,22 +106,40 @@ public class StudentClassInfoServiceImpl implements StudentClassInfoService {
         }
     }
 
-    //升级毕业生
-    private void upGraduateStudent(StudentClassInfoVo studentClassInfoVo) {
+    @Override
+    public void leaveSchool(Integer studentId) {
+        if(studentChargeInfoMapper.countUnCharged(studentId) > 0){
+            updateGraduteStatus(studentId, GraduateStatus.UN_GRADUATE.getCode(), "退学失败，有欠费项目未缴纳。");
+        }else{
+            updateGraduteStatus(studentId, GraduateStatus.LEAVE.getCode(), "");
+        }
+    }
+
+    private void updateGraduteStatus(Integer studentId, Integer graduteStatus, String remark){
         StudentClassInfo studentClassInfo = new StudentClassInfo();
-        studentClassInfo.setId(studentClassInfoVo.getId());
-        studentClassInfo.setGraduate(GraduateStatus.GRADUATE.getCode());
-        studentClassInfoMapper.updateByPrimaryKeySelective(studentClassInfo);
+        studentClassInfo.setStudentId(studentId);
+        studentClassInfo.setGraduate(graduteStatus);
+        studentClassInfo.setRemark(remark);
+        studentClassInfoMapper.updateByStudentId(studentClassInfo);
 
         StudentInfo studentInfo = new StudentInfo();
-        studentInfo.setId(studentClassInfoVo.getStudentId());
-        studentInfo.setGraduate(true);
+        studentInfo.setId(studentId);
+        studentInfo.setGraduate(graduteStatus);
         studentInfoMapper.updateByPrimaryKeySelective(studentInfo);
 
         StudentExtInfo studentExtInfo = new StudentExtInfo();
-        studentExtInfo.setStudentId(studentClassInfoVo.getStudentId());
-        studentExtInfo.setGraduate(1);
+        studentExtInfo.setStudentId(studentId);
+        studentExtInfo.setGraduate(graduteStatus);
         studentExtInfo.setGraduateTime(DateUtil.getCurrentTimespan());
         studentExtInfoMapper.updateByStudentIdSelective(studentExtInfo);
+    }
+
+    //升级毕业生
+    private void upGraduateStudent(StudentClassInfoVo studentClassInfoVo) {
+        if(studentChargeInfoMapper.countUnCharged(studentClassInfoVo.getStudentId()) > 0){
+            updateGraduteStatus(studentClassInfoVo.getStudentId(), GraduateStatus.UN_GRADUATE.getCode(), "毕业失败，有欠费项目未缴纳。");
+        }else{
+            updateGraduteStatus(studentClassInfoVo.getStudentId(), GraduateStatus.GRADUATE.getCode(), "");
+        }
     }
 }

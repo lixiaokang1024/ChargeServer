@@ -7,12 +7,15 @@
 	   rownumbers="true" pagination="true" pageSize="20" showFooter="true">
 	<thead>
 	<tr style="valign: middle">
-		<th field="studentId" sortable="true" width="150px">学号</th>
-		<th field="studentName" sortable="true" width="150px">学生姓名</th>
-		<th field="className" sortable="true" width="150px">班级</th>
-		<th field="gradeName" sortable="true" width="150px">年级</th>
-		<th field="isGraduateStr" sortable="true" width="130px">毕业状态</th>
-		<th field="operator"  width="50px" formatter="settings">操作</th>
+		<th field="studentId" align="center" sortable="true" width="50px">学号</th>
+		<th field="studentName" align="center" sortable="true" width="100px">学生姓名</th>
+		<th field="className" align="center" sortable="true" width="100px">班级</th>
+		<th field="gradeName" align="center" sortable="true" width="100px">年级</th>
+		<th field="isGraduateStr" align="center" sortable="true" width="100px">毕业状态</th>
+		<th field="graduateTime" align="center" sortable="true" width="150px">毕业时间</th>
+		<th field="admissionTime" align="center" sortable="true" width="150px">入学时间</th>
+		<th field="remark" align="center" sortable="true" width="130px">备注</th>
+		<th field="operator" align="center" width="100px" formatter="settings">操作</th>
 	</tr>
 	</thead>
 </table>
@@ -25,6 +28,15 @@
 				<td style="text-align: right;">学生姓名：</td>
 				<td style="width: 150px">
 					<input type="text" id="studentName" name="studentName" style="width: 110px;" value=""/>
+				</td>
+				<td style="text-align: right;">毕业状态：</td>
+				<td style="width: 150px">
+					<select id="graduateStatus">
+						<option value="0">未毕业</option>
+						<option value="1">已毕业</option>
+						<option value="2">已退学</option>
+						<option value="-1">全部</option>
+					</select>
 				</td>
 				<td style="text-align: right;">入学时间：</td>
 				<td colspan="3">
@@ -123,7 +135,7 @@
 	//导出
 	$('#exportLink').click(function () {
 		var datas = getFormData();
-		var url = '${contextPath}/student/export';
+		var url = '${contextPath}/studentClassInfo/export';
 		$.messager.confirm('系统消息', "是否导出！", function (r) {
 			if (r) {
 				$.ajax({
@@ -153,8 +165,19 @@
 	});
 
 	function getFormData() {
+		var admissionTimeBegin = '';
+		if($("#admissionTimeBegin").val() != ''){
+			admissionTimeBegin = $("#admissionTimeBegin").val() + " 00:00:00";
+		}
+		var admissionTimeEnd = '';
+		if($("#admissionTimeEnd").val() != ''){
+			admissionTimeEnd = $("#admissionTimeEnd").val() + " 23:59:59";
+		}
 		var data = {
-			studentName: $('#studentName').val()
+			studentName: $('#studentName').val(),
+			isGraduate: $('#graduateStatus').val(),
+			admissionTimeBegin: admissionTimeBegin,
+			admissionTimeEnd: admissionTimeEnd
 		};
 		return data;
 	}
@@ -235,9 +258,36 @@
 		var html = '<div style="text-align: center;">';
 		if(row.isGraduate == 0){
 			html += '<img style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" title="编辑" a src="${contextPath}/images/m_edit.gif" href="javascript:;" onclick="editClassInfo('+row.studentId+',\''+row.studentName+'\','+row.gradeId+','+row.classId+')" />';
+			html += '<input value="退学" style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;width: 40px;" type="button" onclick="leaveSchool('+row.studentId+')"/>';
 		}
 		html += '</div>';
 		return html;
+	}
+
+	function leaveSchool(studentId){
+		$.messager.confirm('系统消息', "是否确认退学！", function (r) {
+			if (r) {
+				var data = {"studentId":studentId};
+				$.ajax({
+					url: "${contextPath}/studentClassInfo/leaveSchool",
+					cache: false,
+					data: JSON.stringify(data),
+					contentType : 'application/json;charset=utf-8',
+					type: "post",
+					success: function (data) {
+						if (data.success) {
+							$.messager.alert('系统消息', '已完成', "info");
+							$("#datagrid").datagrid("reload");
+						} else {
+							$.messager.alert('系统消息', data.msg,'error');
+						}
+					},
+					error: function (data) {
+						$.messager.alert('系统消息', data.msg,'error');
+					}
+				});
+			}
+		});
 	}
 
 	function editClassInfo(studentId, studentName, gradeId, classId){

@@ -66,7 +66,7 @@ public class StudentInfo implements Serializable {
     /**
      * student_info.is_graduate 
      */
-    private Boolean graduate = false;
+    private Integer graduate;
 
     private String idCardType;
 
@@ -275,17 +275,11 @@ public class StudentInfo implements Serializable {
         this.address = address == null ? null : address.trim();
     }
 
-    /**
-     * @return student_info.is_graduate 
-     */
-    public Boolean getGraduate() {
+    public Integer getGraduate() {
         return graduate;
     }
 
-    /**
-     * @param graduate the value for student_info.is_graduate 
-     */
-    public void setGraduate(Boolean graduate) {
+    public void setGraduate(Integer graduate) {
         this.graduate = graduate;
     }
 

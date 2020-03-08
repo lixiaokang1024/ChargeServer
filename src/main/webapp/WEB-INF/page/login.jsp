@@ -16,7 +16,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="renderer" content="webkit">
-    <meta name="description" content="幼儿园EMA系统！">
+    <meta name="description" content="汇通幼儿园EMA系统！">
     <title>缴费系统 - 用户登录</title>
     <link rel="stylesheet" href="${contextPath}/css/bootstrap.min.css">
     <link rel="stylesheet" href="${contextPath}/css/font-awesome.min.css">
@@ -133,7 +133,7 @@
     <div class="login-box">
         <div class="login-title text-center">
             <h1>
-                <small>幼儿园EMA系统</small>
+                <small>汇通幼儿园EMA系统</small>
             </h1>
         </div>
         <div class="login-content ">

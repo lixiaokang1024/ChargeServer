@@ -19,4 +19,5 @@ public interface StudentClassInfoService {
 
     void updateStudentClassInfo(Integer studentId, Integer classId);
 
+    void leaveSchool(Integer studentId);
 }

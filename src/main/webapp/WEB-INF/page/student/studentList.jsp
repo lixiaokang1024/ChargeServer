@@ -10,6 +10,9 @@
 		<th field="id" sortable="true" align="center" width="50px">学号</th>
 		<th field="name" sortable="true" align="center" width="80px">姓名</th>
 		<th field="sexStr" sortable="true" align="center" width="50px">性别</th>
+		<th field="graduateStr" align="center" sortable="true" width="70px">毕业状态</th>
+		<th field="deposit" align="center" sortable="true" width="50px">押金</th>
+		<th field="prepaymentAmount" align="center" sortable="true" width="70px">预交费金额</th>
 		<th field="idCardType" sortable="true" align="center" width="50px">身份证类型</th>
 		<th field="idCardNumber" sortable="true" align="center" width="150px">身份证号码</th>
 		<th field="bornDate" sortable="true" align="center" width="80px">出生日期</th>
@@ -40,6 +43,15 @@
 				<td style="text-align: right;">学生姓名：</td>
 				<td style="width: 150px">
 					<input type="text" id="studentName" name="studentName" style="width: 110px;" value=""/>
+				</td>
+				<td style="text-align: right;">毕业状态：</td>
+				<td style="width: 150px">
+					<select id="graduateStatus">
+						<option value="0">未毕业</option>
+						<option value="1">已毕业</option>
+						<option value="2">已退学</option>
+						<option value="-1">全部</option>
+					</select>
 				</td>
 				<td style="text-align: right;">手机号：</td>
 				<td style="width: 150px">
@@ -288,7 +300,8 @@
 	function getFormData() {
 		var data = {
 			name: $('#studentName').val(),
-            mobile: $('#mobile').val()
+            mobile: $('#mobile').val(),
+			graduate: $('#graduateStatus').val()
 		};
 		return data;
 	}

@@ -104,7 +104,6 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             studentChargeInfo.setUseDepositAmount(0.00);
             studentChargeInfo.setActualChargeTime(DateUtil.getCurrentTimespan());
             if(prepaymentAmount > 0){
-                studentChargeInfo.setPayType(ChargeType.ADVANCE_CHARGE.getCode());
                 studentChargeInfo.setStatus(ChargeStatus.PART_CHARGED.getCode());
                 if(prepaymentAmount >= needChargeAmount){
                     studentChargeInfo.setUseDepositAmount(needChargeAmount);
@@ -155,6 +154,7 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
         Boolean useDeposit = chargeParam.getIsUseDeposit() == 1;
         Double prepaymentAmount = 0.00; //学生预缴费金额
         Double changePrepaymentAmount = 0.00; //使用预缴费金额
+        Double customOfferAmount = chargeParam.getCustomOfferAmount() == null ? 0 : chargeParam.getCustomOfferAmount();
         if(useDeposit){
             prepaymentAmount = studentExtInfoMapper.getByStudentId(chargeParam.getStudentId()).getPrepaymentAmount();
         }
@@ -165,17 +165,25 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             }
             Double chargeAmount = vo.getChargeAmount() * discount - vo.getActualChargeAmount() - vo.getUseDepositAmount();
             Double actureChargeAmount = projectAmountMap.get(vo.getId()).getProjectAmount();
-            Double useDepositAmount = 0.00;
+            if(actureChargeAmount > chargeAmount){
+                throw new BusinessException("实际支付金额大于应支付金额,请核对后再支付");
+            }
+            Double useCustomOfferAmount = 0.00;
             if(actureChargeAmount < chargeAmount){
-                useDepositAmount = chargeAmount - actureChargeAmount;
+                useCustomOfferAmount = chargeAmount - actureChargeAmount;
+                if(customOfferAmount < useCustomOfferAmount){
+                    useCustomOfferAmount = customOfferAmount;
+                }
+                customOfferAmount -= useCustomOfferAmount;
+            }
+            Double useDepositAmount = 0.00;
+            if((actureChargeAmount + useCustomOfferAmount) < chargeAmount){
+                useDepositAmount = chargeAmount - actureChargeAmount - useCustomOfferAmount;
                 if(prepaymentAmount < useDepositAmount){
                     useDepositAmount = prepaymentAmount;
                 }
                 prepaymentAmount -= useDepositAmount;
                 changePrepaymentAmount += useDepositAmount;
-            }
-            if((actureChargeAmount + useDepositAmount) > chargeAmount){
-              throw new BusinessException("实际支付金额大于应支付金额,请核对后再支付");
             }
             StudentChargeInfo studentChargeInfo = new StudentChargeInfo();
             studentChargeInfo.setId(vo.getId());
@@ -184,6 +192,7 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             studentChargeInfo.setActualChargeTime(DateUtil.getCurrentTimespan());
             studentChargeInfo.setStatus(vo.getStatus());
             studentChargeInfo.setDiscount(discount);
+            studentChargeInfo.setCustomOfferAmount(useCustomOfferAmount);
             if((actureChargeAmount + useDepositAmount) < chargeAmount){
                 if((actureChargeAmount + useDepositAmount) > 0.00){
                     if(vo.getStatus() != ChargeStatus.EXPIRED.getCode()){
@@ -193,10 +202,7 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             }else{
                 studentChargeInfo.setStatus(ChargeStatus.CHARGED.getCode());
             }
-            studentChargeInfo.setPayType(ChargeType.CASH.getCode());
-            if(useDepositAmount > 0.00){
-                studentChargeInfo.setPayType(ChargeType.ADVANCE_CHARGE.getCode());
-            }
+            studentChargeInfo.setPayType(chargeParam.getPayType());
             studentChargeInfoMapper.updateStudentChargeInfo(studentChargeInfo);
             if((actureChargeAmount + useDepositAmount) > 0.00){
                 vo.setActualChargeAmount(actureChargeAmount);

@@ -13,6 +13,7 @@
 			<th width="150px">实际缴费金额</th>
 			<th width="50px">优惠</th>
 			<th width="150px">使用预缴费金额</th>
+			<th width="150px">自定义优惠金额</th>
 			<th width="130px">应缴费时间</th>
 			<th width="130px">实际缴费时间</th>
 			<th width="130px">缴费方式</th>
@@ -27,6 +28,7 @@
 				<td>${ basic.actualChargeAmount }</td>
 				<td>${ basic.discount*10 }折</td>
 				<td>${ basic.useDepositAmount }</td>
+				<td>${ basic.customOfferAmount }</td>
 				<td>${ basic.chargeTimeStr }</td>
 				<td>${ basic.actualChargeTimeStr }</td>
 				<td>${ basic.payTypeStr }</td>

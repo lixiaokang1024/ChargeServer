@@ -114,4 +114,8 @@ public class StudentClassInfoProxy {
     public void updateStudentClassInfo(StudentClassInfo studentClassInfo){
         studentClassInfoService.updateStudentClassInfo(studentClassInfo.getStudentId(), studentClassInfo.getClassId());
     }
+
+    public void leaveSchool(StudentClassInfo studentClassInfo){
+        studentClassInfoService.leaveSchool(studentClassInfo.getStudentId());
+    }
 }

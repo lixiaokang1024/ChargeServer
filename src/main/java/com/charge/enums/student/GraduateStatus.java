@@ -1,7 +1,7 @@
 package com.charge.enums.student;
 
 public enum GraduateStatus {
-    UN_GRADUATE(0, "未毕业"), GRADUATE(1,"已毕业");
+    UN_GRADUATE(0, "未毕业"), GRADUATE(1,"已毕业"), LEAVE(2,"已退学");
 
     private Integer code;
     private String value;

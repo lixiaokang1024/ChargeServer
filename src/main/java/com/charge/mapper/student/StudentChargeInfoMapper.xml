@@ -6,7 +6,7 @@
     <result column="student_id" property="studentId" jdbcType="INTEGER" />
     <result column="charge_project_id" property="chargeProjectId" jdbcType="INTEGER" />
     <result column="charge_amount" property="chargeAmount" jdbcType="DECIMAL" />
-    <result column="charge_coefficient" property="chargeCoefficient" jdbcType="INTEGER" />
+    <result column="charge_coefficient" property="chargeCoefficient" jdbcType="DECIMAL" />
     <result column="actual_charge_amount" property="actualChargeAmount" jdbcType="DECIMAL" />
     <result column="discount" property="discount" jdbcType="DECIMAL" />
     <result column="use_deposit_amount" property="useDepositAmount" jdbcType="DECIMAL" />
@@ -259,6 +259,7 @@
     a.actual_charge_amount,
     a.discount,
     a.use_deposit_amount,
+    a.custom_offer_amount,
     a.charge_time,
     a.actual_charge_time,
     a.pay_type,
@@ -327,6 +328,7 @@
     a.actual_charge_amount,
     a.discount,
     a.use_deposit_amount,
+    a.custom_offer_amount,
     a.charge_time,
     a.actual_charge_time,
     a.pay_type,
@@ -352,6 +354,9 @@
     <if test="payType != null">
       pay_type = #{payType},
     </if>
+    <if test="customOfferAmount != null">
+      custom_offer_amount = #{customOfferAmount},
+    </if>
     <if test="status != null">
       status = #{status},
     </if>
@@ -363,4 +368,8 @@
   <update id="checkChargeExpireStudent">
     update student_charge_info set status = 3 where status in(0, 1) and charge_time &lt;= UNIX_TIMESTAMP(NOW())
   </update>
+
+  <select id="countUnCharged" resultType="int">
+    select count(*) from student_charge_info where student_id = #{studentId} and status != 2
+  </select>
 </mapper>

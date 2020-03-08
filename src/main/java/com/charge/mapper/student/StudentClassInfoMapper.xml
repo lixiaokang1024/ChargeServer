@@ -77,6 +77,9 @@
       <if test="graduate != null" >
         is_graduate = #{graduate,jdbcType=INTEGER},
       </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=INTEGER},
       </if>
@@ -102,7 +105,7 @@
 
   <select id="countStudentClassInfo" resultType="java.lang.Integer">
     SELECT count(1) FROM student_class_info a right JOIN student_info b  on a.student_id=b.id left JOIN class_info c on a.class_id=c.id
-    left JOIN grade_info d on c.grade_id=d.id
+    left JOIN grade_info d on c.grade_id=d.id join student_ext_info e on b.id=e.student_id
     <include refid="wheresql"/>
   </select>
   <select id="queryStudentClassInfoPageList" resultType="com.charge.vo.student.StudentClassInfoVo">
@@ -115,9 +118,12 @@
     d.id as gradeId,
     d.name as gradeName,
     d.level as gradeLevel,
-    b.is_graduate
+    b.is_graduate,
+    a.remark,
+    FROM_UNIXTIME(e.graduate_time) as graduateTime,
+    FROM_UNIXTIME(e.admission_time) as admissionTime
     FROM student_class_info a right JOIN student_info b  on a.student_id=b.id left JOIN class_info c on a.class_id=c.id
-    left JOIN grade_info d on c.grade_id=d.id
+    left JOIN grade_info d on c.grade_id=d.id join student_ext_info e on b.id=e.student_id
     <include refid="wheresql"/>
   </select>
   <sql id="wheresql">
@@ -134,13 +140,35 @@
     <if test="param.gradeName != null and param.gradeName != ''">
       and d.name = #{param.gradeName}
     </if>
-    <if test="param.isGraduate != null and param.isGraduate != 0">
+    <if test="param.isGraduate != null and param.isGraduate != -1">
       and b.is_graduate = #{param.isGraduate}
+    </if>
+    <if test="param.admissionTimeBegin != null and param.admissionTimeBegin != ''">
+      and FROM_UNIXTIME(e.graduate_time) &gt;= #{param.admissionTimeBegin}
+    </if>
+    <if test="param.admissionTimeEnd != null and param.admissionTimeEnd != ''">
+      and FROM_UNIXTIME(e.graduate_time) &lt;= #{param.admissionTimeEnd}
     </if>
   </sql>
 
   <select id="getByStudentId" parameterType="java.lang.Integer" resultType="com.charge.pojo.student.StudentClassInfo">
     SELECT <include refid="Base_Column_List"/> FROM student_class_info WHERE student_id = #{studentId}
   </select>
+
+  <update id="updateByStudentId" parameterType="com.charge.pojo.student.StudentClassInfo" >
+    update student_class_info
+    <set >
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="graduate != null" >
+        is_graduate = #{graduate,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+    </set>
+    where student_id = #{studentId}
+  </update>
 
 </mapper>

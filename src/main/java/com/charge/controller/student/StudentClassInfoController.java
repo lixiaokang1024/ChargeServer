@@ -4,7 +4,9 @@ import com.charge.param.student.StudentClassInfoSearchParam;
 import com.charge.pojo.common.PageResultDTO;
 import com.charge.pojo.student.StudentClassInfo;
 import com.charge.proxy.student.StudentClassInfoProxy;
+import com.charge.util.ExcelUtil;
 import com.charge.vo.student.StudentClassInfoVo;
+import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,4 +99,60 @@ public class StudentClassInfoController {
         return resultMap;
     }
 
+    @RequestMapping("/leaveSchool")
+    @ResponseBody
+    public Map<String, Object> leaveSchool(@RequestBody StudentClassInfo studentClassInfo) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("success", true);
+        try {
+            studentClassInfoProxy.leaveSchool(studentClassInfo);
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
+    }
+
+    @RequestMapping("/export")
+    @ResponseBody
+    public ModelMap exportStudentInfo(StudentClassInfoSearchParam searchParam,HttpServletRequest request) {
+        ModelMap modelMap = new ModelMap();
+        modelMap.put("success", false);
+        final String templateFilePath = request.getSession().getServletContext().getRealPath("/");
+        try {
+            searchParam.setPageSize(Integer.MAX_VALUE);
+            PageResultDTO<List<StudentClassInfoVo>> pageResultDTO = studentClassInfoProxy.queryStudentClassInfo(searchParam);
+            File targetFile = ExcelUtil.createXLSXExcel(initExcelColumn(pageResultDTO.getData()), initExcelHeader(),templateFilePath, "学生班级信息");
+            Map<String, Object> data = new HashMap<>();
+            data.put("filePath", targetFile.getName());
+            data.put("fileName", targetFile.getName());
+            modelMap.put("success", true);
+            modelMap.put("data", data);
+        } catch (Exception e) {
+            modelMap.put("msg", e.getMessage());
+        }
+        return modelMap;
+    }
+
+    private String[] initExcelHeader() {
+        String[] strArray = { "姓名", "学号", "班级", "年级", "毕业状态", "毕业时间", "入学时间", "备注"};
+        return strArray;
+    }
+    private Map<String, List<String>> initExcelColumn(List<StudentClassInfoVo> data) {
+        Map<String, List<String>> result = new HashMap<>();
+        for(int i=0;i<data.size();i++){
+            List<String> column = new ArrayList<>();
+            StudentClassInfoVo dto = data.get(i);
+            column.add(dto.getStudentName());
+            column.add(String.valueOf(dto.getStudentId()));
+            column.add(dto.getClassName());
+            column.add(dto.getGradeName());
+            column.add(dto.getIsGraduateStr());
+            column.add(dto.getGraduateTime());
+            column.add(dto.getAdmissionTime());
+            column.add(dto.getRemark());
+            result.put(String.valueOf(i), column);
+        }
+        return result;
+    }
 }

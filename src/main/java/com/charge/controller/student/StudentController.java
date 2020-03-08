@@ -88,6 +88,7 @@ public class StudentController {
             column.add(String.valueOf(dto.getId()));
             column.add(dto.getSexStr());
             column.add("" + dto.getYear() + "-" + dto.getMonth() + "-" + dto.getDay());
+            column.add(dto.getIdCardNumber());
             column.add(dto.getParentName());
             column.add(dto.getParentIdCardNumber());
             column.add(dto.getMobile());

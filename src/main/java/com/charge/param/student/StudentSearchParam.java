@@ -46,7 +46,7 @@ public class StudentSearchParam extends BaseDataPaginationParam implements Seria
      */
     private String parentName;
     private String mobile;
-    private Integer graduate;
+    private Integer graduate = 0;
     private String creatTimeBegin;
     private String creatTimeEnd;
 

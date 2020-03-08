@@ -1,7 +1,5 @@
 package com.charge.controller.student;
 
-import com.charge.export.common.ExportCSVService;
-import com.charge.export.student.ExportStudentHistoryChargeInfoCSVHandler;
 import com.charge.param.student.StudentChargeInfoSearchParam;
 import com.charge.param.student.StudentChargeParam;
 import com.charge.pojo.common.PageResultDTO;
@@ -137,6 +135,7 @@ public class StudentChargeInfoController {
             List<String> column = new ArrayList<>();
             StudentChargeInfoDetailVo dto = data.get(i);
             column.add(String.valueOf(i+1));
+            column.add(String.valueOf(dto.getStudentId()));
             column.add(dto.getStudentName());
             column.add(dto.getGradeName());
             column.add(dto.getClassName());
@@ -154,7 +153,7 @@ public class StudentChargeInfoController {
     }
 
     private String[] initExcelHeader() {
-        String[] strArray = {"序号", "姓名", "年级", "班级", "缴费项目", "应缴费金额", "实际缴费金额", "使用预缴费金额", "应缴费时间", "实际缴费时间", "缴费方式", "缴费状态"};
+        String[] strArray = {"序号", "姓名", "学号", "年级", "班级", "缴费项目", "应缴费金额", "实际缴费金额", "使用预缴费金额", "应缴费时间", "实际缴费时间", "缴费方式", "缴费状态"};
         return strArray;
     }
 

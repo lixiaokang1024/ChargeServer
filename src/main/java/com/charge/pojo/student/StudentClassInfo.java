@@ -23,6 +23,7 @@ public class StudentClassInfo implements Serializable {
      * student_class_info.is_graduate 
      */
     private Integer graduate;
+    private String remark;
 
     /**
      * student_class_info.create_time 
@@ -93,6 +94,14 @@ public class StudentClassInfo implements Serializable {
      */
     public void setGraduate(Integer graduate) {
         this.graduate = graduate;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     /**

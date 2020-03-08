@@ -111,7 +111,7 @@ public class StudentChargeInfoProxy {
                     XSSFCell chargeTime = xssfRow.getCell(3);
                     String chargeTimeStr = ExcelUtil.getValue(chargeTime);
                     XSSFCell chargeCoefficient = xssfRow.getCell(4);
-                    Integer chargeCoefficientInt = Integer.parseInt(ExcelUtil.getValue(chargeCoefficient));
+                    Double chargeCoefficientDouble = Double.parseDouble(ExcelUtil.getValue(chargeCoefficient));
                     StudentClassInfo studentClassInfo = studentClassInfoService.getByStudentId(studentIdInt);
                     ClassInfo classInfo = schoolService.getClassInfoById(studentClassInfo.getClassId());
                     if(studentClassInfo == null){
@@ -127,15 +127,19 @@ public class StudentChargeInfoProxy {
                     }
                     studentChargeInfo.setChargeProjectId(chargeProject.getId());
                     if(chargeProject.getProjectName().equals("保育费")){
-                        if(chargeCoefficientInt <= 0){
+                        if(chargeCoefficientDouble <= 0){
                             studentChargeInfo.setChargeAmount(0.00);
-                        }else if(chargeCoefficientInt <= 7){
+                            studentChargeInfo.setChargeCoefficient(0.0);
+                        }else if(chargeCoefficientDouble <= 7){
                             studentChargeInfo.setChargeAmount(chargeProject.getAmount() * 0.5);
+                            studentChargeInfo.setChargeCoefficient(0.5);
                         }else{
                             studentChargeInfo.setChargeAmount(chargeProject.getAmount());
+                            studentChargeInfo.setChargeCoefficient(1.0);
                         }
                     }else{
-                        studentChargeInfo.setChargeAmount(chargeProject.getAmount() * chargeCoefficientInt);
+                        studentChargeInfo.setChargeAmount(chargeProject.getAmount() * chargeCoefficientDouble);
+                        studentChargeInfo.setChargeCoefficient(chargeCoefficientDouble);
                     }
                     studentChargeInfo.setChargeTime(DateUtil.getTimespan2(chargeTimeStr));
                     studentChargeInfoService.insertSelective(studentChargeInfo);

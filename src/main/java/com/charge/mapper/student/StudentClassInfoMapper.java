@@ -19,4 +19,6 @@ public interface StudentClassInfoMapper {
     List<StudentClassInfoVo> queryStudentClassInfoPageList(Map<String, Object> searchParam);
 
     StudentClassInfo getByStudentId(Integer studentId);
+
+    int updateByStudentId(StudentClassInfo studentClassInfo);
 }

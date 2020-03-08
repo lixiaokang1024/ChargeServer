@@ -367,6 +367,9 @@
     <if test="param.mobile != null and param.mobile != ''">
       AND mobile=#{param.mobile}
     </if>
+    <if test="param.graduate != null and param.graduate != -1">
+      AND is_graduate=#{param.graduate}
+    </if>
   </sql>
 
   <select id="getStudentInfoByName" parameterType="java.lang.String" resultType="com.charge.pojo.student.StudentInfo">

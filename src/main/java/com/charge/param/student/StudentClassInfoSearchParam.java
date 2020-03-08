@@ -10,7 +10,9 @@ public class StudentClassInfoSearchParam extends BaseDataPaginationParam impleme
     private String className;
     private Integer classId;
     private String gradeName;
-    private Integer isGraduate;
+    private Integer isGraduate = 0;
+    private String admissionTimeBegin;//入学时间
+    private String admissionTimeEnd;
 
     public String getStudentName() {
         return studentName;
@@ -50,5 +52,21 @@ public class StudentClassInfoSearchParam extends BaseDataPaginationParam impleme
 
     public void setIsGraduate(Integer isGraduate) {
         this.isGraduate = isGraduate;
+    }
+
+    public String getAdmissionTimeBegin() {
+        return admissionTimeBegin;
+    }
+
+    public void setAdmissionTimeBegin(String admissionTimeBegin) {
+        this.admissionTimeBegin = admissionTimeBegin;
+    }
+
+    public String getAdmissionTimeEnd() {
+        return admissionTimeEnd;
+    }
+
+    public void setAdmissionTimeEnd(String admissionTimeEnd) {
+        this.admissionTimeEnd = admissionTimeEnd;
     }
 }

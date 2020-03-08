@@ -56,21 +56,44 @@
 
 <!-- 缴费弹框 -->
 <div id="chargeDialog" class="easyui-dialog" title="缴费" closed="true"
-	 style="width:350px; height:200px;overflow: auto;" iconCls="icon-edit">
+	 style="width:400px; height:300px;overflow: auto;" iconCls="icon-edit">
 	<form name="chargeForm" action="" id="chargeForm" method="post">
-		<div style="margin:11px 11px 0px 25px">
+		<div style="margin:20px 5px 5px 35px">
 			<input id="studentId" type="hidden" value=""/>
+			<input id="studentChargeInfoId" type="hidden" value=""/>
 			<span id="chargeProject"></span>
-			<span id="useDeposit">
-				使用预缴费金额：
-				<input type="radio" name="useDeposit" checked="checked" value="0"/>不使用
-				<input type="radio" name="useDeposit" value="1"/>使用
-				<br/><br/>
-			</span>
+			<br/>
+			<table style="border-collapse:separate; border-spacing:0px 5px;">
+				<tr>
+					<td style="float: right">使用预缴费金额：</td>
+					<td>
+						<input type="radio" name="useDeposit" checked="checked" value="0"/>不使用
+						<input type="radio" name="useDeposit" value="1"/>使用
+					</td>
+				</tr>
+				<tr>
+					<td style="float: right">缴费方式：</td>
+					<td>
+						<select id="payType" style="width: 120px">
+							<option value="0">现金</option>
+							<option value="1">非现金</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td style="float: right">
+						自定义优惠金额：
+					</td>
+					<td>
+						<input type="text" style="width: 120px;" id="customOfferAmount" value="0.0" placeholder="请输入优惠金额"/>
+					</td>
+				</tr>
+			</table>
+			<br/>
 			<p align="center">
-				<input id="save" type="button" value="缴费"/>
-				<input id="cancel" type="button" value="取消"/>
-			</p><br>
+				<input id="save" type="button" style="font-size: 15px" value="缴费"/>
+				<input id="cancel" type="button" style="font-size: 15px" value="取消"/>
+			</p>
 		</div>
 	</form>
 </div>
@@ -151,6 +174,21 @@
 		$("#chargeDialog").dialog("open");
 		$("#chargeAmount").val("");
 		$("#studentId").val(studentId);
+		var discountList = {};
+		$.ajax({
+			url:"${contextPath}/discount/discountList",
+			dataType:'json',
+			data:{},
+			async:false,
+			success:function(data){
+				discountList = data.rows;
+			}
+		});
+		var select = '';
+		for(k=0;k<discountList.length;k++){
+			var row = discountList[k];
+			select = select + '<option value="'+(row.discount/10).toFixed(2)+'">'+row.discount+'优惠</option>';
+		}
 		var chargeStatus = [3];
 		$.ajax({
 			url:"${contextPath}/studentChargeInfo/getByStudentId",
@@ -162,8 +200,22 @@
 				$("#chargeProject").append('');
 				for(i=0;i<row.length;i++){
 					var rowData = row[i];
-					$("#chargeProject").append(rowData.chargeProjectName + '：<input style="width: 100px;" id='+rowData.id+' type="text" value='+(rowData.chargeAmount-rowData.actualChargeAmount-rowData.useDepositAmount)+'></input>');
-					$("#chargeProject").append('应缴日期：'+rowData.chargeTimeStr+'<br/><br/>');
+					$("#chargeProject").append('<input id="chargeAmount'+rowData.id+'" type="hidden" value="'+rowData.chargeAmount+'" />');
+					$("#chargeProject").append('<input id="actualChargeAmount'+rowData.id+'" type="hidden" value="'+rowData.actualChargeAmount+'" />');
+					$("#chargeProject").append('<input id="useDepositAmount'+rowData.id+'" type="hidden" value="'+rowData.useDepositAmount+'" />');
+					$("#chargeProject").append(rowData.chargeProjectName + '：<input style="width: 80px;" id='+rowData.id+' type="text" value='+(rowData.chargeAmount-rowData.actualChargeAmount-rowData.useDepositAmount-rowData.customOfferAmount)+' />');
+
+					$("#chargeProject").append('<select id="discount'+rowData.id+'"><option value="1">不优惠</option>'+select+'</select>');
+					$("#chargeProject").append('应缴日期：'+rowData.chargeTimeStr+'<br/>');
+					$("#discount"+rowData.id).bind('change',function () {
+						var id = $(this).attr("id").substring(8);
+						var discount = $(this).val();
+						var chargeAmount = $("#chargeAmount"+id).val();
+						var actualChargeAmount = $("#actualChargeAmount"+id).val();
+						var useDepositAmount = $("#useDepositAmount"+id).val();
+						var discountAmount = chargeAmount*discount - actualChargeAmount - useDepositAmount;
+						$("#"+id).val(discountAmount.toFixed(2));
+					});
 				}
 			},
 			error:function () {
@@ -176,13 +228,16 @@
 	$('#save').live('click',function(){
 		var url = "${contextPath}/studentChargeInfo/doProjectCharge";
 		var projectChargeParamList = new Array();
-		$('#chargeProject').find('input').each(function (index, element) {
-			projectChargeParamList.push({studentProjectId:element.id,projectAmount:element.value});
+		$('#chargeProject').find('input:text').each(function (index, element) {
+			var discount = $('#discount'+element.id).val();
+			projectChargeParamList.push({studentProjectId:element.id,projectAmount:element.value,discount:discount});
 		});
 		var data = {
 			studentId: $('#studentId').val(),
 			isUseDeposit: $('input:radio[name="useDeposit"]:checked').val(),
-			projectChargeParamList:projectChargeParamList
+			projectChargeParamList:projectChargeParamList,
+			payType:$("#payType").val(),
+			customOfferAmount:$("#customOfferAmount").val()
 		}
 		$.messager.confirm('系统消息', "确认缴费！", function (r) {
 			if (r) {
@@ -216,6 +271,7 @@
 			}
 		});
 	});
+
 	$('#cancel').live('click',function(){
 		$("#chargeDialog").dialog("close");
 		return false;
