@@ -3,17 +3,23 @@ package com.charge.service.student.impl;
 import com.charge.Exception.BusinessException;
 import com.charge.enums.charge.ChargeStatus;
 import com.charge.enums.charge.ChargeType;
+import com.charge.mapper.student.ReceiptIdRecordMapper;
 import com.charge.mapper.student.StudentChargeInfoMapper;
+import com.charge.mapper.student.StudentChargeIoMapper;
 import com.charge.mapper.student.StudentExtInfoMapper;
 import com.charge.param.student.ProjectChargeParam;
 import com.charge.param.student.StudentChargeInfoSearchParam;
 import com.charge.param.student.StudentChargeParam;
+import com.charge.pojo.student.ReceiptIdRecord;
 import com.charge.pojo.student.StudentChargeInfo;
+import com.charge.pojo.student.StudentChargeIo;
 import com.charge.service.student.StudentChargeInfoService;
 import com.charge.util.DateUtil;
 import com.charge.util.RequestParamUtil;
 import com.charge.vo.student.StudentChargeInfoDetailVo;
 import com.charge.vo.student.StudentChargeInfoVo;
+import com.charge.vo.student.StudentChargeIoVo;
+import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -26,12 +32,17 @@ import java.util.Map;
 @Service
 public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
 
-
     @Autowired
     private StudentChargeInfoMapper studentChargeInfoMapper;
 
     @Autowired
+    private StudentChargeIoMapper studentChargeIoMapper;
+
+    @Autowired
     private StudentExtInfoMapper studentExtInfoMapper;
+
+    @Autowired
+    private ReceiptIdRecordMapper receiptIdRecordMapper;
 
     public void insertSelective(StudentChargeInfo studentChargeInfo) {
         studentChargeInfo.setCreateTime(DateUtil.getCurrentTimespan());
@@ -71,7 +82,19 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
         studentChargeInfoMapper.checkChargeExpireStudent();
     }
 
-    public void addPrepaymentAmount(StudentChargeParam chargeParam) {
+  @Override
+  public int countReceiptList(StudentChargeInfoSearchParam searchParam) {
+    Map<String, Object> paramMap = RequestParamUtil.getRequestParamMap(searchParam.getCurrentPage(), searchParam.getPageSize(), searchParam);
+    return studentChargeIoMapper.countReceiptList(paramMap);
+  }
+
+  @Override
+  public List<StudentChargeIoVo> queryReceiptList(StudentChargeInfoSearchParam searchParam) {
+    Map<String, Object> paramMap = RequestParamUtil.getRequestParamMap(searchParam.getCurrentPage(), searchParam.getPageSize(), searchParam);
+    return studentChargeIoMapper.queryReceiptList(paramMap);
+  }
+
+  public void addPrepaymentAmount(StudentChargeParam chargeParam) {
         studentExtInfoMapper.updatePrepaymentAmount(chargeParam.getStudentId(), chargeParam.getChargeAmount(), chargeParam.getChargeType());
     }
 
@@ -204,14 +227,33 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             }
             studentChargeInfo.setPayType(chargeParam.getPayType());
             studentChargeInfoMapper.updateStudentChargeInfo(studentChargeInfo);
+            ReceiptIdRecord receiptIdRecord = receiptIdRecordMapper.select();
+            if(receiptIdRecord == null){
+              receiptIdRecord = new ReceiptIdRecord();
+              receiptIdRecord.setRecordId(1);
+              receiptIdRecordMapper.insert(receiptIdRecord);
+            }
+            String receiptId = DateUtil.getDate3() + String.format("%04d", receiptIdRecord.getRecordId());
             if((actureChargeAmount + useDepositAmount) > 0.00){
                 vo.setActualChargeAmount(actureChargeAmount);
                 vo.setActualChargeTime(studentChargeInfo.getActualChargeTime());
                 vo.setUseDepositAmount(studentChargeInfo.getUseDepositAmount());
                 vo.setPayType(studentChargeInfo.getPayType());
                 vo.setStatus(studentChargeInfo.getStatus());
+                vo.setReceiptId(receiptId);
                 result.add(vo);
             }
+            StudentChargeIo studentChargeIo = new StudentChargeIo();
+            studentChargeIo.setActualChargeAmount(BigDecimal.valueOf(actureChargeAmount));
+            studentChargeIo.setActualChargeTime(studentChargeInfo.getActualChargeTime());
+            studentChargeIo.setCreateTime(DateUtil.getCurrentTimespan());
+            studentChargeIo.setCustomOfferAmount(BigDecimal.valueOf(useCustomOfferAmount));
+            studentChargeIo.setPayType(chargeParam.getPayType());
+            studentChargeIo.setReceiptId(receiptId);
+            receiptIdRecordMapper.addIdRecord();
+            studentChargeIo.setStudentChargeInfoId(vo.getId());
+            studentChargeIo.setUseDepositAmount(BigDecimal.valueOf(useDepositAmount));
+            studentChargeIoMapper.insertSelective(studentChargeIo);
         }
         studentExtInfoMapper.updatePrepaymentAmount(chargeParam.getStudentId(), -changePrepaymentAmount, 1);
         return result;

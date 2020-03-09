@@ -21,6 +21,7 @@ import com.charge.util.ExcelUtil;
 import com.charge.util.JsonUtil;
 import com.charge.vo.student.StudentChargeInfoDetailVo;
 import com.charge.vo.student.StudentChargeInfoVo;
+import com.charge.vo.student.StudentChargeIoVo;
 import com.charge.vo.student.StudentInfoVo;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -179,4 +180,23 @@ public class StudentChargeInfoProxy {
         }
         return pageResultDTO;
     }
+
+  public PageResultDTO<List<StudentChargeIoVo>> getReceiptList(StudentChargeInfoSearchParam searchParam) {
+    PageResultDTO<List<StudentChargeIoVo>> pageResultDTO = new PageResultDTO<List<StudentChargeIoVo>>();
+    try {
+
+      int count = studentChargeInfoService.countReceiptList(searchParam);
+      pageResultDTO.setTotalRecord(count);
+      if(count == 0){
+        return pageResultDTO;
+      }
+      pageResultDTO.setCurrentPage(searchParam.getCurrentPage());
+      pageResultDTO.setPageSize(searchParam.getPageSize());
+      List<StudentChargeIoVo> studentChargeIoVoList = studentChargeInfoService.queryReceiptList(searchParam);
+      pageResultDTO.setData(studentChargeIoVoList);
+    } catch (Exception e){
+      logger.error("补打小票列表信息出错,msg={}",e.getMessage(),e);
+    }
+    return pageResultDTO;
+  }
 }

@@ -222,12 +222,15 @@
   </select>
   <select id="countStudentChargeDetail" resultType="java.lang.Integer">
     SELECT count(1)
-    FROM student_charge_info a JOIN student_info b  on a.student_id=b.id
+    FROM student_charge_info a join student_charge_io k on a.id=k.student_charge_info_id JOIN student_info b  on a.student_id=b.id
     join student_class_info e on b.id=e.student_id join class_info f on e.class_id = f.id
     JOIN charge_project d on a.charge_project_id=d.id
     WHERE a.is_deleted = 0
     <if test="param.gradeId != null and param.gradeId != -1">
       AND f.grade_id=#{param.gradeId}
+    </if>
+    <if test="param.receiptId != null and param.receiptId != -1">
+      AND k.receipt_id=#{param.receiptId}
     </if>
     <if test="param.classId != null and param.classId != -1">
       AND e.class_id=#{param.classId}
@@ -256,21 +259,25 @@
     d.project_name as chargeProjectName,
     a.charge_amount,
     a.charge_coefficient,
-    a.actual_charge_amount,
+    k.actual_charge_amount,
     a.discount,
-    a.use_deposit_amount,
-    a.custom_offer_amount,
+    k.use_deposit_amount,
+    k.custom_offer_amount,
     a.charge_time,
-    a.actual_charge_time,
-    a.pay_type,
+    k.actual_charge_time,
+    k.pay_type,
+    k.receipt_id,
     a.status
-    FROM student_charge_info a JOIN student_info b  on a.student_id=b.id
+    FROM student_charge_info a join student_charge_io k on a.id=k.student_charge_info_id JOIN student_info b  on a.student_id=b.id
     join student_class_info e on b.id=e.student_id join class_info f on e.class_id = f.id
     join grade_info m on f.grade_id = m.id
     JOIN charge_project d on a.charge_project_id=d.id
     WHERE a.is_deleted = 0
     <if test="param.gradeId != null and param.gradeId != -1">
       AND f.grade_id=#{param.gradeId}
+    </if>
+    <if test="param.receiptId != null and param.receiptId != -1">
+      AND k.receipt_id=#{param.receiptId}
     </if>
     <if test="param.classId != null and param.classId != -1">
       AND e.class_id=#{param.classId}
@@ -351,11 +358,9 @@
     UPDATE student_charge_info SET
     actual_charge_amount = actual_charge_amount + #{actualChargeAmount},
     use_deposit_amount = use_deposit_amount + #{useDepositAmount},
+    custom_offer_amount = custom_offer_amount = #{customOfferAmount},
     <if test="payType != null">
       pay_type = #{payType},
-    </if>
-    <if test="customOfferAmount != null">
-      custom_offer_amount = #{customOfferAmount},
     </if>
     <if test="status != null">
       status = #{status},

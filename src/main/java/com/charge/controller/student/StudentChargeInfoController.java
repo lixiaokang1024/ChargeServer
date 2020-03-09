@@ -7,6 +7,7 @@ import com.charge.proxy.student.StudentChargeInfoProxy;
 import com.charge.util.ExcelUtil;
 import com.charge.vo.student.StudentChargeInfoDetailVo;
 import com.charge.vo.student.StudentChargeInfoVo;
+import com.charge.vo.student.StudentChargeIoVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -313,6 +314,27 @@ public class StudentChargeInfoController {
             resultMap.put("msg", e.getMessage());
         }
         return resultMap;
+    }
+
+    @RequestMapping("/receiptIndex")
+    public String toReceiptIndex(){
+        return "student/receiptList";
+    }
+
+    @RequestMapping("/receiptList")
+    @ResponseBody
+    public ModelMap getReceiptList(StudentChargeInfoSearchParam searchParam, Integer page, Integer rows) {
+        ModelMap model = new ModelMap();
+        searchParam.setCurrentPage(page);
+        searchParam.setPageSize(rows);
+        PageResultDTO<List<StudentChargeIoVo>> pageResultDTO = chargeInfoProxy.getReceiptList(searchParam);
+        if(pageResultDTO.getData() == null){
+            pageResultDTO.setData(new ArrayList<StudentChargeIoVo>());
+        }
+        model.put("rows", pageResultDTO.getData());
+        model.put("total", pageResultDTO.getTotalRecord());
+        model.put("page", page);
+        return model;
     }
 
 }

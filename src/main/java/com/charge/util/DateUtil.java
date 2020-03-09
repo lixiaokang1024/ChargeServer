@@ -282,7 +282,17 @@ public class DateUtil {
 	public static String getDate2(){
 		return getSimpleDateFormat("yyyy-MM-dd").format(new Date());
 	}
-	
+
+	/**
+	 * 获取日期 yyyyMMdd
+	 * <br>
+	 * @return
+	 *
+	 */
+	public static String getDate3(){
+		return getSimpleDateFormat("yyyyMMdd").format(new Date());
+	}
+
 	/**
      * 获取当前时间一周后日期
      * @param
@@ -380,7 +390,7 @@ public class DateUtil {
 
 
 	public static void main(String[] args){
-		
+		System.out.println(getDate3());
 		System.out.println(getTimespan2("2019-12-15"));
 		
 	}

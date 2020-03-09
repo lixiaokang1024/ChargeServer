@@ -6,6 +6,7 @@ import com.charge.pojo.student.StudentChargeInfo;
 import com.charge.vo.student.StudentChargeInfoDetailVo;
 import com.charge.vo.student.StudentChargeInfoVo;
 
+import com.charge.vo.student.StudentChargeIoVo;
 import java.util.List;
 
 public interface StudentChargeInfoService {
@@ -28,5 +29,8 @@ public interface StudentChargeInfoService {
     int countStudentChargeDetail(StudentChargeInfoSearchParam searchParam);
     List<StudentChargeInfoDetailVo> queryStudentChargeInfoDetailPageList(StudentChargeInfoSearchParam searchParam);
 
-  void checkChargeExpireStudent();
+    void checkChargeExpireStudent();
+
+    int countReceiptList(StudentChargeInfoSearchParam searchParam);
+    List<StudentChargeIoVo> queryReceiptList(StudentChargeInfoSearchParam searchParam);
 }

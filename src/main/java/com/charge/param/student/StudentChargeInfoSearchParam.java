@@ -21,6 +21,8 @@ public class StudentChargeInfoSearchParam extends BaseDataPaginationParam implem
 
     private Integer status;
 
+    private String receiptId;
+
     private String payTimeBegin;
     private String payTimeEnd;
 
@@ -40,6 +42,14 @@ public class StudentChargeInfoSearchParam extends BaseDataPaginationParam implem
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getReceiptId() {
+        return receiptId;
+    }
+
+    public void setReceiptId(String receiptId) {
+        this.receiptId = receiptId;
     }
 
     public String getMobile() {

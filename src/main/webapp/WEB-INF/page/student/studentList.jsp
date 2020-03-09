@@ -599,11 +599,18 @@
 		if($("#chargeType").val()==1){
 			chargeType = "预缴费";
 		}
-		var printHtml = '<div style="margin:11px 11px 0px 25px">';
-		printHtml += '<span>预缴类型：'+chargeType+'</span><br/><br/>';
-		printHtml += '<span>预缴金额：'+amount+'</span><br/><br/>';
-		printHtml += '<span>学生姓名：'+$("#chargeStudentName").val()+'</span><br/><br/>';
+		var printHtml = '<html><head>';
+		printHtml += '<title>小票打印</title><style type="text/css">*{padding:0;margin: 0;}span{font-size: 5px;} td{font-size: 10px;}</style></head><body style="background-color:#fff;">';
+		printHtml += '<div style="padding: 0px;margin: 0px;width: 300px;">';
+		printHtml += '<span style="text-align: center;">汇通婴幼儿智力开发园</span><br/>';
+		printHtml += '<span style="text-align: center">收费票据</span><br/>';
+		printHtml += '<span>预缴类型：'+chargeType+'</span><br/>';
+		printHtml += '<span>预缴金额：'+amount+'</span><br/>';
+		printHtml += '<span>学生姓名：'+$("#chargeStudentName").val()+'</span><br/>';
+		printHtml += '<span>一式两联  白联存根  红联收据联</span><br/>';
+		printHtml += '<span>----------------------------------------</span>';
 		printHtml += '</div>';
+		printHtml += '</body></html>';
 		window.document.body.innerHTML=printHtml;
 		window.print();
 	}

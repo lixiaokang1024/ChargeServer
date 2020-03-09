@@ -1,6 +1,5 @@
 <%@page contentType="text/html;charset=utf-8"%>
 <%@ include file="/WEB-INF/page/header.jsp"%>
-<%@ page language="java" import="com.charge.pojo.User" pageEncoding="UTF-8"%>
 <html>
 <body>
 <table id="datagrid" class="easyui-datagrid"
@@ -419,7 +418,7 @@
 		printHtml += '<span>========================</span><br/>';
 		printHtml += '<span>收费员：${sessionScope.user.userName }</span><br/>';
 		printHtml += '<span>缴费时间：'+data[0].actualChargeTimeStr+'</span><br/>';
-		printHtml += '<span>收据编号：'+data[0].actualChargeTimeStr+'</span><br/><br/>';
+		printHtml += '<span>收据编号：'+data[0].receiptId+'</span><br/><br/>';
 		printHtml += '<span>一式两联  白联存根  红联收据联</span><br/><br/>';
 		printHtml += '<span>----------------------------------------</span>';
         printHtml += '</div>';

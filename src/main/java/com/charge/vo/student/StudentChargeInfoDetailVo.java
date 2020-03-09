@@ -13,6 +13,7 @@ public class StudentChargeInfoDetailVo implements Serializable {
     private String studentName;
     private String className;
     private String gradeName;
+    private String receiptId;
     private Integer chargeProjectId;
     private String chargeProjectName;
     private Double chargeAmount;
@@ -36,6 +37,14 @@ public class StudentChargeInfoDetailVo implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getReceiptId() {
+        return receiptId;
+    }
+
+    public void setReceiptId(String receiptId) {
+        this.receiptId = receiptId;
     }
 
     public Integer getStudentId() {

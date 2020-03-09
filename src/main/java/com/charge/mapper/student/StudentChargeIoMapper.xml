@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.charge.mapper.student.StudentChargeIoMapper">
+  <resultMap id="BaseResultMap" type="com.charge.pojo.student.StudentChargeIo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="student_charge_info_id" jdbcType="INTEGER" property="studentChargeInfoId" />
+    <result column="receipt_id" jdbcType="VARCHAR" property="receiptId" />
+    <result column="actual_charge_amount" jdbcType="DECIMAL" property="actualChargeAmount" />
+    <result column="use_deposit_amount" jdbcType="DECIMAL" property="useDepositAmount" />
+    <result column="custom_offer_amount" jdbcType="DECIMAL" property="customOfferAmount" />
+    <result column="actual_charge_time" jdbcType="INTEGER" property="actualChargeTime" />
+    <result column="pay_type" jdbcType="INTEGER" property="payType" />
+    <result column="create_time" jdbcType="INTEGER" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, student_charge_info_id, receipt_id, actual_charge_amount, use_deposit_amount, 
+    custom_offer_amount, actual_charge_time, pay_type, create_time, modify_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from student_charge_io
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from student_charge_io
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.charge.pojo.student.StudentChargeIo">
+    insert into student_charge_io (id, student_charge_info_id, receipt_id, 
+      actual_charge_amount, use_deposit_amount, custom_offer_amount, 
+      actual_charge_time, pay_type, create_time, 
+      modify_time)
+    values (#{id,jdbcType=INTEGER}, #{studentChargeInfoId,jdbcType=INTEGER}, #{receiptId,jdbcType=VARCHAR}, 
+      #{actualChargeAmount,jdbcType=DECIMAL}, #{useDepositAmount,jdbcType=DECIMAL}, #{customOfferAmount,jdbcType=DECIMAL}, 
+      #{actualChargeTime,jdbcType=INTEGER}, #{payType,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER}, 
+      #{modifyTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.charge.pojo.student.StudentChargeIo">
+    insert into student_charge_io
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="studentChargeInfoId != null">
+        student_charge_info_id,
+      </if>
+      <if test="receiptId != null">
+        receipt_id,
+      </if>
+      <if test="actualChargeAmount != null">
+        actual_charge_amount,
+      </if>
+      <if test="useDepositAmount != null">
+        use_deposit_amount,
+      </if>
+      <if test="customOfferAmount != null">
+        custom_offer_amount,
+      </if>
+      <if test="actualChargeTime != null">
+        actual_charge_time,
+      </if>
+      <if test="payType != null">
+        pay_type,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="studentChargeInfoId != null">
+        #{studentChargeInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="receiptId != null">
+        #{receiptId,jdbcType=VARCHAR},
+      </if>
+      <if test="actualChargeAmount != null">
+        #{actualChargeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="useDepositAmount != null">
+        #{useDepositAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="customOfferAmount != null">
+        #{customOfferAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="actualChargeTime != null">
+        #{actualChargeTime,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null">
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.charge.pojo.student.StudentChargeIo">
+    update student_charge_io
+    <set>
+      <if test="studentChargeInfoId != null">
+        student_charge_info_id = #{studentChargeInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="receiptId != null">
+        receipt_id = #{receiptId,jdbcType=VARCHAR},
+      </if>
+      <if test="actualChargeAmount != null">
+        actual_charge_amount = #{actualChargeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="useDepositAmount != null">
+        use_deposit_amount = #{useDepositAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="customOfferAmount != null">
+        custom_offer_amount = #{customOfferAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="actualChargeTime != null">
+        actual_charge_time = #{actualChargeTime,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null">
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.charge.pojo.student.StudentChargeIo">
+    update student_charge_io
+    set student_charge_info_id = #{studentChargeInfoId,jdbcType=INTEGER},
+      receipt_id = #{receiptId,jdbcType=VARCHAR},
+      actual_charge_amount = #{actualChargeAmount,jdbcType=DECIMAL},
+      use_deposit_amount = #{useDepositAmount,jdbcType=DECIMAL},
+      custom_offer_amount = #{customOfferAmount,jdbcType=DECIMAL},
+      actual_charge_time = #{actualChargeTime,jdbcType=INTEGER},
+      pay_type = #{payType,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=INTEGER},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="countReceiptList" resultType="int">
+    SELECT COUNT(1) FROM (SELECT a.`receipt_id`
+    FROM student_charge_io a JOIN student_charge_info b ON
+        a.student_charge_info_id = b.id JOIN student_class_info c ON b.student_id = c.student_id
+        JOIN class_info d ON c.`class_id`=d.`id`
+        JOIN grade_info e ON d.`grade_id`=e.`id`
+        JOIN student_info f ON b.`student_id`=f.id
+        <include refid="recieptsql"/> group by a.receipt_id) p
+  </select>
+
+  <select id="queryReceiptList" resultType="com.charge.vo.student.StudentChargeIoVo">
+    SELECT a.id,a.student_charge_info_id,a.receipt_id,
+            b.student_id,f.name as studentName,d.name as className,
+            e.name as gradeName,FROM_UNIXTIME(max(a.actual_charge_time)) as chargeTime
+     FROM student_charge_io a JOIN student_charge_info b ON
+        a.student_charge_info_id = b.id JOIN student_class_info c ON b.student_id = c.student_id
+        JOIN class_info d ON c.`class_id`=d.`id`
+        JOIN grade_info e ON d.`grade_id`=e.`id`
+        JOIN student_info f ON b.`student_id`=f.id
+    <include refid="recieptsql"/> group by a.receipt_id
+  </select>
+  <sql id="recieptsql">
+    where 1=1
+    <if test="param.name != null and param.name != ''">
+      and f.name = #{param.name}
+    </if>
+  </sql>
+</mapper>

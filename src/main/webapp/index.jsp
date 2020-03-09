@@ -234,6 +234,9 @@
                     <span>
                         <a href="studentChargeInfo/historyIndex" title="学生历史缴费" class="newTab">学生历史缴费</a>
 					</span>
+                    <span>
+                        <a href="studentChargeInfo/receiptIndex" title="补打小票" class="newTab">补打小票</a>
+					</span>
                 </li>
             </ul>
             <a class="parent" href="javascript:void(0);">日常收支管理</a>
