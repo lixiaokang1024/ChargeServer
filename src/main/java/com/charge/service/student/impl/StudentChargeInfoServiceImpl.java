@@ -1,6 +1,7 @@
 package com.charge.service.student.impl;
 
 import com.charge.Exception.BusinessException;
+import com.charge.enums.charge.ChargeProjectType;
 import com.charge.enums.charge.ChargeStatus;
 import com.charge.enums.charge.ChargeType;
 import com.charge.mapper.student.ReceiptIdRecordMapper;
@@ -94,8 +95,20 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
     return studentChargeIoMapper.queryReceiptList(paramMap);
   }
 
-  public void addPrepaymentAmount(StudentChargeParam chargeParam) {
+  public String addPrepaymentAmount(StudentChargeParam chargeParam) {
         studentExtInfoMapper.updatePrepaymentAmount(chargeParam.getStudentId(), chargeParam.getChargeAmount(), chargeParam.getChargeType());
+        StudentChargeIo studentChargeIo = new StudentChargeIo();
+        String receiptId = getReceiptId();
+        studentChargeIo.setReceiptId(receiptId);
+        studentChargeIo.setPayType(chargeParam.getPayType());
+        studentChargeIo.setActualChargeTime(DateUtil.getCurrentTimespan());
+        studentChargeIo.setCreateTime(DateUtil.getCurrentTimespan());
+        studentChargeIo.setActualChargeAmount(BigDecimal.valueOf(chargeParam.getChargeAmount()));
+        studentChargeIo.setStudentId(chargeParam.getStudentId());
+        studentChargeIo.setChargeType(chargeParam.getChargeType());
+        studentChargeIoMapper.insertSelective(studentChargeIo);
+        receiptIdRecordMapper.addIdRecord();
+        return receiptId;
     }
 
     public void doCharge(StudentChargeParam chargeParam) {
@@ -181,7 +194,8 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
         if(useDeposit){
             prepaymentAmount = studentExtInfoMapper.getByStudentId(chargeParam.getStudentId()).getPrepaymentAmount();
         }
-        for(StudentChargeInfoDetailVo vo:studentChargeInfoDetailVoList){
+      String receiptId = getReceiptId();
+      for(StudentChargeInfoDetailVo vo:studentChargeInfoDetailVoList){
             Double discount = projectAmountMap.get(vo.getId()).getDiscount();
             if(discount == null){
                 discount = 1.0;
@@ -216,8 +230,8 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             studentChargeInfo.setStatus(vo.getStatus());
             studentChargeInfo.setDiscount(discount);
             studentChargeInfo.setCustomOfferAmount(useCustomOfferAmount);
-            if((actureChargeAmount + useDepositAmount) < chargeAmount){
-                if((actureChargeAmount + useDepositAmount) > 0.00){
+            if((actureChargeAmount + useDepositAmount + useCustomOfferAmount) < chargeAmount){
+                if((actureChargeAmount + useDepositAmount + useCustomOfferAmount) > 0.00){
                     if(vo.getStatus() != ChargeStatus.EXPIRED.getCode()){
                         studentChargeInfo.setStatus(ChargeStatus.PART_CHARGED.getCode());
                     }
@@ -227,13 +241,7 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             }
             studentChargeInfo.setPayType(chargeParam.getPayType());
             studentChargeInfoMapper.updateStudentChargeInfo(studentChargeInfo);
-            ReceiptIdRecord receiptIdRecord = receiptIdRecordMapper.select();
-            if(receiptIdRecord == null){
-              receiptIdRecord = new ReceiptIdRecord();
-              receiptIdRecord.setRecordId(1);
-              receiptIdRecordMapper.insert(receiptIdRecord);
-            }
-            String receiptId = DateUtil.getDate3() + String.format("%04d", receiptIdRecord.getRecordId());
+
             if((actureChargeAmount + useDepositAmount) > 0.00){
                 vo.setActualChargeAmount(actureChargeAmount);
                 vo.setActualChargeTime(studentChargeInfo.getActualChargeTime());
@@ -250,12 +258,29 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             studentChargeIo.setCustomOfferAmount(BigDecimal.valueOf(useCustomOfferAmount));
             studentChargeIo.setPayType(chargeParam.getPayType());
             studentChargeIo.setReceiptId(receiptId);
+            studentChargeIo.setChargeAmount(BigDecimal.valueOf(chargeAmount));
             receiptIdRecordMapper.addIdRecord();
             studentChargeIo.setStudentChargeInfoId(vo.getId());
+            studentChargeIo.setStudentId(vo.getStudentId());
             studentChargeIo.setUseDepositAmount(BigDecimal.valueOf(useDepositAmount));
+            studentChargeIo.setChargeType(ChargeProjectType.OTHER.getCode());
             studentChargeIoMapper.insertSelective(studentChargeIo);
         }
         studentExtInfoMapper.updatePrepaymentAmount(chargeParam.getStudentId(), -changePrepaymentAmount, 1);
+        for(StudentChargeInfoDetailVo vo:result){
+            vo.setLeftDepositAmount(prepaymentAmount - changePrepaymentAmount);
+        }
+        studentChargeIoMapper.updateLeftDepositAmount(receiptId, BigDecimal.valueOf(prepaymentAmount - changePrepaymentAmount));
         return result;
     }
+
+  private String getReceiptId() {
+    ReceiptIdRecord receiptIdRecord = receiptIdRecordMapper.select();
+    if(receiptIdRecord == null){
+        receiptIdRecord = new ReceiptIdRecord();
+        receiptIdRecord.setRecordId(1);
+        receiptIdRecordMapper.insert(receiptIdRecord);
+    }
+    return DateUtil.getDate3() + String.format("%04d", receiptIdRecord.getRecordId());
+  }
 }

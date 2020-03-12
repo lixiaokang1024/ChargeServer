@@ -153,8 +153,13 @@ public class StudentChargeInfoProxy {
         studentChargeInfoService.doCharge(chargeParam);
     }
 
-    public void doDepositCharge(StudentChargeParam chargeParam){
-        studentChargeInfoService.addPrepaymentAmount(chargeParam);
+    public List<StudentChargeInfoDetailVo> doDepositCharge(StudentChargeParam chargeParam){
+        String receiptId = studentChargeInfoService.addPrepaymentAmount(chargeParam);
+        StudentChargeInfoSearchParam studentChargeInfoSearchParam = new StudentChargeInfoSearchParam();
+        studentChargeInfoSearchParam.setReceiptId(receiptId);
+        studentChargeInfoSearchParam.setCurrentPage(1);
+        studentChargeInfoSearchParam.setPageSize(10);
+        return studentChargeInfoService.queryStudentChargeInfoDetailPageList(studentChargeInfoSearchParam);
     }
 
     public List<StudentChargeInfoDetailVo> doProjectCharge(StudentChargeParam chargeParam) {

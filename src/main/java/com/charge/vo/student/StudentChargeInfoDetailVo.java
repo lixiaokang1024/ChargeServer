@@ -21,11 +21,13 @@ public class StudentChargeInfoDetailVo implements Serializable {
     private Double actualChargeAmount;//实际缴费金额
     private Double discount;//折扣
     private Double useDepositAmount;//使用预缴费金额
+    private Double leftDepositAmount;
     private Double customOfferAmount;
     private Integer chargeTime;//应缴费时间
     private String chargeTimeStr;
     private Integer actualChargeTime;//实际缴费时间
     private String actualChargeTimeStr;
+    private Integer chargeType;
     private Integer payType;
     private String payTypeStr;//缴费方式(0:现金 1:预缴费扣除 2:其他)
     private Integer status;
@@ -109,6 +111,14 @@ public class StudentChargeInfoDetailVo implements Serializable {
 
     public void setChargeCoefficient(Double chargeCoefficient) {
         this.chargeCoefficient = chargeCoefficient;
+    }
+
+    public Double getLeftDepositAmount() {
+        return leftDepositAmount;
+    }
+
+    public void setLeftDepositAmount(Double leftDepositAmount) {
+        this.leftDepositAmount = leftDepositAmount;
     }
 
     public Integer getChargeTime() {
@@ -205,5 +215,13 @@ public class StudentChargeInfoDetailVo implements Serializable {
 
     public void setActualChargeTimeStr(String actualChargeTimeStr) {
         this.actualChargeTimeStr = actualChargeTimeStr;
+    }
+
+    public Integer getChargeType() {
+        return chargeType;
+    }
+
+    public void setChargeType(Integer chargeType) {
+        this.chargeType = chargeType;
     }
 }

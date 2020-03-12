@@ -8,7 +8,11 @@ public class StudentChargeIo {
 
     private Integer studentChargeInfoId;
 
+    private Integer studentId;
+
     private String receiptId;
+
+    private BigDecimal chargeAmount;
 
     private BigDecimal actualChargeAmount;
 
@@ -17,6 +21,8 @@ public class StudentChargeIo {
     private BigDecimal customOfferAmount;
 
     private Integer actualChargeTime;
+
+    private Integer chargeType;
 
     private Integer payType;
 
@@ -40,12 +46,28 @@ public class StudentChargeIo {
         this.studentChargeInfoId = studentChargeInfoId;
     }
 
+    public Integer getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
+    }
+
     public String getReceiptId() {
         return receiptId;
     }
 
     public void setReceiptId(String receiptId) {
         this.receiptId = receiptId == null ? null : receiptId.trim();
+    }
+
+    public BigDecimal getChargeAmount() {
+        return chargeAmount;
+    }
+
+    public void setChargeAmount(BigDecimal chargeAmount) {
+        this.chargeAmount = chargeAmount;
     }
 
     public BigDecimal getActualChargeAmount() {
@@ -78,6 +100,14 @@ public class StudentChargeIo {
 
     public void setActualChargeTime(Integer actualChargeTime) {
         this.actualChargeTime = actualChargeTime;
+    }
+
+    public Integer getChargeType() {
+        return chargeType;
+    }
+
+    public void setChargeType(Integer chargeType) {
+        this.chargeType = chargeType;
     }
 
     public Integer getPayType() {

@@ -308,7 +308,8 @@ public class StudentChargeInfoController {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         resultMap.put("success", true);
         try {
-            chargeInfoProxy.doDepositCharge(chargeParam);
+          List<StudentChargeInfoDetailVo> data = chargeInfoProxy.doDepositCharge(chargeParam);
+          resultMap.put("data",data);
         } catch (Exception e) {
             resultMap.put("success", false);
             resultMap.put("msg", e.getMessage());

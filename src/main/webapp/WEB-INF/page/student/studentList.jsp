@@ -400,7 +400,7 @@
                         if (data.success) {
 							$.messager.confirm('系统消息', "是否打印！", function (r) {
 								if(r){
-									doPrint();
+									doPrint(data.data);
 								}
 							});
                             $.messager.alert('系统消息', '已完成', "info");
@@ -593,21 +593,36 @@
 		});
 	};
 
-	function doPrint() {
-		var amount = $("#chargeAmount").val();
-		var chargeType = "押金";
-		if($("#chargeType").val()==1){
-			chargeType = "预缴费";
-		}
+	function doPrint(data) {
 		var printHtml = '<html><head>';
 		printHtml += '<title>小票打印</title><style type="text/css">*{padding:0;margin: 0;}span{font-size: 5px;} td{font-size: 10px;}</style></head><body style="background-color:#fff;">';
 		printHtml += '<div style="padding: 0px;margin: 0px;width: 300px;">';
-		printHtml += '<span style="text-align: center;">汇通婴幼儿智力开发园</span><br/>';
-		printHtml += '<span style="text-align: center">收费票据</span><br/>';
-		printHtml += '<span>预缴类型：'+chargeType+'</span><br/>';
-		printHtml += '<span>预缴金额：'+amount+'</span><br/>';
-		printHtml += '<span>学生姓名：'+$("#chargeStudentName").val()+'</span><br/>';
-		printHtml += '<span>一式两联  白联存根  红联收据联</span><br/>';
+		printHtml += '<span style="text-align: center;margin-left: 25px">汇通婴幼儿智力开发园</span><br/>';
+		printHtml += '<span style="text-align: center;margin-left: 50px">收费票据</span><br/>';
+		printHtml += '<span>学生姓名：'+data[0].studentName+'</span><br/>';
+		printHtml += '<span>学号：'+data[0].studentId+'</span><br/>';
+		printHtml += '<span>班级：'+data[0].gradeName+data[0].className+'</span><br/>';
+		printHtml += '<span><table><tr><td align="center">序号</td><td align="center">项目</td><td align="center">小计</td></tr>';
+		printHtml += '<tr><td colspan="3">----------------------------------------</td></tr>';
+		var cash = 0;
+		var dz = 0;
+		for(i = 0;i<data.length;i++){
+			var row = data[i];
+			if(row.payType == 0){
+				cash += row.actualChargeAmount;
+			}else{
+				dz += row.actualChargeAmount;
+			}
+			printHtml += '<tr><td align="center">'+(i+1)+'</td><td align="center">'+row.chargeProjectName+'</td><td align="center">'+row.actualChargeAmount+'</td></tr>';
+		}
+		printHtml += '<tr><td colspan="5">----------------------------------------</td></tr></table></span>';
+		printHtml += '<span>现金付款：'+cash+'</span><br/>';
+		printHtml += '<span>电子支付：'+dz+'</span><br/>';
+		printHtml += '<span>========================</span><br/>';
+		printHtml += '<span>收费员：${sessionScope.user.userName }</span><br/>';
+		printHtml += '<span>缴费时间：'+data[0].actualChargeTimeStr+'</span><br/>';
+		printHtml += '<span>收据编号：'+data[0].receiptId+'</span><br/><br/>';
+		printHtml += '<span>一式两联  白联存根  红联收据联</span><br/><br/>';
 		printHtml += '<span>----------------------------------------</span>';
 		printHtml += '</div>';
 		printHtml += '</body></html>';

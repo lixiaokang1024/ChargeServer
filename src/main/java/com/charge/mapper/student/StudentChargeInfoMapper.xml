@@ -222,10 +222,11 @@
   </select>
   <select id="countStudentChargeDetail" resultType="java.lang.Integer">
     SELECT count(1)
-    FROM student_charge_info a join student_charge_io k on a.id=k.student_charge_info_id JOIN student_info b  on a.student_id=b.id
+    FROM student_charge_io k left join student_charge_info a on a.id=k.student_charge_info_id JOIN student_info b  on k.student_id=b.id
     join student_class_info e on b.id=e.student_id join class_info f on e.class_id = f.id
-    JOIN charge_project d on a.charge_project_id=d.id
-    WHERE a.is_deleted = 0
+    join grade_info m on f.grade_id = m.id
+    left JOIN charge_project d on a.charge_project_id=d.id
+    WHERE 1=1
     <if test="param.gradeId != null and param.gradeId != -1">
       AND f.grade_id=#{param.gradeId}
     </if>
@@ -251,28 +252,31 @@
   <select id="queryStudentChargeDetailPageList" resultType="com.charge.vo.student.StudentChargeInfoDetailVo">
     SELECT
     a.id,
-    a.student_id,
+    k.student_id,
     f.name as className,
     m.name as gradeName,
     b.name as studentName,
     a.charge_project_id,
-    d.project_name as chargeProjectName,
-    a.charge_amount,
+    CASE k.charge_type WHEN 1 THEN '预交费' WHEN 2 THEN '押金' ELSE
+    d.project_name END AS chargeProjectName,
+    k.charge_amount,
     a.charge_coefficient,
     k.actual_charge_amount,
     a.discount,
     k.use_deposit_amount,
+    k.left_deposit_amount,
     k.custom_offer_amount,
     a.charge_time,
     k.actual_charge_time,
     k.pay_type,
+    k.charge_type,
     k.receipt_id,
-    a.status
-    FROM student_charge_info a join student_charge_io k on a.id=k.student_charge_info_id JOIN student_info b  on a.student_id=b.id
+    ifnull(a.status,2) as status
+    FROM student_charge_io k left join student_charge_info a on a.id=k.student_charge_info_id JOIN student_info b  on k.student_id=b.id
     join student_class_info e on b.id=e.student_id join class_info f on e.class_id = f.id
     join grade_info m on f.grade_id = m.id
-    JOIN charge_project d on a.charge_project_id=d.id
-    WHERE a.is_deleted = 0
+    left JOIN charge_project d on a.charge_project_id=d.id
+    WHERE 1=1
     <if test="param.gradeId != null and param.gradeId != -1">
       AND f.grade_id=#{param.gradeId}
     </if>
@@ -339,9 +343,12 @@
     a.charge_time,
     a.actual_charge_time,
     a.pay_type,
-    a.status
+    a.status,
+    f.name as className,
+    g.name as gradeName
     FROM student_charge_info a JOIN student_info b  on a.student_id=b.id
-    JOIN charge_project d on a.charge_project_id=d.id
+    JOIN charge_project d on a.charge_project_id=d.id join student_class_info e on b.id=e.student_id
+    join class_info f on e.class_id=f.id join grade_info g on f.grade_id=g.id
     WHERE a.student_id=#{studentId} AND a.status IN
      <foreach collection="chargeStatusList" open="(" close=")" separator="," item="item">
        #{item}
@@ -358,7 +365,7 @@
     UPDATE student_charge_info SET
     actual_charge_amount = actual_charge_amount + #{actualChargeAmount},
     use_deposit_amount = use_deposit_amount + #{useDepositAmount},
-    custom_offer_amount = custom_offer_amount = #{customOfferAmount},
+    custom_offer_amount = custom_offer_amount + #{customOfferAmount},
     <if test="payType != null">
       pay_type = #{payType},
     </if>

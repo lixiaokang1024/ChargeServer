@@ -20,7 +20,7 @@ public interface StudentChargeInfoService {
 
     StudentChargeInfo queryByUniqueKey(Integer studentId, Integer chargeProjectId, Integer chargeTime);
 
-    void addPrepaymentAmount(StudentChargeParam chargeParam);
+    String addPrepaymentAmount(StudentChargeParam chargeParam);
 
     void doCharge(StudentChargeParam chargeParam);
 

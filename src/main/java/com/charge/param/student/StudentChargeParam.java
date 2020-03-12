@@ -13,7 +13,7 @@ public class StudentChargeParam implements Serializable {
 
     private Double chargeAmount;//缴费金额
 
-    private Integer chargeType;//1:预交费 2:押金
+    private Integer chargeType;//1:预交费 2:押金 3:项目缴费
 
     private Integer payType;//0:现金 1：非现金
 

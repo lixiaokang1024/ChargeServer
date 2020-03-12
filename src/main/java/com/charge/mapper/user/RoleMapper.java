@@ -21,4 +21,8 @@ public interface RoleMapper {
 
     List<RoleVo> selectAll();
     List<Resource> getResourceByUser(Integer userId);
+    List<Role> getRoleByUser(Integer userId);
+    List<Resource> selectAllResource();
+
+  List<Resource> getResourceByRole(Integer roleId);
 }

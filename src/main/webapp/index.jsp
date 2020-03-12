@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="menu" uri="/WEB-INF/permission" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
@@ -173,50 +174,54 @@
             <a class="parent" href="javascript:void(0);">基础信息管理</a>
             <ul>
                 <li>
-                    <span>
-                        <a href="school/gradeIndex" title="年级配置" class="newTab">年级配置</a>
-                    </span>
-                    <span>
-                        <a href="school/classIndex" title="班级配置" class="newTab">班级配置</a>
-                    </span>
-                    <span>
-						<a href="charge/index" title="缴费项目配置" class="newTab">缴费项目配置</a>
-					</span>
-                    <span>
-						<a href="charge/payProjectIndex" title="日常支出项目配置" class="newTab">日常支出项目配置</a>
-					</span>
-                    <span>
-						<a href="charge/incomeProjectIndex" title="日常收入项目配置" class="newTab">日常收入项目配置</a>
-					</span>
-                    <span>
-                        <a href="discount/discountIndex" title="折扣配置" class="newTab">折扣配置</a>
-                    </span>
+                    <menu:permission url="school/gradeIndex">
+                        <span>
+                            <a href="school/gradeIndex" title="年级配置" class="newTab">年级配置</a>
+                        </span>
+                    </menu:permission>
+                    <menu:permission url="school/classIndex">
+                        <span>
+                            <a href="school/classIndex" title="班级配置" class="newTab">班级配置</a>
+                        </span>
+                    </menu:permission>
+                    <menu:permission url="charge/index">
+                        <span>
+                            <a href="charge/index" title="缴费项目配置" class="newTab">缴费项目配置</a>
+                        </span>
+                    </menu:permission>
+                    <menu:permission url="charge/payProjectIndex">
+                        <span>
+                            <a href="charge/payProjectIndex" title="日常支出项目配置" class="newTab">日常支出项目配置</a>
+                        </span>
+                    </menu:permission>
+                    <menu:permission url="charge/incomeProjectIndex">
+                        <span>
+                            <a href="charge/incomeProjectIndex" title="日常收入项目配置" class="newTab">日常收入项目配置</a>
+                        </span>
+                    </menu:permission>
+                    <menu:permission url="discount/discountIndex">
+                        <span>
+                            <a href="discount/discountIndex" title="折扣配置" class="newTab">折扣配置</a>
+                        </span>
+                    </menu:permission>
                 </li>
             </ul>
         </li>
-
-        <li class="leftMenu menu_12">
-            <a class="parent" href="javascript:void(0);">待定</a>
-            <ul>
-                <li>
-                    <span>
-                        <a href="/brand/index" title="待定" class="newTab">待定</a>
-					</span>
-                </li>
-            </ul>
-        </li>
-
 
         <li class="leftMenu menu_2">
             <a class="parent" href="javascript:void(0);">学生管理</a>
             <ul>
                 <li>
-                    <span>
-                        <a href="student/index" title="学生基础信息" class="newTab">学生基础信息</a>
-					</span>
-                    <span>
-                        <a href="studentClassInfo/index" title="学生班级维护" class="newTab">学生班级维护</a>
-					</span>
+                    <menu:permission url="student/index">
+                        <span>
+                            <a href="student/index" title="学生基础信息" class="newTab">学生基础信息</a>
+                        </span>
+                    </menu:permission>
+                    <menu:permission url="studentClassInfo/index">
+                        <span>
+                            <a href="studentClassInfo/index" title="学生班级维护" class="newTab">学生班级维护</a>
+                        </span>
+                    </menu:permission>
                 </li>
             </ul>
         </li>
@@ -225,31 +230,43 @@
             <a class="parent" href="javascript:void(0);">缴费管理</a>
             <ul>
                 <li>
-                    <span>
-                        <a href="studentChargeInfo/index" title="应缴费学生" class="newTab">应缴费学生</a>
-					</span>
-                    <span>
-                        <a href="studentChargeInfo/expireIndex" title="已欠费学生" class="newTab">已欠费学生</a>
-					</span>
-                    <span>
-                        <a href="studentChargeInfo/historyIndex" title="学生历史缴费" class="newTab">学生历史缴费</a>
-					</span>
-                    <span>
-                        <a href="studentChargeInfo/receiptIndex" title="补打小票" class="newTab">补打小票</a>
-					</span>
+                    <menu:permission url="studentChargeInfo/index">
+                        <span>
+                            <a href="studentChargeInfo/index" title="应缴费学生" class="newTab">应缴费学生</a>
+                        </span>
+                    </menu:permission>
+                    <menu:permission url="studentChargeInfo/expireIndex">
+                        <span>
+                            <a href="studentChargeInfo/expireIndex" title="已欠费学生" class="newTab">已欠费学生</a>
+                        </span>
+                    </menu:permission>
+                    <menu:permission url="studentChargeInfo/historyIndex">
+                        <span>
+                            <a href="studentChargeInfo/historyIndex" title="学生历史缴费" class="newTab">学生历史缴费</a>
+                        </span>
+                    </menu:permission>
+                    <menu:permission url="studentChargeInfo/receiptIndex">
+                        <span>
+                            <a href="studentChargeInfo/receiptIndex" title="补打小票" class="newTab">补打小票</a>
+                        </span>
+                    </menu:permission>
                 </li>
             </ul>
             <a class="parent" href="javascript:void(0);">日常收支管理</a>
             <ul>
                 <li>
-                    <span>
-                        <a href="charge/payProjectIoIndex" title="日常支出" class="newTab">日常支出</a>
-					</span>
+                    <menu:permission url="charge/payProjectIoIndex">
+                        <span>
+                            <a href="charge/payProjectIoIndex" title="日常支出" class="newTab">日常支出</a>
+                        </span>
+                    </menu:permission>
                 </li>
                 <li>
-                    <span>
-                        <a href="charge/incomeProjectIoIndex" title="日常收入" class="newTab">日常收入</a>
-					</span>
+                    <menu:permission url="charge/incomeProjectIoIndex">
+                        <span>
+                            <a href="charge/incomeProjectIoIndex" title="日常收入" class="newTab">日常收入</a>
+                        </span>
+                    </menu:permission>
                 </li>
             </ul>
         </li>
@@ -258,9 +275,11 @@
             <a class="parent" href="javascript:void(0);">统计管理</a>
             <ul>
                 <li>
-                    <span>
-                        <a href="studentChargeInfo/countIndex" title="学生缴费统计" class="newTab">学生缴费统计</a>
-					</span>
+                    <menu:permission url="studentChargeInfo/countIndex">
+                        <span>
+                            <a href="studentChargeInfo/countIndex" title="学生缴费统计" class="newTab">学生缴费统计</a>
+                        </span>
+                    </menu:permission>
                 </li>
             </ul>
         </li>
@@ -269,15 +288,21 @@
             <a class="parent" href="javascript:void(0);">系统管理</a>
             <ul>
                 <li>
-                    <span>
-                        <a href="user/userIndex" title="用户管理" class="newTab">用户管理</a>
-					</span>
-                    <span>
-                        <a href="user/roleIndex" title="角色管理" class="newTab">角色管理</a>
-					</span>
-                    <span>
-                        <a href="user/userIndex" title="权限管理" class="newTab">权限管理</a>
-					</span>
+                    <menu:permission url="user/userIndex">
+                        <span>
+                            <a href="user/userIndex" title="用户管理" class="newTab">用户管理</a>
+                        </span>
+                    </menu:permission>
+                    <menu:permission url="user/roleIndex">
+                        <span>
+                            <a href="user/roleIndex" title="角色管理" class="newTab">角色管理</a>
+                        </span>
+                    </menu:permission>
+                    <menu:permission url="user/menuIndex">
+                        <span>
+                            <a href="user/menuIndex" title="权限管理" class="newTab">权限管理</a>
+                        </span>
+                    </menu:permission>
                 </li>
             </ul>
         </li>
@@ -289,9 +314,9 @@
         <div title="后台首页" style="background: url('images/school/main.jpg') no-repeat center 160px ">
             <h5 style="text-align: center;font-size:24px;margin-top:120px;color: orangered;">欢迎使用汇通幼儿园收费系统</h5>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                <h6 style="text-align: center">地址：xxxxxxxxx &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电话：xxxxxxxxx</h6>
-                <h6 style="text-align: center">网站：xxxxxxxxx &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮箱：xxxxxxxxx</h6>
-                <h6 style="text-align: center">公众号：xxxxxxxxx</h6>
+                <%--<h6 style="text-align: center">地址：xxxxxxxxx &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电话：xxxxxxxxx</h6>
+                <h6 style="text-align: center">网站：xxxxxxxxx &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮箱：xxxxxxxxx</h6>--%>
+                <h6 style="text-align: center">QQ：757835235</h6>
         </div>
     </div>
 </div>

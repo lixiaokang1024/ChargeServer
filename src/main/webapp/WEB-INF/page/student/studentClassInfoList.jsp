@@ -12,8 +12,8 @@
 		<th field="className" align="center" sortable="true" width="100px">班级</th>
 		<th field="gradeName" align="center" sortable="true" width="100px">年级</th>
 		<th field="isGraduateStr" align="center" sortable="true" width="100px">毕业状态</th>
-		<th field="graduateTime" align="center" sortable="true" width="150px">毕业时间</th>
 		<th field="admissionTime" align="center" sortable="true" width="150px">入学时间</th>
+		<th field="graduateTime" align="center" sortable="true" width="150px">毕业时间</th>
 		<th field="remark" align="center" sortable="true" width="130px">备注</th>
 		<th field="operator" align="center" width="100px" formatter="settings">操作</th>
 	</tr>

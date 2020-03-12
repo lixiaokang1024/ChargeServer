@@ -7,6 +7,9 @@
             resultType="com.charge.pojo.User">
         select * from user where id=#{id}
     </select>
+<update id="updateUser" parameterType="com.charge.pojo.User">
+    update user set user_name=#{userName},password=#{password} where id=#{id}
+</update>
 
     <insert id="insertSelective" parameterType="com.charge.pojo.User">
         insert into user
@@ -43,4 +46,24 @@
         select * from user
     </select>
 
+    <insert id="saveUserRole">
+        insert into user_role(user_id, role_id) values (#{userId},#{roleId})
+    </insert>
+    <delete id="deleteRoleByUserId">
+        delete from user_role where user_id=#{userId}
+    </delete>
+
+    <insert id="saveRoleResource">
+        insert into role_resource(role_id, resource_id) values (#{roleId}, #{resourceId})
+    </insert>
+    <delete id="deleteResourceByRoleId">
+        delete from role_resource where role_id=#{roleId}
+    </delete>
+
+    <update id="updateResource" parameterType="com.charge.pojo.user.Resource">
+        update resource set menu_key=#{menuKey},menu_name=#{menuName} where id=#{id}
+    </update>
+    <insert id="insertResource" parameterType="com.charge.pojo.user.Resource">
+        insert into resource (menu_key,menu_name) values (#{menuKey},#{menuName})
+    </insert>
 </mapper>

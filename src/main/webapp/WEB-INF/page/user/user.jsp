@@ -39,8 +39,9 @@
 	 style="width:350px; height:200px;overflow: auto;" iconCls="icon-edit">
 	<form name="menuForm" action="" id="menuForm" method="post">
 		<div style="margin:11px 11px 0px 25px">
-			菜单配置：
-			<div id=menuSet></div>
+			<input type="hidden" id="userId"/>
+			角色分配：
+			<div id=roleSet></div>
 			<br/><br/>
 			<p align="center">
 				<input id="menuSave" type="button" value="提交"/>
@@ -55,6 +56,7 @@
 	 style="width:350px; height:200px;overflow: auto;" iconCls="icon-edit">
 	<form name="addUserForm" action="" id="addUserForm" method="post">
 		<div style="margin:11px 11px 0px 25px">
+			<input type="hidden" id="uid"/>
 			用户名：
 			<input id="userName" type="text" style="width: 150px;"/>
 			<br/><br/>
@@ -75,9 +77,16 @@
 	$('#addLink').live('click',function(){
 		$("#userName").val("");
 		$("#password").val("");
+		$("#uid").val("");
 		$("#addDialog").dialog("open");
 		return false;
 	});
+	function editAddDialog(row) {
+		$("#password").val(row.password);
+		$("#userName").val(row.userName);
+		$("#uid").val(row.id);
+		$("#addDialog").dialog("open");
+	}
 	$(function() {
 		/*搜索*/
 		$(function(){
@@ -106,35 +115,74 @@
 
 	function settings(value,row){
 		var html = '<div style="text-align: center;">';
-		html += "<img style='margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;' title='编辑' a src='${contextPath}/images/m_edit.gif' href='javascript:;' onclick='openMenuDialog("+JSON.stringify(row)+")' />";
-        // html += '<a style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" onclick="openMenuDialog(\''+row.id+'\')">资源配置</a>';
+		html += "<img style='margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;' title='编辑' a src='${contextPath}/images/m_edit.gif' href='javascript:;' onclick='editAddDialog("+JSON.stringify(row)+")' />";
+        html += '<a style="margin:0 2px 0 1px; line-height:1.5em;cursor:pointer;" onclick="openMenuDialog(\''+row.id+'\')">角色分配</a>';
 		html += '</div>';
 		return html;
 	}
 
-    function openMenuDialog(roleId) {
+    function openMenuDialog(userId) {
+		$("#userId").val(userId);
         $("#menuDialog").dialog("open");
-		var param={roleId:roleId}
+		$("#roleSet").empty();
 		$.ajax({
-			url:"${contextPath}/user/menuList",
+			url:"${contextPath}/user/userRoleList",
 			dataType:'json',
-			data:param,
+			data:{userId:userId},
 			success:function(data){
-				var menuList = data.rows;
-				for(i=0;i<menuList.length;i++){
-					var menu = menuList[i];
-					$("#menuSet").append('<ul id="tree">');
-					$("#menuSet").append('<li><input type="checkbox" id="'+menu.id+'" name="chkbox"><label for="'+menu.id+'"><span class="folder">'+menu.name+'</span></label></li>');
+				var roleList = data.rows;
+				var userRoleIds = data.roleIds;
+				for(i=0;i<roleList.length;i++){
+					var role = roleList[i];
+					if($.inArray(role.id, userRoleIds) == -1){
+						$("#roleSet").append('<li><input type="checkbox" value="'+role.id+'" id="'+role.id+'" name="chkbox">'+role.name+'</li>');
+					}else{
+						$("#roleSet").append('<li><input type="checkbox" checked="checked" value="'+role.id+'" id="'+role.id+'" name="chkbox">'+role.name+'</li>');
+					}
+					$("#roleSet").append('<ul id="tree">');
 				}
-				$("#menuSet").append('</ul>');
+				$("#roleSet").append('</ul>');
 			}
 		});
         return false;
     }
 
+	$('#menuSave').live('click',function(){
+		var url = "${contextPath}/user/saveUserRole";
+		var roleIds=new Array();
+		$("input[name=chkbox]").each(function (i,d){
+			if(d.checked) {
+				roleIds.push(d.value);
+			}
+		})
+		var data = {
+			userId: $('#userId').val(),
+			roleIds: roleIds
+		}
+		$.ajax({
+			url: url,
+			cache:false,
+			dataType:'json',
+			data:data,
+			success: function (data) {
+				$("#menuDialog").dialog("close");
+				if (data.success) {
+					$.messager.alert('系统消息', '已完成', "info");
+					$("#datagrid").datagrid("reload");
+				} else {
+					$.messager.alert('系统消息', data.msg,'error');
+				}
+			} ,
+			error:function(data){
+				$.messager.alert('系统消息', data.msg,'error');
+			}
+		});
+	});
+
 	$('#save').live('click',function(){
 		var url = "${contextPath}/user/saveUser";
 		var data = {
+			userId: $('#uid').val(),
 			userName: $('#userName').val(),
 			password: $('#password').val()
 		}

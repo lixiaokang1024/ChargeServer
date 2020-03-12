@@ -386,12 +386,13 @@
     	var printHtml = '<html><head>';
 		printHtml += '<title>小票打印</title><style type="text/css">*{padding:0;margin: 0;}span{font-size: 5px;} td{font-size: 10px;}</style></head><body style="background-color:#fff;">';
 		printHtml += '<div style="padding: 0px;margin: 0px;width: 300px;">';
-        printHtml += '<span style="text-align: center;">汇通婴幼儿智力开发园</span><br/>';
-		printHtml += '<span style="text-align: center">收费票据</span><br/>';
+        printHtml += '<span style="text-align: center;margin-left: 25px">汇通婴幼儿智力开发园</span><br/>';
+		printHtml += '<span style="text-align: center;margin-left: 50px">收费票据</span><br/>';
 		printHtml += '<span>学生姓名：'+data[0].studentName+'</span><br/>';
 		printHtml += '<span>学号：'+data[0].studentId+'</span><br/>';
 		printHtml += '<span>班级：'+data[0].gradeName+data[0].className+'</span><br/>';
 		printHtml += '<span>缴费属期：'+data[0].chargeTimeStr+'</span><br/>';
+		printHtml += '<span>个人账户余额：'+data[0].leftDepositAmount+'</span><br/>';
 		printHtml += '<span><table><tr><td align="center">序号</td><td align="center">项目</td><td align="center">基数</td><td align="center">系数</td><td align="center">小计</td></tr>';
 		printHtml += '<tr><td colspan="5">----------------------------------------</td></tr>';
 		var shouldCharge = 0;
@@ -405,7 +406,7 @@
 			if(row.payType == 0){
 				cash += row.actualChargeAmount;
 			}else{
-				dz = row.actualChargeAmount;
+				dz += row.actualChargeAmount;
 			}
             var base = row.chargeAmount / row.chargeCoefficient;
         	printHtml += '<tr><td align="center">'+(i+1)+'</td><td align="center">'+row.chargeProjectName+'</td><td align="center">'+base+'</td><td align="center">'+row.chargeCoefficient+'</td><td align="center">'+row.chargeAmount+'</td></tr>';

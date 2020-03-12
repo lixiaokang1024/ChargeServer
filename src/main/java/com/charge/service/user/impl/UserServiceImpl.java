@@ -26,12 +26,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(String username, String password) {
-        User user = new User();
-        user.setUserName(username);
-        user.setPassword(password);
-        user.setAge(10);
+    public void saveUser(User user) {
+      if(user.getId() != null){
+        userDao.updateUser(user);
+      }else{
         userDao.insertSelective(user);
+      }
     }
 
     @Override
@@ -57,7 +57,46 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void saveUserRole(Integer userId, List<Integer> roleIds) {
+        userDao.deleteRoleByUserId(userId);
+        for(Integer roleId:roleIds){
+            userDao.saveUserRole(userId, roleId);
+        }
+    }
+
+  @Override
+  public void saveOrUpdateResource(Resource resource) {
+    if(resource.getId() != null){
+      userDao.updateResource(resource);
+    }else{
+      userDao.insertResource(resource);
+    }
+  }
+
+    @Override
     public List<Resource> getResourceByUser(Integer userId) {
         return roleMapper.getResourceByUser(userId);
     }
+    @Override
+    public List<Resource> getResourceByRole(Integer roleId) {
+      return roleMapper.getResourceByRole(roleId);
+    }
+
+  @Override
+  public List<Resource> getResourceList() {
+    return roleMapper.selectAllResource();
+  }
+
+  @Override
+  public List<Role> getRoleByUser(Integer userId) {
+    return roleMapper.getRoleByUser(userId);
+  }
+
+  @Override
+  public void saveRoleResource(Integer roleId, List<Integer> resourceIds) {
+      userDao.deleteResourceByRoleId(roleId);
+    for(Integer resourceId:resourceIds){
+      userDao.saveRoleResource(roleId, resourceId);
+    }
+  }
 }

@@ -13,10 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
@@ -55,6 +53,14 @@ public class UserController {
             }
         }
         session.setAttribute("resource", menuList);
+        List<Role> roleList = userService.getRoleByUser(userIndb.getId());
+        List<Integer> roleIds = new ArrayList<>();
+        if(!CollectionUtils.isEmpty(roleList)){
+            for(Role role:roleList){
+                roleIds.add(role.getId());
+            }
+        }
+        session.setAttribute("role", roleIds);
         return result;
     }
 
@@ -91,6 +97,27 @@ public class UserController {
         return model;
     }
 
+    @RequestMapping("/userRoleList")
+    @ResponseBody
+    public ModelMap userRoleList(Integer userId) {
+        ModelMap model = new ModelMap();
+        try {
+            List<RoleVo> roleList = userService.getRoleList();
+            model.put("rows", roleList);
+            List<Role> roleByUser = userService.getRoleByUser(userId);
+            List<Integer> roleIds = new ArrayList<>();
+            if(!CollectionUtils.isEmpty(roleByUser)){
+                for(Role role:roleByUser){
+                    roleIds.add(role.getId());
+                }
+            }
+            model.put("roleIds", roleIds);
+        }catch (Exception e){
+        }
+        return model;
+    }
+
+
     @RequestMapping("/saveRole")
     @ResponseBody
     public Map<String, Object> saveRole(Integer roleId, String name) {
@@ -105,13 +132,17 @@ public class UserController {
         return resultMap;
     }
 
-    @RequestMapping("/saveUser")
+    @RequestMapping("/saveResource")
     @ResponseBody
-    public Map<String, Object> saveUser(String userName, String password) {
+    public Map<String, Object> saveResource(Integer menuId, String menuKey, String menuName) {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("success", true);
         try {
-            userService.saveUser(userName, password);
+            Resource resource = new Resource();
+            resource.setId(menuId);
+            resource.setMenuKey(menuKey);
+            resource.setMenuName(menuName);
+            userService.saveOrUpdateResource(resource);
         } catch (Exception e) {
             resultMap.put("success", false);
             resultMap.put("msg", e.getMessage());
@@ -119,13 +150,89 @@ public class UserController {
         return resultMap;
     }
 
+    @RequestMapping("/saveUser")
+    @ResponseBody
+    public Map<String, Object> saveUser(Integer userId, String userName, String password) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("success", true);
+        try {
+            User user = new User();
+            user.setId(userId);
+            user.setUserName(userName);
+            user.setPassword(password);
+            userService.saveUser(user);
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
+    }
+
+    @RequestMapping("/saveUserRole")
+    @ResponseBody
+    public Map<String, Object> saveUserRole(@RequestParam("userId")Integer userId, @RequestParam("roleIds[]") List<Integer> roleIds) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("success", true);
+        try {
+            if(!CollectionUtils.isEmpty(roleIds)){
+                userService.saveUserRole(userId, roleIds);
+            }
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
+    }
+
+    @RequestMapping("/saveRoleResource")
+    @ResponseBody
+    public Map<String, Object> saveRoleResource(@RequestParam("roleId")Integer roleId, @RequestParam("resourceIds[]") List<Integer> resourceIds) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("success", true);
+        try {
+            if(!CollectionUtils.isEmpty(resourceIds)){
+                userService.saveRoleResource(roleId, resourceIds);
+            }
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
+    }
+
+    @RequestMapping("/menuIndex")
+    public String toMenuIndex(){
+        return "user/resource";
+    }
     @RequestMapping("/menuList")
     @ResponseBody
     public Map<String, Object> menuList(Integer roleId) {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("success", true);
         try {
-            resultMap.put("rows", userService.getRoleList());
+            resultMap.put("rows", userService.getResourceList());
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
+    }
+
+    @RequestMapping("/roleMenuList")
+    @ResponseBody
+    public Map<String, Object> roleMenuList(Integer roleId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("success", true);
+        try {
+            resultMap.put("rows", userService.getResourceList());
+            List<Resource> resourceByRole = userService.getResourceByRole(roleId);
+            List<Integer> roleResourceIds = new ArrayList<>();
+            if(!CollectionUtils.isEmpty(resourceByRole)){
+                for(Resource resource:resourceByRole){
+                    roleResourceIds.add(resource.getId());
+                }
+            }
+            resultMap.put("roleMenus", roleResourceIds);
         } catch (Exception e) {
             resultMap.put("success", false);
             resultMap.put("msg", e.getMessage());

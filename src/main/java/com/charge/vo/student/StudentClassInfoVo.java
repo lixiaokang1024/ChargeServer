@@ -2,6 +2,7 @@ package com.charge.vo.student;
 
 import com.charge.enums.student.GraduateStatus;
 
+import com.charge.util.DateUtil;
 import java.io.Serializable;
 
 public class StudentClassInfoVo implements Serializable {
@@ -109,7 +110,7 @@ public class StudentClassInfoVo implements Serializable {
     }
 
     public String getGraduateTime() {
-        return graduateTime;
+        return DateUtil.getDatetime1(DateUtil.getTimespan(graduateTime));
     }
 
     public void setGraduateTime(String graduateTime) {
@@ -117,7 +118,7 @@ public class StudentClassInfoVo implements Serializable {
     }
 
     public String getAdmissionTime() {
-        return admissionTime;
+        return DateUtil.getDatetime1(DateUtil.getTimespan(admissionTime));
     }
 
     public void setAdmissionTime(String admissionTime) {

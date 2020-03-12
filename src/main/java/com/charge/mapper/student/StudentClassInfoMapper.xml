@@ -120,8 +120,10 @@
     d.level as gradeLevel,
     b.is_graduate,
     a.remark,
-    FROM_UNIXTIME(e.graduate_time) as graduateTime,
-    FROM_UNIXTIME(e.admission_time) as admissionTime
+    CASE WHEN e.graduate_time=0 THEN "" ELSE
+    FROM_UNIXTIME(e.graduate_time) END AS graduateTime,
+    CASE WHEN e.admission_time=0 THEN "" ELSE
+    FROM_UNIXTIME(e.admission_time) END AS admissionTime
     FROM student_class_info a right JOIN student_info b  on a.student_id=b.id left JOIN class_info c on a.class_id=c.id
     left JOIN grade_info d on c.grade_id=d.id join student_ext_info e on b.id=e.student_id
     <include refid="wheresql"/>

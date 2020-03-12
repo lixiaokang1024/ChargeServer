@@ -88,4 +88,15 @@
     SELECT d.* FROM USER a JOIN user_role b ON a.id=b.user_id JOIN role_resource c ON b.role_id = c.role_id JOIN resource d ON c.resource_id = d.id
     where a.id=#{userId}
   </select>
+  <select id="getRoleByUser" resultType="com.charge.pojo.user.Role">
+    SELECT c.* FROM USER a JOIN user_role b ON a.id=b.user_id JOIN role c on b.role_id=c.id where a.id=#{userId}
+  </select>
+
+  <select id="selectAllResource" resultType="com.charge.pojo.user.Resource">
+    select * from resource
+  </select>
+
+  <select id="getResourceByRole" resultType="com.charge.pojo.user.Resource">
+    SELECT a.* FROM resource a JOIN role_resource b ON a.id=b.`resource_id` WHERE b.`role_id`=#{roleId}
+  </select>
 </mapper>

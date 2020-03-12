@@ -36,7 +36,7 @@
             <mvc:exclude-mapping path="/user/login" />
             <bean class="com.charge.interceptor.LoginInterceptor" />
         </mvc:interceptor>
-        <mvc:interceptor>
+        <!--<mvc:interceptor>
             <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/css/**" />
             <mvc:exclude-mapping path="/images/**" />
@@ -47,7 +47,7 @@
             <mvc:exclude-mapping path="/user/login" />
             <mvc:exclude-mapping path="/user/modifyPW" />
             <bean class="com.charge.interceptor.PermissionInterceptor" />
-        </mvc:interceptor>
+        </mvc:interceptor>-->
     </mvc:interceptors>
 
     <!-- configure the InternalResourceViewResolver -->
