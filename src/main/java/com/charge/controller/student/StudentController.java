@@ -76,7 +76,9 @@ public class StudentController {
     }
 
     private String[] initExcelHeader() {
-        String[] strArray = { "姓名", "学号", "性别", "出生日期", "身份证号", "监护人","监护人身份证号","联系方式","地址","毕业状态" , "民族", "户口所在地"};
+        String[] strArray = { "学号","姓名", "性别","毕业状态","押金","预交费金额",
+            "身份证类型","身份证号", "出生日期","国籍","民族","港澳台侨外","出生所在地","籍贯","户口性质","非农业户口类型","户口所在地",
+            "监护人","监护人身份证类型","监护人身份证号","监护人关系","联系方式","地址"};
         return strArray;
     }
     private Map<String, List<String>> initExcelColumn(List<StudentInfoVo> data) {
@@ -84,18 +86,29 @@ public class StudentController {
         for(int i=0;i<data.size();i++){
             List<String> column = new ArrayList<>();
             StudentInfoVo dto = data.get(i);
-            column.add(dto.getName());
             column.add(String.valueOf(dto.getId()));
+            column.add(dto.getName());
             column.add(dto.getSexStr());
-            column.add("" + dto.getYear() + "-" + dto.getMonth() + "-" + dto.getDay());
+            column.add(dto.getGraduateStr());
+            column.add(String.valueOf(dto.getDeposit()));
+            column.add(String.valueOf(dto.getPrepaymentAmount()));
+            column.add(dto.getIdCardType());
             column.add(dto.getIdCardNumber());
+            column.add("" + dto.getYear() + "-" + dto.getMonth() + "-" + dto.getDay());
+            column.add(dto.getCountry());
+            column.add(dto.getNation());
+            column.add(dto.getOversea());
+            column.add(dto.getBornPlace());
+            column.add(dto.getNativePlace());
+            column.add(dto.getAccountCharacter());
+            column.add(dto.getNonAgriculturalAccountType());
+            column.add(dto.getRegisteredResidence());
             column.add(dto.getParentName());
+            column.add(dto.getParentIdCardType());
             column.add(dto.getParentIdCardNumber());
+            column.add(dto.getRelation());
             column.add(dto.getMobile());
             column.add(dto.getAddress());
-            column.add(dto.getGraduateStr());
-            column.add(dto.getNation());
-            column.add(dto.getRegisteredResidence());
             result.put(String.valueOf(i), column);
         }
         return result;

@@ -40,7 +40,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public void updateSelective(StudentInfo studentInfo) {
-        if(studentInfoMapper.getStudentInfoByIdCardNumber(studentInfo.getIdCardNumber()) != null){
+        StudentInfo studentInfoByIdCardNumber = studentInfoMapper.getStudentInfoByIdCardNumber(studentInfo.getIdCardNumber());
+        if(studentInfoByIdCardNumber != null && !studentInfoByIdCardNumber.getId().equals(studentInfo.getId())){
             throw new BusinessException("身份证号不可重复，身份证号为"+studentInfo.getIdCardNumber());
         }
         studentInfoMapper.updateByPrimaryKeySelective(studentInfo);
