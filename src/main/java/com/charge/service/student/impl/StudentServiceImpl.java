@@ -35,6 +35,7 @@ public class StudentServiceImpl implements StudentService {
         studentInfoMapper.insertSelective(studentInfo);
         studentExtInfo.setStudentId(studentInfo.getId());
         studentExtInfo.setCreateTime(DateUtil.getCurrentTimespan());
+        studentExtInfo.setAdmissionTime(DateUtil.getCurrentTimespan());
         studentExtInfoMapper.insertSelective(studentExtInfo);
     }
 

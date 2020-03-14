@@ -102,12 +102,14 @@
 			printHtml += '<tr><td colspan="5">----------------------------------------</td></tr>';
 			var shouldCharge = 0;
 			var useDepositAmount = 0;
+			var customOfferAmount = 0;
 			var cash = 0;
 			var dz = 0;
 			for(i = 0;i<data.length;i++){
 				var row = data[i];
 				shouldCharge += row.chargeAmount;
 				useDepositAmount += row.useDepositAmount;
+				customOfferAmount += row.customOfferAmount;
 				if(row.payType == 0){
 					cash += row.actualChargeAmount;
 				}else{
@@ -119,6 +121,7 @@
 			printHtml += '<tr><td colspan="5">----------------------------------------</td></tr></table></span>';
 			printHtml += '<span>应缴费金额：'+shouldCharge+'</span><br/>';
 			printHtml += '<span>个人账号扣除金额：'+useDepositAmount+'</span><br/>';
+			printHtml += '<span>优惠金额：'+customOfferAmount+'</span><br/>';
 			printHtml += '<span>现金付款：'+cash+'</span><br/>';
 			printHtml += '<span>电子支付：'+dz+'</span><br/>';
 			printHtml += '<span>========================</span><br/>';

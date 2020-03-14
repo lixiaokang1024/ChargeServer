@@ -188,11 +188,12 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             projectAmountMap.put(projectChargeParam.getStudentProjectId(), projectChargeParam);
         }
         Boolean useDeposit = chargeParam.getIsUseDeposit() == 1;
+        Double totalPrepaymentAmount = studentExtInfoMapper.getByStudentId(chargeParam.getStudentId()).getPrepaymentAmount();
         Double prepaymentAmount = 0.00; //学生预缴费金额
         Double changePrepaymentAmount = 0.00; //使用预缴费金额
         Double customOfferAmount = chargeParam.getCustomOfferAmount() == null ? 0 : chargeParam.getCustomOfferAmount();
         if(useDeposit){
-            prepaymentAmount = studentExtInfoMapper.getByStudentId(chargeParam.getStudentId()).getPrepaymentAmount();
+            prepaymentAmount = totalPrepaymentAmount;
         }
       String receiptId = getReceiptId();
       for(StudentChargeInfoDetailVo vo:studentChargeInfoDetailVoList){
@@ -200,13 +201,13 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             if(discount == null){
                 discount = 1.0;
             }
-            Double chargeAmount = vo.getChargeAmount() * discount - vo.getActualChargeAmount() - vo.getUseDepositAmount();
+            Double chargeAmount = vo.getChargeAmount() * discount - vo.getActualChargeAmount() - vo.getUseDepositAmount() - vo.getCustomOfferAmount();
             Double actureChargeAmount = projectAmountMap.get(vo.getId()).getProjectAmount();
             if(actureChargeAmount > chargeAmount){
                 throw new BusinessException("实际支付金额大于应支付金额,请核对后再支付");
             }
             Double useCustomOfferAmount = 0.00;
-            if(actureChargeAmount < chargeAmount){
+            if(actureChargeAmount < chargeAmount && customOfferAmount>0){
                 useCustomOfferAmount = chargeAmount - actureChargeAmount;
                 if(customOfferAmount < useCustomOfferAmount){
                     useCustomOfferAmount = customOfferAmount;
@@ -214,7 +215,7 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
                 customOfferAmount -= useCustomOfferAmount;
             }
             Double useDepositAmount = 0.00;
-            if((actureChargeAmount + useCustomOfferAmount) < chargeAmount){
+            if((actureChargeAmount + useCustomOfferAmount) < chargeAmount && prepaymentAmount>0){
                 useDepositAmount = chargeAmount - actureChargeAmount - useCustomOfferAmount;
                 if(prepaymentAmount < useDepositAmount){
                     useDepositAmount = prepaymentAmount;
@@ -242,13 +243,14 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             studentChargeInfo.setPayType(chargeParam.getPayType());
             studentChargeInfoMapper.updateStudentChargeInfo(studentChargeInfo);
 
-            if((actureChargeAmount + useDepositAmount) > 0.00){
+            if((actureChargeAmount + useDepositAmount + useCustomOfferAmount) > 0.00){
                 vo.setActualChargeAmount(actureChargeAmount);
                 vo.setActualChargeTime(studentChargeInfo.getActualChargeTime());
                 vo.setUseDepositAmount(studentChargeInfo.getUseDepositAmount());
                 vo.setPayType(studentChargeInfo.getPayType());
                 vo.setStatus(studentChargeInfo.getStatus());
                 vo.setReceiptId(receiptId);
+                vo.setCustomOfferAmount(useCustomOfferAmount);
                 result.add(vo);
             }
             StudentChargeIo studentChargeIo = new StudentChargeIo();
@@ -259,7 +261,6 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
             studentChargeIo.setPayType(chargeParam.getPayType());
             studentChargeIo.setReceiptId(receiptId);
             studentChargeIo.setChargeAmount(BigDecimal.valueOf(chargeAmount));
-            receiptIdRecordMapper.addIdRecord();
             studentChargeIo.setStudentChargeInfoId(vo.getId());
             studentChargeIo.setStudentId(vo.getStudentId());
             studentChargeIo.setUseDepositAmount(BigDecimal.valueOf(useDepositAmount));
@@ -268,9 +269,10 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
         }
         studentExtInfoMapper.updatePrepaymentAmount(chargeParam.getStudentId(), -changePrepaymentAmount, 1);
         for(StudentChargeInfoDetailVo vo:result){
-            vo.setLeftDepositAmount(prepaymentAmount - changePrepaymentAmount);
+            vo.setLeftDepositAmount(totalPrepaymentAmount - changePrepaymentAmount);
         }
-        studentChargeIoMapper.updateLeftDepositAmount(receiptId, BigDecimal.valueOf(prepaymentAmount - changePrepaymentAmount));
+        receiptIdRecordMapper.addIdRecord();
+        studentChargeIoMapper.updateLeftDepositAmount(receiptId, BigDecimal.valueOf(totalPrepaymentAmount - changePrepaymentAmount));
         return result;
     }
 

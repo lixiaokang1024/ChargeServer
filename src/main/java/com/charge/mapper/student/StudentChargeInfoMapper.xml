@@ -345,8 +345,9 @@
     a.pay_type,
     a.status,
     f.name as className,
-    g.name as gradeName
-    FROM student_charge_info a JOIN student_info b  on a.student_id=b.id
+    g.name as gradeName,
+    ext.prepayment_amount as leftDepositAmount
+    FROM student_charge_info a JOIN student_info b  on a.student_id=b.id join student_ext_info ext on b.id=ext.student_id
     JOIN charge_project d on a.charge_project_id=d.id join student_class_info e on b.id=e.student_id
     join class_info f on e.class_id=f.id join grade_info g on f.grade_id=g.id
     WHERE a.student_id=#{studentId} AND a.status IN

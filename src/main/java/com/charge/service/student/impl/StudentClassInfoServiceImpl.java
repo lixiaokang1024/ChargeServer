@@ -130,12 +130,23 @@ public class StudentClassInfoServiceImpl implements StudentClassInfoService {
         StudentExtInfo studentExtInfo = new StudentExtInfo();
         studentExtInfo.setStudentId(studentId);
         studentExtInfo.setGraduate(graduteStatus);
-        studentExtInfo.setGraduateTime(DateUtil.getCurrentTimespan());
+        if(graduteStatus == GraduateStatus.GRADUATE.getCode() || graduteStatus == GraduateStatus.LEAVE.getCode()){
+            studentExtInfo.setGraduateTime(DateUtil.getCurrentTimespan());
+        }
         studentExtInfoMapper.updateByStudentIdSelective(studentExtInfo);
     }
 
     //升级毕业生
     private void upGraduateStudent(StudentClassInfoVo studentClassInfoVo) {
+        StudentExtInfo studentExtInfo = studentExtInfoMapper.getByStudentId(studentClassInfoVo.getStudentId());
+        if(studentExtInfo.getDeposit()>0){
+            updateGraduteStatus(studentClassInfoVo.getStudentId(), GraduateStatus.UN_GRADUATE.getCode(), "毕业失败，押金未退。");
+            return;
+        }
+        if(studentExtInfo.getPrepaymentAmount()>0){
+            updateGraduteStatus(studentClassInfoVo.getStudentId(), GraduateStatus.UN_GRADUATE.getCode(), "毕业失败，预交费未退。");
+            return;
+        }
         if(studentChargeInfoMapper.countUnCharged(studentClassInfoVo.getStudentId()) > 0){
             updateGraduteStatus(studentClassInfoVo.getStudentId(), GraduateStatus.UN_GRADUATE.getCode(), "毕业失败，有欠费项目未缴纳。");
         }else{

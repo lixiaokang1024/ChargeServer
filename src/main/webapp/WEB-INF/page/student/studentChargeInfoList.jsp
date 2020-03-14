@@ -90,6 +90,7 @@
 					<td>
 						<input type="radio" name="useDeposit" checked="checked" value="0"/>不使用
 						<input type="radio" name="useDeposit" value="1"/>使用
+						<h6 id="leftDepositAmount" style="color: red"></h6>
 					</td>
 				</tr>
 				<tr>
@@ -308,6 +309,7 @@
                 $("#chargeProject").empty();
                 var row = data.rows;
                 $("#chargeProject").append('');
+                $("#leftDepositAmount").html('账户余额：'+row[0].leftDepositAmount);
                 for(i=0;i<row.length;i++){
                     var rowData = row[i];
 					$("#chargeProject").append('<input id="chargeAmount'+rowData.id+'" type="hidden" value="'+rowData.chargeAmount+'" />');
@@ -396,6 +398,7 @@
 		printHtml += '<span><table><tr><td align="center">序号</td><td align="center">项目</td><td align="center">基数</td><td align="center">系数</td><td align="center">小计</td></tr>';
 		printHtml += '<tr><td colspan="5">----------------------------------------</td></tr>';
 		var shouldCharge = 0;
+		var customOfferAmount = 0;
 		var useDepositAmount = 0;
 		var cash = 0;
 		var dz = 0;
@@ -403,6 +406,7 @@
             var row = data[i];
 			shouldCharge += row.chargeAmount;
 			useDepositAmount += row.useDepositAmount;
+			customOfferAmount += row.customOfferAmount;
 			if(row.payType == 0){
 				cash += row.actualChargeAmount;
 			}else{
@@ -413,6 +417,7 @@
 		}
 		printHtml += '<tr><td colspan="5">----------------------------------------</td></tr></table></span>';
 		printHtml += '<span>应缴费金额：'+shouldCharge+'</span><br/>';
+		printHtml += '<span>优惠金额：'+customOfferAmount+'</span><br/>';
 		printHtml += '<span>个人账号扣除金额：'+useDepositAmount+'</span><br/>';
 		printHtml += '<span>现金付款：'+cash+'</span><br/>';
 		printHtml += '<span>电子支付：'+dz+'</span><br/>';
