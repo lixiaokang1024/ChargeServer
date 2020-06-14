@@ -47,12 +47,42 @@
 					<input type="button" class="button search" value="搜索" id="searchLink"/>
 					<input type="reset" class="button clear" value="清空" id="clearLink"/>
 					<input type="button" class="button add" value="批量导入" id="addExcel" />
+					<input type="button" class="button add" value="添加" id="addLink" />
 				</td>
 			</tr>
 		</table>
 	</form>
 </div>
 <!--搜索条件结束-->
+
+<!-- 添加费用项目 -->
+<div id="addDialog" class="easyui-dialog" title="添加学生收费信息" closed="true"
+	 style="width:350px; height:300px;overflow: auto;" iconCls="icon-edit">
+	<form name="addForm" action="" id="addForm" method="post">
+		<div style="margin:11px 11px 0px 25px">
+			学生学号：
+			<input name="student_id" id="student_id" type="text" style="width: 150px;"/>
+			<br/><br/>
+			学生姓名：
+			<input name="student_name" id="student_name" type="text" style="width: 150px;"/>
+			<br/><br/>
+			收费项目：
+			<select id="chargeProjectId" style="width: 150px;">
+			</select>
+			<br/><br/>
+			缴费日期：
+			<input id="chargeTimeStr" style="width: 150px;" />
+			<br/><br/>
+			缴费系数：
+			<input id="chargeCoefficient" style="width: 150px;" />
+			<br/><br/>
+			<p align="center">
+				<input id="saveAdd" type="button" value="添加"/>
+				<input id="cancelAdd" type="button" value="取消"/>
+			</p><br>
+		</div>
+	</form>
+</div>
 
 <!-- 学生收费信息批量导入 -->
 <div id="dialogExcel" class="easyui-dialog" title="学生收费信息批量导入" closed="true"
@@ -122,6 +152,29 @@
 
 
 <script type="text/javascript">
+	$('#addLink').live('click',function(){
+		$("#addDialog").dialog("open");
+		$('#chargeProjectId').empty();
+		$('#student_id').val("");
+		$('#student_name').val("");
+		$('#chargeTimeStr').val("");
+		$('#chargeCoefficient').val("");
+		var param={page:1,rows:2000}
+		$.ajax({
+			url:"${contextPath}/charge/list",
+			dataType:'json',
+			data:param,
+			success:function(data){
+				var chargeProjectList = data.rows;
+				for(i=0;i<chargeProjectList.length;i++){
+					var chargeProject = chargeProjectList[i];
+					$("#chargeProjectId").append('<option value="'+chargeProject.id+'">'+chargeProject.projectName+'</option>');
+				}
+			}
+		});
+		return false;
+	});
+
 	$(function() {
 		/*搜索*/
 		$(function(){
@@ -180,8 +233,13 @@
 		$("#dialogExcel").dialog("close");
 		return false;
 	});
-	$('#cancel').live('click',function(){
-		$("#chargeDialog").dialog("close");
+	$('#cancelAdd').live('click',function(){
+		$('#chargeProjectId').empty();
+		$('#student_id').val("");
+		$('#student_name').val("");
+		$('#chargeTimeStr').val("");
+		$('#chargeCoefficient').val("");
+		$("#addDialog").dialog("close");
 		return false;
 	});
 	//导出
@@ -380,6 +438,42 @@
 					}
 
 				});
+			}
+		});
+	});
+
+	$('#saveAdd').live('click',function(){
+		var url = "${contextPath}/studentChargeInfo/addCharge";
+		var data = {
+			chargeProjectId: $('#chargeProjectId').val(),
+			studentId: $('#student_id').val(),
+			chargeCoefficient: $('#chargeCoefficient').val(),
+			chargeTimeStr: $('#chargeTimeStr').val()
+		}
+		$('#addForm').ajaxSubmit({
+			url: url,
+			cache:false,
+			dataType:'json',
+			data:data,
+			beforeSend: function() {
+				$("#saveAdd").attr("disabled",true);
+				$("#cancelAdd").attr("disabled", true);
+			} ,
+			success: function (data) {
+				$("#addDialog").dialog("close");
+				if (data.success) {
+					$.messager.alert('系统消息', '已完成', "info");
+					$("#datagrid").datagrid("reload");
+				} else {
+					layer.alert(data.msg);
+				}
+			} ,
+			complete: function(){
+				$("#saveAdd").attr("disabled",false);
+				$("#cancelAdd").attr("disabled", false);
+			},
+			error:function(data){
+				$.messager.alert('系统消息', data.msg,'error');
 			}
 		});
 	});

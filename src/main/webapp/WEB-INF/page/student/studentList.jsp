@@ -114,6 +114,12 @@
 				<option value="2">押金</option>
 			</select>
 			<br/>
+			缴费方式：
+			<select style="width: 150px" id="chargeMethod">
+				<option value="1">现金</option>
+				<option value="2">非现金</option>
+			</select>
+			<br/>
 			<p align="center">
 				<input id="chargeSave" type="button" value="预缴费"/>
 				<input id="chargeCancel" type="button" value="取消"/>

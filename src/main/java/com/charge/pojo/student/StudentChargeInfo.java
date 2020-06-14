@@ -39,6 +39,8 @@ public class StudentChargeInfo implements Serializable {
      */
     private Integer chargeTime;
 
+    private String chargeTimeStr;
+
     private Integer actualChargeTime;
 
     /**
@@ -196,6 +198,14 @@ public class StudentChargeInfo implements Serializable {
      */
     public void setPayType(Integer payType) {
         this.payType = payType;
+    }
+
+    public String getChargeTimeStr() {
+        return chargeTimeStr;
+    }
+
+    public void setChargeTimeStr(String chargeTimeStr) {
+        this.chargeTimeStr = chargeTimeStr;
     }
 
     /**

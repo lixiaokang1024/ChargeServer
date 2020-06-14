@@ -149,6 +149,28 @@ public class StudentChargeInfoProxy {
         }
     }
 
+    public void doAddCharge(StudentChargeInfo studentChargeInfo){
+        Double chargeCoefficientDouble = studentChargeInfo.getChargeCoefficient();
+        ChargeProject chargeProjectDB = chargeService.getChargeProjectById(studentChargeInfo.getChargeProjectId());
+        if(chargeProjectDB.getProjectName().equals("保育费")){
+            if(chargeCoefficientDouble <= 0){
+                studentChargeInfo.setChargeAmount(0.00);
+                studentChargeInfo.setChargeCoefficient(0.0);
+            }else if(chargeCoefficientDouble <= 7){
+                studentChargeInfo.setChargeAmount(chargeProjectDB.getAmount() * 0.5);
+                studentChargeInfo.setChargeCoefficient(0.5);
+            }else{
+                studentChargeInfo.setChargeAmount(chargeProjectDB.getAmount());
+                studentChargeInfo.setChargeCoefficient(1.0);
+            }
+        }else{
+            studentChargeInfo.setChargeAmount(chargeProjectDB.getAmount() * chargeCoefficientDouble);
+            studentChargeInfo.setChargeCoefficient(chargeCoefficientDouble);
+        }
+        studentChargeInfo.setChargeTime(DateUtil.getTimespan2(studentChargeInfo.getChargeTimeStr()));
+        studentChargeInfoService.insertSelective(studentChargeInfo);
+    }
+
     public void doCharge(StudentChargeParam chargeParam){
         studentChargeInfoService.doCharge(chargeParam);
     }

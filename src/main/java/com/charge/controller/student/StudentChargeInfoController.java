@@ -3,6 +3,7 @@ package com.charge.controller.student;
 import com.charge.param.student.StudentChargeInfoSearchParam;
 import com.charge.param.student.StudentChargeParam;
 import com.charge.pojo.common.PageResultDTO;
+import com.charge.pojo.student.StudentChargeInfo;
 import com.charge.proxy.student.StudentChargeInfoProxy;
 import com.charge.util.ExcelUtil;
 import com.charge.vo.student.StudentChargeInfoDetailVo;
@@ -265,6 +266,20 @@ public class StudentChargeInfoController {
         try {
             InputStream io = buildInfo.getInputStream();
             chargeInfoProxy.importStudentChargeInfo(io);
+        } catch (Exception e) {
+            resultMap.put("success", false);
+            resultMap.put("msg", e.getMessage());
+        }
+        return resultMap;
+    }
+
+    @RequestMapping("/addCharge")
+    @ResponseBody
+    public Map<String, Object> addCharge(StudentChargeInfo chargeParam) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("success", true);
+        try {
+            chargeInfoProxy.doAddCharge(chargeParam);
         } catch (Exception e) {
             resultMap.put("success", false);
             resultMap.put("msg", e.getMessage());
