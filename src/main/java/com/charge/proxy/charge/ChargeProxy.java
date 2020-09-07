@@ -10,10 +10,13 @@ import com.charge.pojo.charge.ChargeProject;
 import com.charge.pojo.charge.PayProject;
 import com.charge.pojo.charge.PayProjectIo;
 import com.charge.pojo.common.PageResultDTO;
+import com.charge.pojo.school.ClassInfo;
 import com.charge.pojo.school.GradeInfo;
+import com.charge.pojo.student.StudentClassInfo;
 import com.charge.service.charge.ChargeService;
 import com.charge.service.school.SchoolService;
 import com.charge.service.student.StudentChargeInfoService;
+import com.charge.service.student.StudentClassInfoService;
 import com.charge.util.JsonUtil;
 import com.charge.vo.charge.ChargeProjectVo;
 import com.charge.vo.charge.PayProjectIoVo;
@@ -42,9 +45,23 @@ public class ChargeProxy {
     @Autowired
     private StudentChargeInfoService studentChargeInfoService;
 
+    @Autowired
+    private StudentClassInfoService studentClassInfoService;
+
     public PageResultDTO<List<ChargeProjectVo>> queryChargeProjectList(ChargeSearchParam chargeSearchParam){
         logger.info("查询收费项目信息搜索参数：{}", JsonUtil.toJson(chargeSearchParam));
         PageResultDTO<List<ChargeProjectVo>> pageResultDTO = new PageResultDTO<List<ChargeProjectVo>>();
+        if (chargeSearchParam.getStudentId() != null) {
+            StudentClassInfo studentClassInfo = studentClassInfoService.getByStudentId(chargeSearchParam.getStudentId());
+            if (studentClassInfo == null) {
+                return pageResultDTO;
+            }
+            ClassInfo classInfo = schoolService.getClassInfoById(studentClassInfo.getClassId());
+            if (classInfo == null) {
+                return pageResultDTO;
+            }
+            chargeSearchParam.setGradeId(classInfo.getGradeId());
+        }
         try {
 
             int count = chargeService.countChargeProject(chargeSearchParam);

@@ -13,6 +13,9 @@
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.charge.pojo.student.ReceiptIdRecord">
     insert into receipt_id_record(record_id) values (#{recordId});
   </insert>
+  <delete id="deleteReceiptIdRecord">
+    delete from receipt_id_record
+  </delete>
   <select id="select" resultType="com.charge.pojo.student.ReceiptIdRecord">
     select * from receipt_id_record
   </select>

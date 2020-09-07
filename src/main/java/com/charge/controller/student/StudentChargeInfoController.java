@@ -137,8 +137,8 @@ public class StudentChargeInfoController {
             List<String> column = new ArrayList<>();
             StudentChargeInfoDetailVo dto = data.get(i);
             column.add(String.valueOf(i+1));
-            column.add(String.valueOf(dto.getStudentId()));
             column.add(dto.getStudentName());
+            column.add(String.valueOf(dto.getStudentId()));
             column.add(dto.getGradeName());
             column.add(dto.getClassName());
             column.add(dto.getChargeProjectName());

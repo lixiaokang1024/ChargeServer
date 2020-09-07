@@ -6,4 +6,6 @@ public interface ReceiptIdRecordMapper {
     int insert(ReceiptIdRecord record);
     ReceiptIdRecord select();
     void addIdRecord();
+
+  void deleteReceiptIdRecord();
 }

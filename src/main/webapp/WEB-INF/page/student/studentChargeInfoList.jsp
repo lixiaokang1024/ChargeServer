@@ -175,6 +175,24 @@
 		return false;
 	});
 
+	$('input[name="student_id"]').change(function () {
+		var studentId = $("#student_id").val();
+		var param = {page: 1, rows: 2000, studentId: studentId}
+		$.ajax({
+			url: "${contextPath}/charge/list",
+			dataType: 'json',
+			data: param,
+			success: function (data) {
+				$('#chargeProjectId').empty();
+				var chargeProjectList = data.rows;
+				for (i = 0; i < chargeProjectList.length; i++) {
+					var chargeProject = chargeProjectList[i];
+					$("#chargeProjectId").append('<option value="' + chargeProject.id + '">' + chargeProject.projectName + '</option>');
+				}
+			}
+		});
+	});
+
 	$(function() {
 		/*搜索*/
 		$(function(){

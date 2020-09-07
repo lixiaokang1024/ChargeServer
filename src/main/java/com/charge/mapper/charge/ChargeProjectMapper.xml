@@ -124,6 +124,9 @@
     <if test="param.projectName != null and param.projectName != ''">
       AND a.project_name=#{param.projectName}
     </if>
+    <if test="param.gradeId != null">
+      AND a.grade_id=#{param.gradeId}
+    </if>
   </sql>
 
   <select id="getChargeProjectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
