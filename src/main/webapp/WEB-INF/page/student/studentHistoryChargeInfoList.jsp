@@ -72,7 +72,7 @@
 			payTimeEnd = payTimeEnd + " 23:59:59";
 		}
 		var data = {
-			studentName: $('#studentName').val(),
+			name: $('#studentName').val(),
 			payTimeBegin: payTimeBegin,
 			payTimeEnd: payTimeEnd
 		};

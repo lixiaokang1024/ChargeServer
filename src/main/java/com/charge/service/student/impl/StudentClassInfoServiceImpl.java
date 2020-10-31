@@ -48,6 +48,7 @@ public class StudentClassInfoServiceImpl implements StudentClassInfoService {
 
     public void insertSelective(StudentClassInfo studentClassInfo) {
         studentClassInfo.setCreateTime(DateUtil.getCurrentTimespan());
+        studentClassInfoMapper.deleteByStudentId(studentClassInfo.getStudentId());
         studentClassInfoMapper.insertSelective(studentClassInfo);
     }
 

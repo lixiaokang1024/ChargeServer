@@ -5,6 +5,7 @@ import com.charge.vo.student.StudentClassInfoVo;
 
 import java.util.List;
 import java.util.Map;
+import org.apache.ibatis.annotations.Param;
 
 public interface StudentClassInfoMapper {
     int insert(StudentClassInfo record);
@@ -21,4 +22,6 @@ public interface StudentClassInfoMapper {
     StudentClassInfo getByStudentId(Integer studentId);
 
     int updateByStudentId(StudentClassInfo studentClassInfo);
+
+  void deleteByStudentId(@Param("studentId") Integer studentId);
 }
