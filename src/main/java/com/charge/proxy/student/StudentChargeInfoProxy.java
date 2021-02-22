@@ -219,7 +219,7 @@ public class StudentChargeInfoProxy {
       }
       pageResultDTO.setCurrentPage(searchParam.getCurrentPage());
       pageResultDTO.setPageSize(searchParam.getPageSize());
-      List<StudentChargeIoVo> studentChargeIoVoList = studentChargeInfoService.queryReceiptList(searchParam);
+        List<StudentChargeIoVo> studentChargeIoVoList = studentChargeInfoService.queryReceiptPageList(searchParam);
       pageResultDTO.setData(studentChargeIoVoList);
     } catch (Exception e){
       logger.error("补打小票列表信息出错,msg={}",e.getMessage(),e);

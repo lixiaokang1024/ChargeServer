@@ -90,9 +90,9 @@ public class StudentChargeInfoServiceImpl implements StudentChargeInfoService {
   }
 
   @Override
-  public List<StudentChargeIoVo> queryReceiptList(StudentChargeInfoSearchParam searchParam) {
+  public List<StudentChargeIoVo> queryReceiptPageList(StudentChargeInfoSearchParam searchParam) {
     Map<String, Object> paramMap = RequestParamUtil.getRequestParamMap(searchParam.getCurrentPage(), searchParam.getPageSize(), searchParam);
-    return studentChargeIoMapper.queryReceiptList(paramMap);
+    return studentChargeIoMapper.queryReceiptPageList(paramMap);
   }
 
   public String addPrepaymentAmount(StudentChargeParam chargeParam) {

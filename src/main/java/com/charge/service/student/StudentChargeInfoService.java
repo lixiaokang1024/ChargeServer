@@ -32,5 +32,6 @@ public interface StudentChargeInfoService {
     void checkChargeExpireStudent();
 
     int countReceiptList(StudentChargeInfoSearchParam searchParam);
-    List<StudentChargeIoVo> queryReceiptList(StudentChargeInfoSearchParam searchParam);
+
+    List<StudentChargeIoVo> queryReceiptPageList(StudentChargeInfoSearchParam searchParam);
 }

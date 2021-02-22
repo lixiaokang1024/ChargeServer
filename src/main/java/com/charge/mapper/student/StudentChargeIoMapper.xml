@@ -182,7 +182,7 @@
         <include refid="recieptsql"/> group by a.receipt_id) p
   </select>
 
-  <select id="queryReceiptList" resultType="com.charge.vo.student.StudentChargeIoVo">
+  <select id="queryReceiptPageList" resultType="com.charge.vo.student.StudentChargeIoVo">
     SELECT a.id,a.student_charge_info_id,a.receipt_id,
             a.student_id,f.name as studentName,d.name as className,
             e.name as gradeName,FROM_UNIXTIME(max(a.actual_charge_time)) as chargeTime

@@ -23,7 +23,7 @@ public interface StudentChargeIoMapper {
 
     int countReceiptList(Map<String, Object> paramMap);
 
-    List<StudentChargeIoVo> queryReceiptList(Map<String, Object> paramMap);
+  List<StudentChargeIoVo> queryReceiptPageList(Map<String, Object> paramMap);
 
     void updateLeftDepositAmount(@Param("receiptId") String receiptId, @Param("leftDepositAmount") BigDecimal leftDepositAmount);
 }
