@@ -174,11 +174,11 @@
 
   <select id="countReceiptList" resultType="int">
     SELECT COUNT(1) FROM (SELECT a.`receipt_id`
-    FROM student_charge_io a JOIN student_charge_info b ON
-        a.student_charge_info_id = b.id JOIN student_class_info c ON b.student_id = c.student_id
-        JOIN class_info d ON c.`class_id`=d.`id`
-        JOIN grade_info e ON d.`grade_id`=e.`id`
-        JOIN student_info f ON b.`student_id`=f.id
+    FROM student_charge_io a left JOIN student_charge_info b ON
+    a.student_charge_info_id = b.id left JOIN student_class_info c ON b.student_id = c.student_id
+    left JOIN class_info d ON c.`class_id`=d.`id`
+    left JOIN grade_info e ON d.`grade_id`=e.`id`
+    left JOIN student_info f ON b.`student_id`=f.id
         <include refid="recieptsql"/> group by a.receipt_id) p
   </select>
 
@@ -187,10 +187,10 @@
             a.student_id,f.name as studentName,d.name as className,
             e.name as gradeName,FROM_UNIXTIME(max(a.actual_charge_time)) as chargeTime
      FROM student_charge_io a left JOIN student_charge_info b ON
-        a.student_charge_info_id = b.id JOIN student_class_info c ON a.student_id = c.student_id
-        JOIN class_info d ON c.`class_id`=d.`id`
-        JOIN grade_info e ON d.`grade_id`=e.`id`
-        JOIN student_info f ON a.`student_id`=f.id
+    a.student_charge_info_id = b.id left JOIN student_class_info c ON a.student_id = c.student_id
+    left JOIN class_info d ON c.`class_id`=d.`id`
+    left JOIN grade_info e ON d.`grade_id`=e.`id`
+    left JOIN student_info f ON a.`student_id`=f.id
     <include refid="recieptsql"/> group by a.receipt_id
   </select>
   <sql id="recieptsql">
