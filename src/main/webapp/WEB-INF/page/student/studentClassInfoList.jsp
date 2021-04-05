@@ -332,18 +332,18 @@
 		});
 		return false;
 	}
-	$('#gradeId').live('click',function(){
+	$('#gradeId').live('change',function(){
 		$("#classId").empty();
-		var gradeId = $("#gradeId").val();
-		var param={page:1,rows:2000,gradeId:gradeId}
+		let gradeId = $("#gradeId").val();
+		let param={page:1,rows:2000,gradeId:gradeId}
 		$.ajax({
 			url:"${contextPath}/school/calssList",
 			dataType:'json',
 			data:param,
 			success:function(data){
-				var classList = data.rows;
+				let classList = data.rows;
 				for(i=0;i<classList.length;i++){
-					var classInfo = classList[i];
+					let classInfo = classList[i];
 					$("#classId").append('<option value="'+classInfo.id+'">'+classInfo.name+'</option>');
 				}
 			}
