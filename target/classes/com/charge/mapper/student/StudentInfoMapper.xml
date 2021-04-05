@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.charge.mapper.student.StudentInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.charge.pojo.student.StudentInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+    <result column="month" jdbcType="INTEGER" property="month" />
+    <result column="day" jdbcType="INTEGER" property="day" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="parent_name" jdbcType="VARCHAR" property="parentName" />
+    <result column="parent_id_card_type" jdbcType="VARCHAR" property="parentIdCardType" />
+    <result column="parent_id_card_number" jdbcType="VARCHAR" property="parentIdCardNumber" />
+    <result column="relation" jdbcType="VARCHAR" property="relation" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="is_graduate" jdbcType="BIT" property="graduate" />
+    <result column="id_card_type" jdbcType="VARCHAR" property="idCardType" />
+    <result column="id_card_number" jdbcType="VARCHAR" property="idCardNumber" />
+    <result column="country" jdbcType="VARCHAR" property="country" />
+    <result column="nation" jdbcType="VARCHAR" property="nation" />
+    <result column="oversea" jdbcType="VARCHAR" property="oversea" />
+    <result column="born_place" jdbcType="VARCHAR" property="bornPlace" />
+    <result column="native_place" jdbcType="VARCHAR" property="nativePlace" />
+    <result column="account_character" jdbcType="VARCHAR" property="accountCharacter" />
+    <result column="non_agricultural_account_type" jdbcType="VARCHAR" property="nonAgriculturalAccountType" />
+    <result column="registered_residence" jdbcType="VARCHAR" property="registeredResidence" />
+    <result column="creat_time" jdbcType="INTEGER" property="creatTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="is_deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, sex, year, month, day, age, parent_name, parent_id_card_type, parent_id_card_number,
+    relation, mobile, address, is_graduate, id_card_type, id_card_number, country, nation,
+    oversea, born_place, native_place, account_character, non_agricultural_account_type,
+    registered_residence, creat_time, modify_time, is_deleted
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from student_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from student_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.charge.pojo.student.StudentInfo">
+    insert into student_info (id, name, sex,
+      year, month, day, age,
+      parent_name, parent_id_card_type, parent_id_card_number,
+      relation, mobile, address,
+      is_graduate, id_card_type, id_card_number,
+      country, nation, oversea,
+      born_place, native_place, account_character,
+      non_agricultural_account_type, registered_residence,
+      creat_time, modify_time, is_deleted
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER},
+      #{year,jdbcType=INTEGER}, #{month,jdbcType=INTEGER}, #{day,jdbcType=INTEGER}, #{age,jdbcType=INTEGER},
+      #{parentName,jdbcType=VARCHAR}, #{parentIdCardType,jdbcType=VARCHAR}, #{parentIdCardNumber,jdbcType=VARCHAR},
+      #{relation,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+      #{graduate,jdbcType=BIT}, #{idCardType,jdbcType=VARCHAR}, #{idCardNumber,jdbcType=VARCHAR},
+      #{country,jdbcType=VARCHAR}, #{nation,jdbcType=VARCHAR}, #{oversea,jdbcType=VARCHAR},
+      #{bornPlace,jdbcType=VARCHAR}, #{nativePlace,jdbcType=VARCHAR}, #{accountCharacter,jdbcType=VARCHAR},
+      #{nonAgriculturalAccountType,jdbcType=VARCHAR}, #{registeredResidence,jdbcType=VARCHAR},
+      #{creatTime,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.charge.pojo.student.StudentInfo">
+    insert into student_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="year != null">
+        year,
+      </if>
+      <if test="month != null">
+        month,
+      </if>
+      <if test="day != null">
+        day,
+      </if>
+      <if test="age != null">
+        age,
+      </if>
+      <if test="parentName != null">
+        parent_name,
+      </if>
+      <if test="parentIdCardType != null">
+        parent_id_card_type,
+      </if>
+      <if test="parentIdCardNumber != null">
+        parent_id_card_number,
+      </if>
+      <if test="relation != null">
+        relation,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="graduate != null">
+        is_graduate,
+      </if>
+      <if test="idCardType != null">
+        id_card_type,
+      </if>
+      <if test="idCardNumber != null">
+        id_card_number,
+      </if>
+      <if test="country != null">
+        country,
+      </if>
+      <if test="nation != null">
+        nation,
+      </if>
+      <if test="oversea != null">
+        oversea,
+      </if>
+      <if test="bornPlace != null">
+        born_place,
+      </if>
+      <if test="nativePlace != null">
+        native_place,
+      </if>
+      <if test="accountCharacter != null">
+        account_character,
+      </if>
+      <if test="nonAgriculturalAccountType != null">
+        non_agricultural_account_type,
+      </if>
+      <if test="registeredResidence != null">
+        registered_residence,
+      </if>
+      <if test="creatTime != null">
+        creat_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="deleted != null">
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null">
+        #{month,jdbcType=INTEGER},
+      </if>
+      <if test="day != null">
+        #{day,jdbcType=INTEGER},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="parentName != null">
+        #{parentName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentIdCardType != null">
+        #{parentIdCardType,jdbcType=VARCHAR},
+      </if>
+      <if test="parentIdCardNumber != null">
+        #{parentIdCardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null">
+        #{relation,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="graduate != null">
+        #{graduate,jdbcType=BIT},
+      </if>
+      <if test="idCardType != null">
+        #{idCardType,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardNumber != null">
+        #{idCardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null">
+        #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="nation != null">
+        #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="oversea != null">
+        #{oversea,jdbcType=VARCHAR},
+      </if>
+      <if test="bornPlace != null">
+        #{bornPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="nativePlace != null">
+        #{nativePlace,jdbcType=VARCHAR},
+      </if>
+      <if test="accountCharacter != null">
+        #{accountCharacter,jdbcType=VARCHAR},
+      </if>
+      <if test="nonAgriculturalAccountType != null">
+        #{nonAgriculturalAccountType,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredResidence != null">
+        #{registeredResidence,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null">
+        #{creatTime,jdbcType=INTEGER},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.charge.pojo.student.StudentInfo">
+    update student_info
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="year != null">
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null">
+        month = #{month,jdbcType=INTEGER},
+      </if>
+      <if test="day != null">
+        day = #{day,jdbcType=INTEGER},
+      </if>
+      <if test="age != null">
+        age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="parentName != null">
+        parent_name = #{parentName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentIdCardType != null">
+        parent_id_card_type = #{parentIdCardType,jdbcType=VARCHAR},
+      </if>
+      <if test="parentIdCardNumber != null">
+        parent_id_card_number = #{parentIdCardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null">
+        relation = #{relation,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="graduate != null">
+        is_graduate = #{graduate,jdbcType=BIT},
+      </if>
+      <if test="idCardType != null">
+        id_card_type = #{idCardType,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardNumber != null">
+        id_card_number = #{idCardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null">
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="nation != null">
+        nation = #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="oversea != null">
+        oversea = #{oversea,jdbcType=VARCHAR},
+      </if>
+      <if test="bornPlace != null">
+        born_place = #{bornPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="nativePlace != null">
+        native_place = #{nativePlace,jdbcType=VARCHAR},
+      </if>
+      <if test="accountCharacter != null">
+        account_character = #{accountCharacter,jdbcType=VARCHAR},
+      </if>
+      <if test="nonAgriculturalAccountType != null">
+        non_agricultural_account_type = #{nonAgriculturalAccountType,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredResidence != null">
+        registered_residence = #{registeredResidence,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null">
+        creat_time = #{creatTime,jdbcType=INTEGER},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        is_deleted = #{deleted,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.charge.pojo.student.StudentInfo">
+    update student_info
+    set name = #{name,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      year = #{year,jdbcType=INTEGER},
+      month = #{month,jdbcType=INTEGER},
+      day = #{day,jdbcType=INTEGER},
+      age = #{age,jdbcType=INTEGER},
+      parent_name = #{parentName,jdbcType=VARCHAR},
+      parent_id_card_type = #{parentIdCardType,jdbcType=VARCHAR},
+      parent_id_card_number = #{parentIdCardNumber,jdbcType=VARCHAR},
+      relation = #{relation,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      is_graduate = #{graduate,jdbcType=BIT},
+      id_card_type = #{idCardType,jdbcType=VARCHAR},
+      id_card_number = #{idCardNumber,jdbcType=VARCHAR},
+      country = #{country,jdbcType=VARCHAR},
+      nation = #{nation,jdbcType=VARCHAR},
+      oversea = #{oversea,jdbcType=VARCHAR},
+      born_place = #{bornPlace,jdbcType=VARCHAR},
+      native_place = #{nativePlace,jdbcType=VARCHAR},
+      account_character = #{accountCharacter,jdbcType=VARCHAR},
+      non_agricultural_account_type = #{nonAgriculturalAccountType,jdbcType=VARCHAR},
+      registered_residence = #{registeredResidence,jdbcType=VARCHAR},
+      creat_time = #{creatTime,jdbcType=INTEGER},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      is_deleted = #{deleted,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="countStudentInfo" resultType="java.lang.Integer">
+    SELECT count(id) FROM student_info <include refid="wheresql"/>
+  </select>
+  <select id="queryStudentInfoPageList" resultMap="BaseResultMap">
+    SELECT * FROM student_info <include refid="wheresql"/>
+  </select>
+
+  <sql id="wheresql">
+    WHERE is_deleted=0
+    <if test="param.name != null and param.name != ''">
+      AND name=#{param.name}
+    </if>
+    <if test="param.mobile != null and param.mobile != ''">
+      AND mobile=#{param.mobile}
+    </if>
+    <if test="param.graduate != null and param.graduate != -1">
+      AND is_graduate=#{param.graduate}
+    </if>
+  </sql>
+
+  <select id="getStudentInfoByName" parameterType="java.lang.String" resultType="com.charge.pojo.student.StudentInfo">
+    SELECT <include refid="Base_Column_List"/> FROM student_info WHERE name=#{studentName}
+  </select>
+
+  <select id="getStudentInfoById" parameterType="java.lang.Integer" resultType="com.charge.pojo.student.StudentInfo">
+    SELECT <include refid="Base_Column_List"/> FROM student_info WHERE id=#{studentId}
+  </select>
+  <select id="getStudentInfoByIdCardNumber" parameterType="java.lang.String" resultType="com.charge.pojo.student.StudentInfo">
+    SELECT <include refid="Base_Column_List"/> FROM student_info WHERE id_card_number=#{cardNumber}
+  </select>
+
+</mapper>

@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.charge.mapper.student.StudentChargeInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.charge.pojo.student.StudentChargeInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="student_id" property="studentId" jdbcType="INTEGER" />
+    <result column="charge_project_id" property="chargeProjectId" jdbcType="INTEGER" />
+    <result column="charge_amount" property="chargeAmount" jdbcType="DECIMAL" />
+    <result column="charge_coefficient" property="chargeCoefficient" jdbcType="DECIMAL" />
+    <result column="actual_charge_amount" property="actualChargeAmount" jdbcType="DECIMAL" />
+    <result column="discount" property="discount" jdbcType="DECIMAL" />
+    <result column="use_deposit_amount" property="useDepositAmount" jdbcType="DECIMAL" />
+    <result column="charge_time" property="chargeTime" jdbcType="INTEGER" />
+    <result column="actual_charge_time" property="actualChargeTime" jdbcType="INTEGER" />
+    <result column="pay_type" property="payType" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="INTEGER" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="deleted" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, student_id, charge_project_id, charge_amount, charge_coefficient, actual_charge_amount,discount,use_deposit_amount,charge_time,
+    actual_charge_time,pay_type, status,create_time, modify_time, is_deleted
+  </sql>
+  <insert id="insert" parameterType="com.charge.pojo.student.StudentChargeInfo" >
+    insert into student_charge_info (id, student_id, charge_project_id, 
+      charge_amount, charge_coefficient, actual_charge_amount,discount,use_deposit_amount,charge_time, actual_charge_time,pay_type,
+      status, create_time, modify_time, 
+      is_deleted)
+    values (#{id,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{chargeProjectId,jdbcType=INTEGER}, 
+      #{chargeAmount,jdbcType=DECIMAL},#{chargeCoefficient}, #{actualChargeAmount},#{discount},#{useDepositAmount},#{chargeTime,jdbcType=INTEGER},
+       #{actualChargeTime},#{payType,jdbcType=INTEGER},
+      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, 
+      #{deleted,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.charge.pojo.student.StudentChargeInfo" >
+    insert into student_charge_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="studentId != null" >
+        student_id,
+      </if>
+      <if test="chargeProjectId != null" >
+        charge_project_id,
+      </if>
+      <if test="chargeAmount != null" >
+        charge_amount,
+      </if>
+      <if test="chargeCoefficient != null" >
+        charge_coefficient,
+      </if>
+      <if test="actualChargeAmount != null" >
+        actual_charge_amount,
+      </if>
+      <if test="discount != null" >
+        discount,
+      </if>
+      <if test="useDepositAmount != null" >
+        use_deposit_amount,
+      </if>
+      <if test="chargeTime != null" >
+        charge_time,
+      </if>
+      <if test="actualChargeTime != null" >
+        actual_charge_time,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="deleted != null" >
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="chargeProjectId != null" >
+        #{chargeProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="chargeAmount != null" >
+        #{chargeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="chargeCoefficient != null" >
+        #{chargeCoefficient},
+      </if>
+      <if test="actualChargeAmount != null" >
+        #{actualChargeAmount},
+      </if>
+      <if test="discount != null" >
+        #{discount},
+      </if>
+      <if test="useDepositAmount != null" >
+        #{useDepositAmount},
+      </if>
+      <if test="chargeTime != null" >
+        #{chargeTime,jdbcType=INTEGER},
+      </if>
+      <if test="actualChargeTime != null" >
+        #{actualChargeTime},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.charge.pojo.student.StudentChargeInfo" >
+    update student_charge_info
+    <set >
+      <if test="studentId != null" >
+        student_id = #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="chargeProjectId != null" >
+        charge_project_id = #{chargeProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="chargeAmount != null" >
+        charge_amount = #{chargeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="actualChargeAmount != null" >
+        actual_charge_amount = #{actualChargeAmount},
+      </if>
+      <if test="discount != null" >
+        discount = #{discount},
+      </if>
+      <if test="useDepositAmount != null" >
+        use_deposit_amount = #{useDepositAmount},
+      </if>
+      <if test="chargeTime != null" >
+        charge_time = #{chargeTime,jdbcType=INTEGER},
+      </if>
+      <if test="actualChargeTime != null" >
+        actual_charge_time = #{actualChargeTime},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        is_deleted = #{deleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.charge.pojo.student.StudentChargeInfo" >
+    update student_charge_info
+    set student_id = #{studentId,jdbcType=INTEGER},
+      charge_project_id = #{chargeProjectId,jdbcType=INTEGER},
+      charge_amount = #{chargeAmount,jdbcType=DECIMAL},
+      actual_charge_amount = #{actualChargeAmount},
+      discount = #{discount},
+      use_deposit_amount = #{useDepositAmount},
+      charge_time = #{chargeTime,jdbcType=INTEGER},
+      actual_charge_time = #{actualChargeTime},
+      pay_type = #{payType,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=INTEGER},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      is_deleted = #{deleted,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="queryByUniqueKey" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from student_charge_info where student_id=#{studentId} and charge_project_id=#{chargeProjectId} and charge_time=#{chargeTime}
+  </select>
+
+  <select id="countStudentChargeInfo" resultType="java.lang.Integer">
+    SELECT COUNT(DISTINCT(a.student_id)) FROM student_charge_info a JOIN student_info b on a.student_id=b.id
+    join student_class_info e on b.id=e.student_id join class_info f on e.class_id = f.id
+    JOIN student_ext_info c on a.student_id=c.student_id
+     JOIN charge_project d on a.charge_project_id=d.id <include refid="wheresql"/>
+  </select>
+  <select id="queryStudentChargeInfoPageList" resultType="com.charge.vo.student.StudentChargeInfoVo">
+    SELECT
+      a.id,
+      a.student_id,
+      b.name AS studentName,
+      SUM(a.charge_amount) as chargeAmount,
+      SUM(a.actual_charge_amount+a.use_deposit_amount) as actualChargeAmount,
+      c.prepayment_amount,
+      c.deposit
+     FROM student_info b JOIN student_ext_info c on b.id=c.student_id join
+    student_class_info e on b.id=e.student_id join class_info f on e.class_id = f.id
+      LEFT JOIN student_charge_info a on a.student_id=b.id
+     JOIN charge_project d on a.charge_project_id=d.id
+    <include refid="wheresql"/>
+    GROUP BY a.student_id
+  </select>
+  <select id="countStudentChargeDetail" resultType="java.lang.Integer">
+    SELECT count(1)
+    FROM student_charge_io k left join student_charge_info a on a.id=k.student_charge_info_id JOIN student_info b  on k.student_id=b.id
+    join student_class_info e on b.id=e.student_id join class_info f on e.class_id = f.id
+    join grade_info m on f.grade_id = m.id
+    left JOIN charge_project d on a.charge_project_id=d.id
+    WHERE 1=1
+    <if test="param.gradeId != null and param.gradeId != -1">
+      AND f.grade_id=#{param.gradeId}
+    </if>
+    <if test="param.receiptId != null and param.receiptId != -1">
+      AND k.receipt_id=#{param.receiptId}
+    </if>
+    <if test="param.classId != null and param.classId != -1">
+      AND e.class_id=#{param.classId}
+    </if>
+    <if test="param.name != null and param.name != ''">
+      AND b.name=#{param.name}
+    </if>
+    <if test="param.status != null and param.status != -1">
+      AND a.status=#{param.status}
+    </if>
+    <if test="param.payTimeBegin != null and param.payTimeBegin != ''">
+      AND a.actual_charge_time &gt;= UNIX_TIMESTAMP(#{param.payTimeBegin})
+    </if>
+    <if test="param.payTimeEnd != null and param.payTimeEnd != ''">
+      AND a.actual_charge_time &lt;= UNIX_TIMESTAMP(#{param.payTimeEnd})
+    </if>
+  </select>
+  <select id="queryStudentChargeDetailPageList" resultType="com.charge.vo.student.StudentChargeInfoDetailVo">
+    SELECT
+    a.id,
+    k.student_id,
+    f.name as className,
+    m.name as gradeName,
+    b.name as studentName,
+    a.charge_project_id,
+    CASE k.charge_type WHEN 1 THEN '预交费' WHEN 2 THEN '押金' ELSE
+    d.project_name END AS chargeProjectName,
+    k.charge_amount,
+    a.charge_coefficient,
+    k.actual_charge_amount,
+    a.discount,
+    k.use_deposit_amount,
+    k.left_deposit_amount,
+    k.custom_offer_amount,
+    a.charge_time,
+    k.actual_charge_time,
+    k.pay_type,
+    k.charge_type,
+    k.receipt_id,
+    ifnull(a.status,2) as status
+    FROM student_charge_io k left join student_charge_info a on a.id=k.student_charge_info_id JOIN student_info b  on k.student_id=b.id
+    join student_class_info e on b.id=e.student_id join class_info f on e.class_id = f.id
+    join grade_info m on f.grade_id = m.id
+    left JOIN charge_project d on a.charge_project_id=d.id
+    WHERE 1=1
+    <if test="param.gradeId != null and param.gradeId != -1">
+      AND f.grade_id=#{param.gradeId}
+    </if>
+    <if test="param.receiptId != null and param.receiptId != -1">
+      AND k.receipt_id=#{param.receiptId}
+    </if>
+    <if test="param.classId != null and param.classId != -1">
+      AND e.class_id=#{param.classId}
+    </if>
+    <if test="param.name != null and param.name != ''">
+      AND b.name=#{param.name}
+    </if>
+    <if test="param.status != null and param.status != -1">
+      AND a.status=#{param.status}
+    </if>
+    <if test="param.payTimeBegin != null and param.payTimeBegin != ''">
+      AND a.actual_charge_time &gt;= UNIX_TIMESTAMP(#{param.payTimeBegin})
+    </if>
+    <if test="param.payTimeEnd != null and param.payTimeEnd != ''">
+      AND a.actual_charge_time &lt;= UNIX_TIMESTAMP(#{param.payTimeEnd})
+    </if>
+  </select>
+  <sql id="wheresql">
+    WHERE a.is_deleted = 0
+    <if test="param.chargeStatus != null">
+      AND a.status IN
+      <foreach collection="param.chargeStatus" open="(" close=")" separator="," item="item">
+        #{item}
+      </foreach>
+    </if>
+    <if test="param.name != null and param.name != ''">
+      AND b.name=#{param.name}
+    </if>
+    <if test="param.chargeProjectId != null">
+      AND a.charge_project_id=#{param.chargeProjectId}
+    </if>
+    <if test="param.gradeId != null and param.gradeId != -1">
+      AND f.grade_id=#{param.gradeId}
+    </if>
+    <if test="param.classId != null and param.classId != -1">
+      AND e.class_id=#{param.classId}
+    </if>
+    <if test="param.payTimeBegin != null and param.payTimeBegin != ''">
+      AND a.actual_charge_time &gt;= UNIX_TIMESTAMP(#{param.payTimeBegin})
+    </if>
+    <if test="param.payTimeEnd != null and param.payTimeEnd != ''">
+      AND a.actual_charge_time &lt;= UNIX_TIMESTAMP(#{param.payTimeEnd})
+    </if>
+  </sql>
+
+  <select id="queryStudentChargeInfoDetail" resultType="com.charge.vo.student.StudentChargeInfoDetailVo">
+    SELECT
+    a.id,
+    a.student_id,
+    b.name as studentName,
+    a.charge_project_id,
+    d.project_name as chargeProjectName,
+    a.charge_amount,
+    a.charge_coefficient,
+    a.actual_charge_amount,
+    a.discount,
+    a.use_deposit_amount,
+    a.custom_offer_amount,
+    a.charge_time,
+    a.actual_charge_time,
+    a.pay_type,
+    a.status,
+    f.name as className,
+    g.name as gradeName,
+    ext.prepayment_amount as leftDepositAmount
+    FROM student_charge_info a JOIN student_info b  on a.student_id=b.id join student_ext_info ext on b.id=ext.student_id
+    JOIN charge_project d on a.charge_project_id=d.id join student_class_info e on b.id=e.student_id
+    join class_info f on e.class_id=f.id join grade_info g on f.grade_id=g.id
+    WHERE a.student_id=#{studentId} AND a.status IN
+     <foreach collection="chargeStatusList" open="(" close=")" separator="," item="item">
+       #{item}
+     </foreach>
+    <if test="payTimeBegin != null and payTimeBegin != ''">
+      AND a.actual_charge_time &gt;= UNIX_TIMESTAMP(#{payTimeBegin})
+    </if>
+    <if test="payTimeEnd != null and payTimeEnd != ''">
+      AND a.actual_charge_time &lt;= UNIX_TIMESTAMP(#{payTimeEnd})
+    </if>
+  </select>
+
+  <update id="updateStudentChargeInfo" parameterType="com.charge.pojo.student.StudentChargeInfo">
+    UPDATE student_charge_info SET
+    actual_charge_amount = actual_charge_amount + #{actualChargeAmount},
+    use_deposit_amount = use_deposit_amount + #{useDepositAmount},
+    custom_offer_amount = custom_offer_amount + #{customOfferAmount},
+    <if test="payType != null">
+      pay_type = #{payType},
+    </if>
+    <if test="status != null">
+      status = #{status},
+    </if>
+    discount = #{discount},
+    actual_charge_time = #{actualChargeTime}
+    WHERE id=#{id}
+  </update>
+
+  <update id="checkChargeExpireStudent">
+    update student_charge_info set status = 3 where status in(0, 1) and charge_time &lt;= UNIX_TIMESTAMP(NOW())
+  </update>
+
+  <select id="countUnCharged" resultType="int">
+    select count(*) from student_charge_info where student_id = #{studentId} and status != 2
+  </select>
+</mapper>

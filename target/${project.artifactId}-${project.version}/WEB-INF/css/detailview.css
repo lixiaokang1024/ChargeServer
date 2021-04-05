@@ -1,0 +1,69 @@
+table.detail-view .null
+{
+	color: pink;
+}
+
+table.detail-view
+{
+	background: white;
+	width: 100%;
+	margin: 0;
+}
+
+table.detail-view th, table.detail-view td
+{
+	font-size: 0.9em;
+	border: 1px white solid;
+	padding: 10px;
+	vertical-align: top;
+}
+
+table.detail-view th
+{
+	text-align: right;
+	width: 160px;
+	font-size:14px;
+	border-bottom: 1px #fff solid;
+}
+
+table.detail-view td
+{
+	border-bottom: 1px #ddd solid;
+	border-right:solid 1px #ddd;
+	background:#fff;
+}
+table.detail-view tr.odd
+{
+	background:#fff;
+}
+
+table.detail-view tr.even
+{
+	background:#fff;
+}
+
+table.detail-view tr.even td
+{
+	background:#fff;
+}
+
+table.detail-view tr.odd th
+{
+}
+
+table.detail-view tr.even th
+{
+}
+
+
+.list{border:1px solid #cfaa6f; background:#fffefc;}
+.list thead{}
+.list thead th{background:#f4e1ba; font-size:12px; text-align:center; padding:6px; border-bottom:1px solid #cfaa6f;border-right:1px solid #cfaa6f; color:#804f21;}
+.list tbody{background:#fff;}
+.list tbody tr{}
+.list tbody tr td{text-align:center; padding:6px;  border-left:1px solid #f4e1ba;border-bottom:1px solid #f4e1ba; font-size:12px;}
+.list tbody tr td span{color:red;clear:both;display:block}
+.list tfoot tr{}
+.list tfoot tr td{padding:6px; text-align:right}
+.list tfoot tr td span{color:red;}
+.list .rows{background:#fcf8ef;}

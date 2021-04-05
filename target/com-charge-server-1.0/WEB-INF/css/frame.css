@@ -1,0 +1,129 @@
+/** 外部框架样式 **/
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,
+code,del,dfn,em,img,q,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 12px;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+.easyui-layout {background:#f1f1f1;}
+
+table {
+	border-collapse: separate;
+	border-spacing: 0;
+}
+
+/** 顶部 **/
+#header {
+	height: 93px;
+	position: relative;
+	background:url(../images/wms/header_bg.jpg) repeat-x left 20px #FDFDFD;
+	color: #fff;
+	overflow:hidden;
+}
+.wms_yj{background:url(../images/wms/yj_bg.jpg) repeat-x left top;width:262px;height:23px; line-height:23px; text-align:center;float:right; color:#3d3d3d;margin:8px 6px 0px 0px;}
+.wms_logo{background:url(../images/school/logo.jpg) no-repeat left top;width:200px;height:43px;position:absolute; top:12px;left:4px;height:50px; padding:0px 0px 0px 40px;}
+.header a {	color: #fff;	text-decoration: none;}
+.header a:hover {color:#fff;}
+
+
+
+/*菜单*/.header #topMenu { position:absolute;top:62px;left:0;float:left;	color:#3d3d3d; border-left:1px solid #dadada;border-top:1px solid #dadada;border-right:1px solid #dadada;height:27px; background:url(../images/wms/wms_img.jpg) repeat-x top;}	
+.header #topMenu a{}
+
+.top-link {	width:220px; float:right;color:#3d3d3d;　padding:0px 0px 0px 12px; text-align:right; margin:12px 6px 0px 0px; font-family:Arial, Helvetica, sans-serif;}/*用户退出*/
+.top-link a{color: #3186c7; text-decoration:none}
+.top-link a:hover{color: #3186c7; text-decoration:underline}
+.top-link img{ vertical-align:middle; margin-left:4px;}
+
+.top-menu {float:left;}
+.top-menu .tab {float: left;line-height: 27px;white-space: nowrap;position: relative;z-index: 2;text-algin:center;padding:0 8px;}/*未选*/
+.top-menu .tab span {display: block;float: left;text-decoration: none;padding: 0px 0px 0px 0px;height: 27px;float: left;color:#416aa3;text-align:center;}
+.top-menu .current span {	background: url(../images/system_menu_btn2.gif) no-repeat top left;	height: 28px;	line-height: 28px;width:95px; text-align:center; color:#fff;} /*当前*/	
+.top-menu .current span a{ color:#fff; }
+.top-menu .current span a {	color: #000;}
+#container{	background:url(../images/header_bg_line.jpg) repeat-x top left;}
+
+/** 左侧 **/
+#left{	width:180px;	overflow:hidden;	vertical-align:top;	background:#dcedf7;}
+
+/** 切换左侧菜单 **/
+#toggleLeft{width:6px;	background:url(../images/main_bg_line.jpg) repeat-y;}
+#toggleLeft img{cursor:pointer;}
+
+
+
+
+/** 左侧菜单 **/
+ul#menu, ul#menu ul {
+  list-style-type:none;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  list-style:none;
+}
+
+ul#menu a.parent {
+  display: block;
+  text-decoration: none;padding:0px; margin:0px;
+}
+
+ul#menu li {
+  margin:0px; padding:0px; list-style-type:none; 
+}
+
+ul#menu li a.parent {
+	
+  background:url(../images/wms/wms_menu_img.gif) no-repeat -2px -2px;
+  color: #fff;	
+  padding: 6px 6px 6px 26px; 
+}
+ul#menu li a.parent:hover {
+	padding: 6px 6px 6px 26px; 
+	background:url(../images/wms/wms_menu_img3.gif) no-repeat 9px 8px #3b75ab;
+	}
+
+
+
+
+ul#menu li span a {
+  background: #5298dd;
+  color: #fff;	
+  padding: 6px;border-bottom:1px solid #3d8dd6; 
+
+}
+
+
+ul#menu li ul li span a {
+  background:url(../images/wms/wms_menu_img1.gif) no-repeat 18px 6px #5298dd;
+  color: #fff;
+  padding-left: 35px;
+  display: block;
+  text-decoration: none;
+}
+ul#menu li ul li span a:hover {
+  background:url(../images/wms/wms_menu_img1.gif) no-repeat 18px 6px #448fda;
+  color: #fff;
+  padding-left: 35px;
+  display: block;
+  text-decoration: none;
+}
+
+ul#menu li ul li a.parent:hover {
+  background: #b6d0e0;
+  border-left: 5px #34658e solid;
+  padding-left: 15px;
+}
+.mycur {
+  background: #b6d0e0;
+  border-left: 5px #34658e solid;
+  padding-left: 15px;
+}
+ul#menu .leftMenu
+{
+	display:none;
+}

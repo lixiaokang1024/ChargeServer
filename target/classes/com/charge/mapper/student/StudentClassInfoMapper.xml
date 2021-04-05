@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.charge.mapper.student.StudentClassInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.charge.pojo.student.StudentClassInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="student_id" property="studentId" jdbcType="INTEGER" />
+    <result column="class_id" property="classId" jdbcType="INTEGER" />
+    <result column="is_graduate" property="graduate" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="INTEGER" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="deleted" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, student_id, class_id, is_graduate, create_time, modify_time, is_deleted
+  </sql>
+  <insert id="insert" parameterType="com.charge.pojo.student.StudentClassInfo" >
+    insert into student_class_info (id, student_id, class_id,is_graduate, create_time,
+      modify_time, is_deleted)
+    values (#{id,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{classId,jdbcType=INTEGER},
+     #{graduate,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER},
+      #{modifyTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.charge.pojo.student.StudentClassInfo" >
+    insert into student_class_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="studentId != null" >
+        student_id,
+      </if>
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="graduate != null" >
+        is_graduate,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      is_deleted,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="graduate != null" >
+        #{graduate,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      #{deleted,jdbcType=TINYINT},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.charge.pojo.student.StudentClassInfo" >
+    update student_class_info
+    <set >
+      <if test="studentId != null" >
+        student_id = #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="graduate != null" >
+        is_graduate = #{graduate,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null" >
+        is_deleted = #{deleted,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.charge.pojo.student.StudentClassInfo" >
+    update student_class_info
+    set student_id = #{studentId,jdbcType=INTEGER},
+      class_id = #{classId,jdbcType=INTEGER},
+      is_graduate = #{graduate,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=INTEGER},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      is_deleted = #{deleted,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <delete id="deleteByStudentId" parameterType="int">
+    delete from student_class_info where student_id = #{studentId}
+  </delete>
+
+  <select id="countStudentClassInfo" resultType="java.lang.Integer">
+    SELECT count(1) FROM student_class_info a right JOIN student_info b  on a.student_id=b.id left JOIN class_info c on a.class_id=c.id
+    left JOIN grade_info d on c.grade_id=d.id join student_ext_info e on b.id=e.student_id
+    <include refid="wheresql"/>
+  </select>
+  <select id="queryStudentClassInfoPageList" resultType="com.charge.vo.student.StudentClassInfoVo">
+    SELECT
+    a.id,
+    b.id as studentId,
+    b.name as studentName,
+    a.class_id,
+    c.name as className,
+    d.id as gradeId,
+    d.name as gradeName,
+    d.level as gradeLevel,
+    b.is_graduate,
+    a.remark,
+    CASE WHEN e.graduate_time=0 THEN "" ELSE
+    FROM_UNIXTIME(e.graduate_time) END AS graduateTime,
+    CASE WHEN e.admission_time=0 THEN "" ELSE
+    FROM_UNIXTIME(e.admission_time) END AS admissionTime
+    FROM student_class_info a right JOIN student_info b  on a.student_id=b.id left JOIN class_info c on a.class_id=c.id
+    left JOIN grade_info d on c.grade_id=d.id join student_ext_info e on b.id=e.student_id
+    <include refid="wheresql"/> ORDER BY b.id ASC
+  </select>
+  <sql id="wheresql">
+    WHERE 1 = 1
+    <if test="param.studentName != null and param.studentName != ''">
+      and b.name = #{param.studentName}
+    </if>
+    <if test="param.className != null and param.className != ''">
+      and c.name = #{param.className}
+    </if>
+    <if test="param.classId != null">
+      and c.id = #{param.classId}
+    </if>
+    <if test="param.gradeName != null and param.gradeName != ''">
+      and d.name = #{param.gradeName}
+    </if>
+    <if test="param.isGraduate != null and param.isGraduate != -1">
+      and b.is_graduate = #{param.isGraduate}
+    </if>
+    <if test="param.admissionTimeBegin != null and param.admissionTimeBegin != ''">
+      and FROM_UNIXTIME(e.graduate_time) &gt;= #{param.admissionTimeBegin}
+    </if>
+    <if test="param.admissionTimeEnd != null and param.admissionTimeEnd != ''">
+      and FROM_UNIXTIME(e.graduate_time) &lt;= #{param.admissionTimeEnd}
+    </if>
+  </sql>
+
+  <select id="getByStudentId" parameterType="java.lang.Integer" resultType="com.charge.pojo.student.StudentClassInfo">
+    SELECT <include refid="Base_Column_List"/> FROM student_class_info WHERE student_id = #{studentId}
+  </select>
+
+  <update id="updateByStudentId" parameterType="com.charge.pojo.student.StudentClassInfo" >
+    update student_class_info
+    <set >
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="graduate != null" >
+        is_graduate = #{graduate,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+    </set>
+    where student_id = #{studentId}
+  </update>
+
+</mapper>
